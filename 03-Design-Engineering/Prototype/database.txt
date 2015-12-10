@@ -1,0 +1,104 @@
+NOTES: Pag may "*" ibig sabihin unique ung data.
+	   Walang "*", common sa MOVE UP and COOPERATE
+	   MOVE UP and COOPERATE pa lang ito.
+
+Nov. 16, 10:30am ITDC Room 201 meeet with ma'am
+
+----------------------------------------------------------------------------------------------------------------------------------
+Tables
+
+	1. Student(userid, studentnumber, lastname, firstname, middlename, nationality, gender, birthdate, birthplace, presentaddress, permanentaddress, contactnumbers, emailaddress, degree, department, college);
+
+	2. Admin(userid, lastname, firstname, middlename);
+
+	3. Sig(userid, lastname, firstname, middlename, position);
+
+	4. User(userid, type);
+
+	5. Application(application-id, scholarshipname, userid);
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+1) Mobility for Vigor and Excellence (MOVE UP)
+
+	Personal Data
+		Name
+		Nationality
+		Gender
+		Date of Birth
+		Birthplace
+		Present Address
+		Permanent Address
+		Contact Numbers
+		Email Address
+		*Facebook Account
+		*Name of Parents
+		*Address of Parents
+		*Contact Number of Parents
+
+	Academic Data
+		Degree Course
+		*Major
+		Student Number
+		*First Year of Enrollment
+		*Year Level
+		Department
+		College
+		*Type of Adviser
+		*Name of Adviser
+		*Specialization of Adviser
+		*Contact Number of Adviser
+		*Email Address of Adviser
+		Name of Undergraduate Applicant
+
+	Mobility Application for
+		Academic Year
+		Duration of Stay
+		*Type of Mobility
+		Name of Host Institution
+		(To be filled up by OIL personnel)
+		Address of Host Institution
+		Name of Potential Foreign Expert/Co-Adviser
+		*Advanced courses/subject to be enrolled		Approved by
+			1.
+			2.
+			3.
+		*ST System Level
+		*Certified by
+
+2) Continuous Operational and Outcomes-based Partnership for Excellence in Research and Academic Training Enhancement (COOPERATE)
+
+	Personal Data
+		Name
+		Nationality
+		Gender
+		Date of Birth
+		Birthplace
+		*Status (single/married)
+		*Name of Spouse
+		Present Address
+		Permanent Address
+		Contact Number
+		Email Address
+		*Employment Status
+		*Position
+		*Name of Employer
+		*Business Address
+
+	Academic Data
+		Degree Course
+		Student Number
+		*Target year of graduation
+		*Specialization
+		*Constituent Unit where affiliated
+		Department
+		College
+		Name of Graduate Student Applicant
+
+	COOPERATE APPLICATION FOR
+		Academic Year
+		Duration of Stay
+		Name of Host Institution
+		Address of Host Institution
+		Name of Potential Expert/Co-Adviser
