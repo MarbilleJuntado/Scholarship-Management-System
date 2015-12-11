@@ -11,4 +11,7 @@
     elseif ($email == 'admin@up.edu.ph' && $password == 'admin'){
     	header("Location: admin.html");
     }
+    else {
+      header("Location: error.html");
+    }
 ?>
