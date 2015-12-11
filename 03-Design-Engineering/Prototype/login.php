@@ -8,4 +8,7 @@
     elseif ($email == 'sig@up.edu.ph' && $password == 'sig') {
       header("Location: sig.html");
     }
+    elseif ($email == 'admin@up.edu.ph' && $password == 'admin'){
+    	header("Location: admin.html");
+    }
 ?>
