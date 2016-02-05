@@ -180,8 +180,6 @@
                                     </div>
 
                                     <button type="submit" style="margin-bottom:10px" class="btn btn-default">Submit</button>
-
-                                    <button type="submit" style="margin-bottom:10px" class="btn btn-default">Cancel</button>
                                   </div>
                               </form>
                             </div>
@@ -191,27 +189,37 @@
                         <div id="apply-div" style="display:none">
                           <h1>Apply for Scholarship</h1>
                           <p>Please choose the scholarship you want to apply for from the dropdown menu. Read the description of the scholarship. Download the form and follow all instructions given. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
-                          <div class="dropdown" style="margin-bottom:10px">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                              Choose Scholarship
-                              <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                              <li><a href="#">MOVE UP</a></li>
-                              <li><a href="#">COOPERATE</a></li>
-                              <li><a href="#">MOVE DOWN</a></li>
-                              <li><a href="#">COOPERATE JANAI</a></li>
+                          <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Scholarship Type
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                              <li class="menu-item dropdown dropdown-submenu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Undergraduate</a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="#">FILIPINO INFORMATION TECHNOLOGY GROUP, USA SCHOLARSHIP (FITG)</a></li>
+                                  <li><a href="#">LANDBANK - UP SCHOLARSHIP PROGRAM</a></li>
+                                  <li><a href="#">FUJI BANK SCHOLARSHIP PROGRAM</a></li>
+                                </ul>
+                              </li>
+                              <li class="menu-item dropdown dropdown-submenu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Faculty/Graduate</a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="#">Erasmus Mundus "Swap and Transfer"</a></li>
+                                  <li><a href="#">MOVEUP</a></li>
+                                </ul>
+                              </li>
                             </ul>
                           </div>
 
-                            <div class="panel panel-info">
+
+                            <div id="hideaway" style="display:none;" class="panel panel-info">
                               <div class="panel-heading">Scholarship Description</div>
                               <div class="panel-body">
                                 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
                               </div>
                             </div>
-                            <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-
+                            <br>
 
                             <form method="get" action="forms/MOVEUP.rar">
                               <button type="submit" class="btn btn-success">Download Application Form</button>
