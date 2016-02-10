@@ -1,0 +1,228 @@
+1) 
+	select distinct categoryname, count(*) as total_products 
+	from products join categories 
+	on (categories.categoryid = products.categoryid) 
+	group by categoryname 
+	order by categoryname;
+
+2)
+	SELECT CategoryName, ProductName, CompanyName
+	from products join categories on products.CategoryID = categories.CategoryID
+	join suppliers on suppliers.SupplierID = products.SupplierID
+	where discontinued = 1
+	order by categoryname, ProductName
+
+3)
+	SELECT categoryname, productname, max(unitprice)
+	from categories join products on categories.CategoryID = products.CategoryID
+	group by CategoryName
+	order by CategoryName
+
+4)
+	SELECT CONCAT(employees.LastName, ", ", employees.FirstName) as EmployeeName, 
+	       CONCAT(table1.lastName, ", ", table1.firstName) as ManagerName
+	FROM 
+	(
+	    SELECT * FROM employees
+	) as table1
+
+	JOIN
+	employees
+	ON
+	(table1.EmployeeID = employees.ReportsTo)
+	order by employees.LastName, employees.FirstName
+
+5) 
+	SELECT orders.OrderID, CompanyName, (UnitPrice * Quantity) as Amount, RequiredDate, ShippedDate, CONCAT(LastName, ", ", FirstName) as EmployeeName
+	FROM orders 
+	JOIN customers on orders.CustomerID = customers.CustomerID
+	JOIN order_details on order_details.OrderID = orders.OrderID
+	JOIN employees on employees.EmployeeID = orders.EmployeeID
+	where RequiredDate < ShippedDate
+	order by ShippedDate DESC
+
+6)
+	select country, count(*) as shipmentCount 
+	from customers JOIN orders on customers.CustomerID = orders.CustomerID
+	group by Country
+	order by Country
+
+7) 
+	SELECT companyName, count(OrderID) as shipmentCount
+	from orders join customers on orders.CustomerID = customers.CustomerID 
+	where YEAR(ShippedDate) = 1996
+	group by CompanyName
+	order by shipmentCount DESC
+
+8) 
+	select ProductName, CompanyName, CONCAT(ContactName, " | ", Phone) as ContactDetails, UnitsInStock, ReorderLevel
+	FROM products JOIN suppliers on products.SupplierID = suppliers.SupplierID
+	where UnitsInStock < ReorderLevel
+	order by (UnitsInStock - ReorderLevel)
+
+9) 
+	SELECT CONCAT(FirstName, " ", LastName) as employeeName, orders.OrderID, companyName, max(UnitPrice * Quantity) as Sale, orderDate, ShippedDate
+	from order_details 
+	join orders on order_details.OrderID = orders.OrderID
+	JOIN employees on employees.EmployeeID = orders.EmployeeID
+    JOIN customers on customers.CustomerID = orders.CustomerID
+
+	group by employeeName
+	order by Sale DESC
+
+10)
+	SELECT EmployeeName, SUM(Sales) as TotalSales
+
+	FROM
+	(
+	    select orders.OrderID, ShippedDate, CONCAT(FirstName, " ", LastName) as EmployeeName, (UnitPrice * Quantity) as Sales
+	    from orders
+	    join employees on orders.EmployeeID = employees.EmployeeID
+	    join order_details on order_details.OrderID = orders.OrderID
+	    where year(ShippedDate) = 1997
+	) as salesTable
+
+	group by EmployeeName
+	order by TotalSales DESC
+
+11)
+	select orders.orderID, CompanyName as Customer, (UnitPrice * Quantity) as Sales, OrderDate, ShippedDate
+	from orders
+	JOIN order_details on orders.OrderID = order_details.OrderID
+	JOIN customers on orders.CustomerID = customers.CustomerID
+	order by Sales DESC limit 10
+
+12)
+	select CategoryName, table3.ProductName, TotalSales
+
+	FROM
+
+	(
+	    SELECT ProductName, SUM(Sales) as TotalSales
+
+	    FROM
+
+	    (
+	        select ProductName, ShippedDate, (order_details.UnitPrice * Quantity) as Sales
+	        from products
+	        join order_details on products.ProductID = order_details.ProductID
+	        join orders on order_details.OrderID = orders.OrderID
+	        
+	        where ShippedDate BETWEEN '1997-10-01 00:00:00' AND '1998-09-30 11:59:59'
+	    ) as table1
+
+	    group by ProductName
+	) as table2
+
+	JOIN
+
+	(
+	    select CategoryName, ProductName
+	    from categories join products on categories.CategoryID = products.categoryID
+	) as table3
+
+	ON table2.ProductName = table3.ProductName
+    
+    order by CategoryName, TotalSales
+
+13)
+	Select CustomerID, CompanyName, SUM(Amount) as TotalAmount
+
+	FROM
+
+	(
+	    SELECT orders.orderID, customers.CustomerID, CompanyName, (UnitPrice * Quantity) as Amount
+	    from orders
+	    join customers on orders.CustomerID = customers.CustomerID
+	    join order_details on orders.OrderID = order_details.OrderID
+	    where year(orderDate) = '1997'
+	) as table1
+
+	group by CompanyName
+	order by TotalAmount DESC
+
+14)
+	select CompanyName, OrderID, MAX(OrderDate) as Most_Recent_Order_Date, ShippedDate
+
+	FROM
+
+	(
+	select orders.OrderID, customers.CustomerID, CompanyName, ShippedDate, OrderDate
+	from orders
+	join customers on orders.CustomerID = customers.CustomerID
+	) as table1
+
+	group by CompanyName
+
+15)
+	select CityNCountry, SUM(Freight) as Total_Freight
+
+	FROM
+
+	(
+	Select Freight, OrderID, ShippedDate, CONCAT(City, ", ", Country) as CityNCountry
+	from orders
+	join customers on orders.CustomerID = customers.CustomerID
+	where year(ShippedDate) = '1998'
+	) as table1
+
+	group by CityNCountry
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

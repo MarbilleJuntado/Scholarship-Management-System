@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+
+<?php
+  // Connect
+    $conn = new mysqli("localhost","root","","cs192upsms");
+  // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+?>
+
 <html lang="en">
 
 <head>
@@ -42,7 +52,7 @@
 
                 <li><a href="javascript:displayDiv('home-div','pending-div','reviewed-div','about-div')">Home</a></li>
                 <li><a href="javascript:displayDiv('pending-div','home-div','reviewed-div','about-div')">Pending Applications</a></li>
-                <li><a href="javascript:displayDiv('reviewed-div','pending-div', 'home-div','about-div')">Reviewed Applications</a></li> 
+                <li><a href="javascript:displayDiv('reviewed-div','pending-div', 'home-div','about-div')">Reviewed Applications</a></li>
                 <li><a href="javascript:displayDiv('about-div','pending-div', 'reviewed-div','home-div')">About</a></li>
                 <li><a href="login.html">Logout</a></li>
             </ul>
@@ -101,38 +111,92 @@
                                   <th class = "col-md-1"></th>
                                 </tr>
                               </thead>
+
+
+
                               <tbody>
+
+                              <?php
+                                $to_query = "select N.studentID, N.lastName, N.firstName, N.middleName,  A.applicationID, A.scholarshipID, S.name, A.appdate from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
+
+
+
+                                /*
+                                N.studentID = 0
+                                N.lastName = 1
+                                N.firstName = 2
+                                N.middleName = 3
+                                A.applicationID = 4
+                                A.scholarshipID = 5
+                                S.name = 6
+                                S.appDate = 7
+                                */
+
+                                $sql_result = mysqli_query($conn,$to_query);
+                                while($rows=mysqli_fetch_row($sql_result)){
+                                 foreach ($rows as $key => $value){
+                                   if($key == 1){
+                                     $name = $value;
+                                   }
+                                   if($key == 2){
+                                     $name = $name . ", " . $value;
+                                   }
+                                   if($key == 3){
+                                     $name = $name . " " . $value;
+                                    ?>
+                                  <tr>
+                                   <td>
+                                     <?php echo $name; ?>
+                                   </td>
+
+                                   <?php
+                                    }
+                                   if($key == 6){
+                                  ?>
+                                     <td>
+                                       <?php echo $value; ?>
+                                     </td>
+
+                                  <?php
+                                   }
+                                   if($key == 7){
+
+                                  ?>
+                                    <td>
+                                      <?php echo $value; ?>
+                                    </td>
+                                     <?php
+                                   }
+
+                                   }
+                                   ?>
+
+                                   <td style = "padding-left:40px">
+                                       <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
+                                   </td>
+
+                                   <?php
+                                 }
+
+                                  ?>
+
                                 <tr>
                                   <td>John Doe</td>
                                   <td>MOVE UP</td>
                                   <td>November 3, 2015</td>
                                   <td style = "padding-left:40px">
                                       <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                  </td>                                    
+                                  </td>
                                   <td style = "padding-left:40px">
-                                    <div class = "checkbox">
-                                      <label><input type = "checkbox" value = ""></label> 
-                                    </div>
-                                  </td>
-
-
-                                </tr>
-                                <tr>
-                                  <td>Jane Doe</td>
-                                  <td>COOPERATE</td>
-                                  <td>November 5, 2015</td>
-                                  <td style = "padding-left:40px;">
-                                    <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                  </td>
-                                  <td style = "padding-left: 40px;">
                                     <div class = "checkbox">
                                       <label><input type = "checkbox" value = ""></label>
                                     </div>
                                   </td>
-                                  
                                 </tr>
+
                               </tbody>
-                            </table>  
+
+                            </table>
 
                             <div class = "col-md-offset-10">
                               <div class= "dropdown">
@@ -171,7 +235,7 @@
                                   </td>
                                 </tr>
                               </tbody>
-                            </table>  
+                            </table>
 
                             <div class = "modal fade" id = "myModal" role = "dialog">
                               <div class = "modal-dialog">
@@ -200,7 +264,7 @@
                                           <td>
                                             <button type = "button" class = "btn btn-info btn-block"> View </button>
                                           </td>
-                                        </tr>            
+                                        </tr>
                                       </tbody>
                                     </table>
                                   </div>

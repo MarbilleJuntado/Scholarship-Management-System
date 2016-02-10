@@ -1,0 +1,8 @@
+Sprint 2 Changes
+
+- added cs192upsms.orig
+- changed sig.html to sig.php
+- updated login.php (changed sig.html to sig.php)
+
+- updated sig.php
+- System should display the applications on UI (DONE)
