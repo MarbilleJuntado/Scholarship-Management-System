@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
 <?php
+
+session_start();
+$_SESSION['currentUserTYPE'] = 'sig';
+$_SESSION['currentUserID'] = 3;
+$_SESSION['selectedAppID'] = 3;
+
   // Connect
     $conn = new mysqli("localhost","root","","cs192upsms");
   // Check connection
@@ -111,15 +117,10 @@
                                   <th class = "col-md-1"></th>
                                 </tr>
                               </thead>
-
-
-
                               <tbody>
 
                               <?php
                                 $to_query = "select N.studentID, N.lastName, N.firstName, N.middleName,  A.applicationID, A.scholarshipID, S.name, A.appdate from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
-
-
 
                                 /*
                                 N.studentID = 0
@@ -167,12 +168,17 @@
                                     </td>
                                      <?php
                                    }
-
-                                   }
+                                  }
                                    ?>
 
                                    <td style = "padding-left:40px">
                                        <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
+                                   </td>
+
+                                   <td style = "padding-left:40px">
+                                     <div class = "checkbox">
+                                       <label><input type = "checkbox" value = ""></label>
+                                     </div>
                                    </td>
 
                                    <?php
@@ -269,6 +275,10 @@
                                     </table>
                                   </div>
                                   <div class = "modal-footer">
+                                      <div class="pull-left">
+                                        <button type="button" class="btn btn-success" href=# onclick="javascript:acceptApp();">Accept</button>
+                                        <button type="button" class="btn btn-danger" href=# onclick="javascript:rejectApp();">Reject</button>
+                                      </div>
                                     <button type = "button" class = "btn btn-default" data-dismiss = "modal"> Close </button>
                                   </div>
                                 </div>
@@ -334,8 +344,23 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+    </script>
 
+    <!-- Script for accepting application (Signatory) !-->
+    <script type="text/javascript">
+    function acceptApp(){
+      <?php
+         $SQLAccept = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES ($_SESSION[currentUserID], $_SESSION[selectedAppID], 1)";
+         $accept = mysqli_query($conn, $SQLAccept);
+      ?>
 
+    <!-- Script for rejecting application (Signatory) !-->
+    function rejectApp(){
+      <?php
+         $SQLReject = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES ($_SESSION[currentUserID], $_SESSION[selectedAppID], 0)";
+         $reject = mysqli_query($conn, $SQLReject);
+      ?>
+    }
     </script>
 
     <!-- Display Div Script -->
@@ -356,9 +381,7 @@
           d4.style.display = "none";
           d5.style.display = "none";
        }
-
     }
-
     </script>
 
 

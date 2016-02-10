@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2016 at 04:49 AM
+-- Generation Time: Feb 10, 2016 at 08:40 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -52,17 +52,21 @@ CREATE TABLE IF NOT EXISTS `application` (
   `applicationID` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL,
-  `appDate` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `appDate` date NOT NULL,
+  `verifiedByAdmin` tinyint(1) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
 --
 
-INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`) VALUES
-(1, 1, 1, '2016-02-10'),
-(2, 2, 1, '2016-02-10'),
-(3, 3, 2, '2016-02-10');
+INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `verifiedByAdmin`) VALUES
+(1, 1, 1, '2016-02-10', 0),
+(2, 2, 1, '2016-02-10', 0),
+(3, 3, 2, '2016-02-10', 0),
+(4, 7, 4, '2016-02-08', 0),
+(5, 9, 5, '2016-02-06', 0),
+(6, 9, 4, '2016-02-01', 0);
 
 -- --------------------------------------------------------
 
@@ -97,19 +101,20 @@ CREATE TABLE IF NOT EXISTS `scholarship` (
   `name` varchar(255) NOT NULL,
   `benefactor` varchar(255) NOT NULL,
   `appDeadline` date NOT NULL,
-  `numofGrantees` int(11) NOT NULL
+  `numofGrantees` int(11) NOT NULL,
+  `signatoryOrder` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
 --
 
-INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`) VALUES
-(1, 'COOPERATE', 'OIL', '2016-02-05', 5),
-(2, 'MOVE UP', 'OIL', '2016-02-05', 10),
-(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6),
-(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3),
-(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15);
+INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`, `signatoryOrder`) VALUES
+(1, 'COOPERATE', 'OIL', '2016-02-05', 5, ''),
+(2, 'MOVE UP', 'OIL', '2016-02-05', 10, ''),
+(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, ''),
+(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, ''),
+(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '');
 
 -- --------------------------------------------------------
 
@@ -164,6 +169,48 @@ CREATE TABLE IF NOT EXISTS `sigstatus` (
   `applicationID` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sigstatus`
+--
+
+INSERT INTO `sigstatus` (`sigID`, `applicationID`, `status`) VALUES
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 1),
+(4, 5, 1),
+(3, 8, 1),
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 0),
+(5, 5, 1),
+(5, 5, 0),
+(5, 5, 1),
+(5, 5, 0),
+(5, 5, 1),
+(5, 5, 0),
+(5, 5, 1),
+(5, 5, 0),
+(9, 9, 1),
+(9, 9, 0),
+(9, 9, 1),
+(9, 9, 0),
+(9, 9, 1),
+(9, 9, 0),
+(9, 9, 1),
+(9, 9, 0),
+(3, 3, 1),
+(3, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -263,7 +310,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
