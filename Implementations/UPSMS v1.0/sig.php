@@ -1,29 +1,70 @@
 <!DOCTYPE html>
 
+<!--
+ The MIT License (MIT)
+ Copyright (c) 2016 UPSMS
+ Authors:
+   Prototype Front-End Developer: Patricia Regarde
+   Front-End and Back-End Developer: Cyan Villarin
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ This is a course requirement for CS 192 Software Engineering II under the
+ supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer
+ Science, College of Engineering, University of the Philippines, Diliman for
+ the AY 2015-2016
+
+ Code History:
+  Decemeber 10, 2015: Patricia Regarde finished Front End of Protoype for sig.php
+  February 10, 2016: Cyan Villarin added the feature of the sig.php being able to read from cs192upsms.sql database.
+                     The system is also able to display the contents of the application table from the UI.
+  February 11, 2016: Cyan Villarin added the feature of the system that allows the signatory account to accept/reject an
+                     application. If accepted, the system will write 1 to status field of the sigstatus table. If rejected,
+                     write 0 instead.
+
+  File Creation Date: December 11, 2015
+  Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
+  Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
+  Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
+-->
+
 <?php
+/* Start a session so that other files can access these variables */
+  session_start();
+  $_SESSION['currentUserTYPE'] = 'sig';
+  $_SESSION['currentUserID'] = 1;
+  $_SESSION['selectedAppID'] = 1;
 
-session_start();
-$_SESSION['currentUserTYPE'] = 'sig';
-$_SESSION['currentUserID'] = 3;
-$_SESSION['selectedAppID'] = 3;
-
-  // Connect
+  /* Connect to database */
     $conn = new mysqli("localhost","root","","cs192upsms");
-  // Check connection
+  /* Checks Connection */
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
 ?>
 
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="Our main goal is to implement a system that allows the monitoring of scholarship system within UP System." content="">
+    <meta name="Patricia Regarde, Cyan Villarin" content="">
 
     <title>Home</title>
 
@@ -32,13 +73,10 @@ $_SESSION['selectedAppID'] = 3;
 
     <!-- Custom CSS -->
     <link href="sig.css" rel="stylesheet">
-
 </head>
 
 <body>
-
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -54,7 +92,6 @@ $_SESSION['selectedAppID'] = 3;
                     </span>
                   </div>
                 </form>
-
 
                 <li><a href="javascript:displayDiv('home-div','pending-div','reviewed-div','about-div')">Home</a></li>
                 <li><a href="javascript:displayDiv('pending-div','home-div','reviewed-div','about-div')">Pending Applications</a></li>
@@ -180,11 +217,9 @@ $_SESSION['selectedAppID'] = 3;
                                        <label><input type = "checkbox" value = ""></label>
                                      </div>
                                    </td>
-
-                                   <?php
+                                <?php
                                  }
-
-                                  ?>
+                                ?>
 
                                 <tr>
                                   <td>John Doe</td>
@@ -199,11 +234,8 @@ $_SESSION['selectedAppID'] = 3;
                                     </div>
                                   </td>
                                 </tr>
-
                               </tbody>
-
                             </table>
-
                             <div class = "col-md-offset-10">
                               <div class= "dropdown">
                                 <button class = "btn btn-info" type = "button" data-toggle = "dropdown"> Accept
@@ -217,7 +249,6 @@ $_SESSION['selectedAppID'] = 3;
                               </div>
                             </div>
                             <br>
-
                             <h4>Returned Applications</h4>
                             <table class = "table table-hover table-condensed">
                               <thead>
@@ -237,12 +268,10 @@ $_SESSION['selectedAppID'] = 3;
                                   <td>Incomplete Documents</td>
                                   <td>
                                       <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
-
                             <div class = "modal fade" id = "myModal" role = "dialog">
                               <div class = "modal-dialog">
                                 <div class = "modal-content">
@@ -276,8 +305,12 @@ $_SESSION['selectedAppID'] = 3;
                                   </div>
                                   <div class = "modal-footer">
                                       <div class="pull-left">
-                                        <button type="button" class="btn btn-success" href=# onclick="javascript:acceptApp();">Accept</button>
-                                        <button type="button" class="btn btn-danger" href=# onclick="javascript:rejectApp();">Reject</button>
+                                        <form action="sigaccept.php" method="get">
+                                          <button style = "margin:5px" type="submit" class="btn btn-success">Accept</button>
+                                        </form>
+                                        <form action="sigreject.php" method="get">
+                                          <button style = "margin:5px" type="submit" class="btn btn-danger">Reject</button>
+                                        </form>
                                       </div>
                                     <button type = "button" class = "btn btn-default" data-dismiss = "modal"> Close </button>
                                   </div>
@@ -285,13 +318,9 @@ $_SESSION['selectedAppID'] = 3;
                               </div>
                             </div>
                           </div>
-
-
                         </div>
-
                         <div id="reviewed-div" style="display:none">
                             <h2> Reviewed Applications </h2>
-
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
@@ -312,9 +341,7 @@ $_SESSION['selectedAppID'] = 3;
                                 </tr>
                               </tbody>
                             </table>
-
                         </div>
-
                         <div id="about-div" style="display:none">
                           <h1>About</h1>
                           <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
@@ -322,7 +349,6 @@ $_SESSION['selectedAppID'] = 3;
                           <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
                           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -346,35 +372,25 @@ $_SESSION['selectedAppID'] = 3;
     });
     </script>
 
-    <!-- Script for accepting application (Signatory) !-->
+    <!--
+    Method Name: displayDiv
+    Creation Date: December 7, 2015
+    Purpose: To display and switch between tabs on a page.
+    List of the calling arguments: The arguments used are the div elements of the page.
+    List of required files: No required files
+    Return Value: None
+    -->
     <script type="text/javascript">
-    function acceptApp(){
-      <?php
-         $SQLAccept = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES ($_SESSION[currentUserID], $_SESSION[selectedAppID], 1)";
-         $accept = mysqli_query($conn, $SQLAccept);
-      ?>
-
-    <!-- Script for rejecting application (Signatory) !-->
-    function rejectApp(){
-      <?php
-         $SQLReject = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES ($_SESSION[currentUserID], $_SESSION[selectedAppID], 0)";
-         $reject = mysqli_query($conn, $SQLReject);
-      ?>
-    }
-    </script>
-
-    <!-- Display Div Script -->
-    <script type="text/javascript">
-    function displayDiv(div1, div2, div3, div4, div5)
-    {
-       d1 = document.getElementById(div1);  // this is the div we want to disply
-       d2 = document.getElementById(div2);  // the divs below are the div, pardon for inefficiency
+    function displayDiv(div1, div2, div3, div4, div5){
+      /* This is the div that we want to display */
+       d1 = document.getElementById(div1);
+      /* The divs below are to be hidden when the first div wants to be shown */
+       d2 = document.getElementById(div2);
        d3 = document.getElementById(div3);
        d4 = document.getElementById(div4);
        d5 = document.getElementById(div5);
 
-       if( d1.style.display == "none" )
-       {
+       if( d1.style.display == "none" ){
           d1.style.display = "block";
           d2.style.display = "none";
           d3.style.display = "none";
@@ -383,10 +399,5 @@ $_SESSION['selectedAppID'] = 3;
        }
     }
     </script>
-
-
-
-
 </body>
-
 </html>
