@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2016 at 01:57 AM
+-- Generation Time: Feb 13, 2016 at 01:17 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -53,8 +53,8 @@ CREATE TABLE IF NOT EXISTS `application` (
   `studentID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL,
   `appDate` date NOT NULL,
-  `verifiedByAdmin` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
@@ -66,7 +66,9 @@ INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDa
 (3, 3, 2, '2016-02-10', 0),
 (4, 7, 4, '2016-02-08', 0),
 (5, 9, 5, '2016-02-06', 0),
-(6, 9, 4, '2016-02-01', 0);
+(6, 9, 4, '2016-02-01', 0),
+(7, 5, 3, '2016-02-13', 0),
+(8, 4, 4, '2016-02-12', 0);
 
 -- --------------------------------------------------------
 
@@ -179,6 +181,8 @@ INSERT INTO `sigstatus` (`sigID`, `applicationID`, `status`) VALUES
 (1, 1, 0),
 (1, 1, 1),
 (1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
 (1, 1, 0);
 
 -- --------------------------------------------------------
@@ -215,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `student` (
 --
 
 INSERT INTO `student` (`studentID`, `upMail`, `firstName`, `middleName`, `lastName`, `nationality`, `gender`, `birthDate`, `birthPlace`, `presStreetAddr`, `presMunBrgy`, `presProvCity`, `presRegion`, `permStreetAddr`, `permMunBrgy`, `permProvCity`, `permRegion`, `contactNo`, `dept`, `college`) VALUES
-(1, 'gggryffindor', 'Godric', 'G', 'Gryffindor', 'Filipino', 'Male', '1986-01-14', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering '),
+(1, 'gggryffindor', 'Cyan', 'G', 'Gryffindor', 'Filipino', 'Male', '1986-01-14', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering '),
 (2, 'ptregarde@up.edu.ph', 'Patricia Ann', 'Torres', 'Regarde', 'Filipino', 'Female', '1997-06-05', 'Manila', '6132 Osias Street', 'Poblacion', 'Makati City', 'NCR', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering'),
 (3, 'hhhufflepuff@up.edu.ph', 'Helga', 'H', 'Hufflepuff', 'Filipino', 'Female', '1992-09-02', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science', 'College of Engineering'),
 (4, 'rrravenclaw@up.edu.ph', 'Rowena', 'R', 'Ravenclaw', 'Filipino', 'Female', '1995-07-19', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', '456 MNO Street ', 'PQR', 'STU City', 'VWX', 1234567, 'Institute of Civil Engineering', 'College of Engineering'),
@@ -279,7 +283,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
