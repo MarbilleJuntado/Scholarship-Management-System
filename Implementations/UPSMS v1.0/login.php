@@ -6,7 +6,7 @@
       header("Location: user.html");;
     }
     elseif ($email == 'sig@up.edu.ph' && $password == 'sig') {
-      header("Location: sig.html");
+      header("Location: sig.php");
     }
     elseif ($email == 'admin@up.edu.ph' && $password == 'admin'){
     	header("Location: admin.html");

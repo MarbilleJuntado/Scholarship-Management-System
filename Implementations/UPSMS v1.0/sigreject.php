@@ -40,3 +40,21 @@
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
+
+<?php
+  /* Connect to database */
+    $conn = new mysqli("localhost","root","","cs192upsms");
+  /* Checks Connection */
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+/* Start a session and get the session variables defined from sig.php */
+  session_start();
+  $currID = $_SESSION["currentUserID"];
+  $selAppID = $_SESSION["selectedAppID"];
+
+  /* The value on status is 0 because it is rejected */
+  $SQL = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES (1, 1, 0)";
+  $plswork = mysqli_query($conn, $SQL);
+?>

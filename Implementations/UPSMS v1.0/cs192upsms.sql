@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2016 at 03:12 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Feb 13, 2016 at 01:17 AM
+-- Server version: 5.6.26
+-- PHP Version: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `upsms`
+-- Database: `cs192upsms`
 --
 
 -- --------------------------------------------------------
@@ -52,8 +52,23 @@ CREATE TABLE IF NOT EXISTS `application` (
   `applicationID` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL,
-  `appDate` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `appDate` date NOT NULL,
+  `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `application`
+--
+
+INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `verifiedByAdmin`) VALUES
+(1, 1, 1, '2016-02-10', 0),
+(2, 2, 1, '2016-02-10', 0),
+(3, 3, 2, '2016-02-10', 0),
+(4, 7, 4, '2016-02-08', 0),
+(5, 9, 5, '2016-02-06', 0),
+(6, 9, 4, '2016-02-01', 0),
+(7, 5, 3, '2016-02-13', 0),
+(8, 4, 4, '2016-02-12', 0);
 
 -- --------------------------------------------------------
 
@@ -88,19 +103,20 @@ CREATE TABLE IF NOT EXISTS `scholarship` (
   `name` varchar(255) NOT NULL,
   `benefactor` varchar(255) NOT NULL,
   `appDeadline` date NOT NULL,
-  `numofGrantees` int(11) NOT NULL
+  `numofGrantees` int(11) NOT NULL,
+  `signatoryOrder` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
 --
 
-INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`) VALUES
-(1, 'COOPERATE', 'OIL', '2016-02-05', 5),
-(2, 'MOVE UP', 'OIL', '2016-02-05', 10),
-(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6),
-(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3),
-(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15);
+INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`, `signatoryOrder`) VALUES
+(1, 'COOPERATE', 'OIL', '2016-02-05', 5, ''),
+(2, 'MOVE UP', 'OIL', '2016-02-05', 10, ''),
+(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, ''),
+(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, ''),
+(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '');
 
 -- --------------------------------------------------------
 
@@ -156,6 +172,19 @@ CREATE TABLE IF NOT EXISTS `sigstatus` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `sigstatus`
+--
+
+INSERT INTO `sigstatus` (`sigID`, `applicationID`, `status`) VALUES
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -190,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `student` (
 --
 
 INSERT INTO `student` (`studentID`, `upMail`, `firstName`, `middleName`, `lastName`, `nationality`, `gender`, `birthDate`, `birthPlace`, `presStreetAddr`, `presMunBrgy`, `presProvCity`, `presRegion`, `permStreetAddr`, `permMunBrgy`, `permProvCity`, `permRegion`, `contactNo`, `dept`, `college`) VALUES
-(1, 'gggryffindor', 'Godric', 'G', 'Gryffindor', 'Filipino', 'Male', '1986-01-14', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering '),
+(1, 'gggryffindor', 'Cyan', 'G', 'Gryffindor', 'Filipino', 'Male', '1986-01-14', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering '),
 (2, 'ptregarde@up.edu.ph', 'Patricia Ann', 'Torres', 'Regarde', 'Filipino', 'Female', '1997-06-05', 'Manila', '6132 Osias Street', 'Poblacion', 'Makati City', 'NCR', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering'),
 (3, 'hhhufflepuff@up.edu.ph', 'Helga', 'H', 'Hufflepuff', 'Filipino', 'Female', '1992-09-02', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science', 'College of Engineering'),
 (4, 'rrravenclaw@up.edu.ph', 'Rowena', 'R', 'Ravenclaw', 'Filipino', 'Female', '1995-07-19', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', '456 MNO Street ', 'PQR', 'STU City', 'VWX', 1234567, 'Institute of Civil Engineering', 'College of Engineering'),
@@ -254,7 +283,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
