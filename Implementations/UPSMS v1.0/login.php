@@ -9,7 +9,7 @@
       header("Location: sig.php");
     }
     elseif ($email == 'admin@up.edu.ph' && $password == 'admin'){
-    	header("Location: admin.html");
+    	header("Location: admin.php");
     }
     else {
       header("Location: error.html");
