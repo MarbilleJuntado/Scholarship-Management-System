@@ -3,7 +3,7 @@
     $password = $_POST['password'];
 
     if($email == 'user@up.edu.ph' && $password == 'user'){
-      header("Location: user.html");;
+      header("Location: user.php");;
     }
     elseif ($email == 'sig@up.edu.ph' && $password == 'sig') {
       header("Location: sig.php");
