@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
+
 CREATE TABLE IF NOT EXISTS `admin` (
   `adminID` int(11) NOT NULL,
   `upMail` varchar(255) NOT NULL,
@@ -46,29 +47,21 @@ INSERT INTO `admin` (`adminID`, `upMail`, `firstName`, `middleName`, `lastName`)
 
 --
 -- Table structure for table `application`
---
-
 CREATE TABLE IF NOT EXISTS `application` (
   `applicationID` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL,
-  `appDate` date NOT NULL,
-  `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  `appDate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `status` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
 --
 
-INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `verifiedByAdmin`) VALUES
-(1, 1, 1, '2016-02-10', 0),
-(2, 2, 1, '2016-02-10', 0),
-(3, 3, 2, '2016-02-10', 0),
-(4, 7, 4, '2016-02-08', 0),
-(5, 9, 5, '2016-02-06', 0),
-(6, 9, 4, '2016-02-01', 0),
-(7, 5, 3, '2016-02-13', 0),
-(8, 4, 4, '2016-02-12', 0);
+INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `status`) VALUES
+(1, 2, 1, '2016-02-19 04:37:31', 0),
+(2, 1, 1, '2016-02-19 04:36:27', 0);
 
 -- --------------------------------------------------------
 
@@ -230,6 +223,20 @@ INSERT INTO `student` (`studentID`, `upMail`, `firstName`, `middleName`, `lastNa
 (9, 'llovegood@up.edu.ph', 'Luna', '', 'Lovegood', 'Filipino', 'Female', '1994-01-05', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mechanical Engineering', 'College of Engineering'),
 (10, 'mmcgonagall', 'Minerva', '', 'McGonagall', 'Filipino', 'Female', '1980-06-27', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mining, Metallurgical and Materials Engineering', 'College of Engineering');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `studentscholarship`
+--
+
+CREATE TABLE IF NOT EXISTS `studentscholarship` (
+  `ssID` int(11) NOT NULL,
+  `studentID` int(11) NOT NULL,
+  `scholarshipID` int(11) NOT NULL,
+  `startDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `endDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -271,6 +278,12 @@ ALTER TABLE `student`
   ADD PRIMARY KEY (`studentID`);
 
 --
+-- Indexes for table `studentscholarship`
+--
+ALTER TABLE `studentscholarship`
+  ADD PRIMARY KEY (`ssID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -304,6 +317,11 @@ ALTER TABLE `signatory`
 --
 ALTER TABLE `student`
   MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `studentscholarship`
+--
+ALTER TABLE `studentscholarship`
+  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
