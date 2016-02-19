@@ -36,9 +36,11 @@
   February 11, 2016: Cyan Villarin added the feature of the system that allows the signatory account to accept/reject an
                      application. If accepted, the system will write 1 to status field of the sigstatus table. If rejected,
                      write 0 instead.
+  February 18, 2016: Cyan Villarin implemented the filtering of applications. The UI will now display the only applications
+                      that has the sigID included in the scholarship's sigOrder. Order restriction not yet implemented.
 
   File Creation Date: December 11, 2015
-  Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
+  Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
@@ -47,8 +49,9 @@
 /* Start a session so that other files can access these variables */
   session_start();
   $_SESSION['currentUserTYPE'] = 'sig';
-  $_SESSION['currentUserID'] = 1;
+  $_SESSION['currentUserID'] = 3;
   $_SESSION['selectedAppID'] = 1;
+  $_SESSION['appList'] = NULL;
 
   /* Connect to database */
     $conn = new mysqli("localhost","root","","cs192upsms");
@@ -157,7 +160,7 @@
                               <tbody>
 
                               <?php
-                                $to_query = "select N.studentID, N.lastName, N.firstName, N.middleName,  A.applicationID, A.scholarshipID, S.name, A.appdate from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
+                                $to_query = "select S.signatoryOrder, N.lastName, N.firstName, N.middleName,  A.applicationID, A.scholarshipID, S.name, A.appdate, N.studentID from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
 
                                 /*
                                 N.studentID = 0
@@ -168,56 +171,81 @@
                                 A.scholarshipID = 5
                                 S.name = 6
                                 S.appDate = 7
+                                S.signatoryOrder = 8
                                 */
 
                                 $sql_result = mysqli_query($conn,$to_query);
                                 while($rows=mysqli_fetch_row($sql_result)){
+                                 $presentInSigOrder = 0;
                                  foreach ($rows as $key => $value){
-                                   if($key == 1){
-                                     $name = $value;
-                                   }
-                                   if($key == 2){
-                                     $name = $name . ", " . $value;
-                                   }
-                                   if($key == 3){
-                                     $name = $name . " " . $value;
-                                    ?>
-                                  <tr>
-                                   <td>
-                                     <?php echo $name; ?>
-                                   </td>
 
-                                   <?php
-                                    }
-                                   if($key == 6){
-                                  ?>
+                                   if ($key == 0) {
+                                     $str = $value;
+                                     $delimiter = ',';
+                                     $order = preg_split("/$delimiter/", $str);
+                                     $numOfSigs = count($order);
+
+                                     for ($i=0; $i < $numOfSigs; $i++) {
+                                       if ($order[$i] == $_SESSION['currentUserID']) {
+                                         $presentInSigOrder = 1;
+                                         break;
+                                       }
+                                     }
+                                   }
+
+                                   if ($presentInSigOrder == 1) {
+                                     if($key == 1){
+                                   			$name = $value;
+                                   		}
+
+                                     if($key == 2){
+                                       $name = $name . ", " . $value;
+                                     }
+                                     if($key == 3){
+                                       $name = $name . " " . $value;
+                                      ?>
+
+                                    <tr>
                                      <td>
-                                       <?php echo $value; ?>
+                                       <?php
+                                         echo $name;
+                                       ?>
                                      </td>
 
-                                  <?php
-                                   }
-                                   if($key == 7){
-
-                                  ?>
-                                    <td>
-                                      <?php echo $value; ?>
-                                    </td>
                                      <?php
+                                      }
+                                     if($key == 6){
+                                    ?>
+                                       <td>
+                                         <?php echo $value; ?>
+                                       </td>
+
+                                    <?php
+                                     }
+                                     if($key == 7){
+
+                                    ?>
+                                      <td>
+                                        <?php echo $value; ?>
+                                      </td>
+                                       <?php
+                                     }
                                    }
                                   }
-                                   ?>
+                                  if($presentInSigOrder == 1){
+                                    ?>
 
-                                   <td style = "padding-left:40px">
-                                       <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                   </td>
+                                    <td style = "padding-left:40px">
+                                        <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
+                                    </td>
 
-                                   <td style = "padding-left:40px">
-                                     <div class = "checkbox">
-                                       <label><input type = "checkbox" value = ""></label>
-                                     </div>
-                                   </td>
-                                <?php
+                                    <td style = "padding-left:40px">
+                                      <div class = "checkbox">
+                                        <label><input type = "checkbox" value = ""></label>
+                                      </div>
+                                    </td>
+                                  <?php
+                                  }
                                  }
                                 ?>
 
