@@ -42,9 +42,9 @@
 
 <?php
 	session_start();
-	
+
 		/*Open a connection to mySQL*/
-		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
+		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
 		/*If the accept button was clicked*/
 		if ($_POST['accrej'] == 'Accept'){
@@ -57,14 +57,14 @@
 					$data = array('student' => $student);
 					/*Update the status in the application table*/
 					$STH = $DBH->prepare("UPDATE application SET status = 1 WHERE studentID = :student");
-					
-					$STH->execute($data);		
-		
+
+					$STH->execute($data);
+
 					/*Insert data to studentscholarship table*/
 					$row = $DBH->lastInsertId();
 					$data = array('studentID' => $student, 'scholarshipID' => $scholarship);
 					$STH = $DBH->prepare("INSERT INTO studentscholarship (studentID, scholarshipID, startDate, endDate) VALUES (:studentID, :scholarshipID, NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR))");
-					
+
 					$STH->execute($data);
 
 				}
@@ -84,9 +84,9 @@
 				}
 			}
 		}
-		
+
 		$DBH = null;
 		/*Return to homepage*/
 		header("Location: ../admin.php");
-			
+
 ?>

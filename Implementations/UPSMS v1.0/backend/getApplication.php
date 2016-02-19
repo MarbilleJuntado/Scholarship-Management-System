@@ -3,7 +3,7 @@
  Copyright (c) 2016 UPSMS
  Authors:
    Back-End Developer: Patricia Regarde
-   
+
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
 
  Code History:
   February 11, 2016: Patricia Regarde added the backend for getting data from the application table
-					 to display on the UI. 
+					 to display on the UI.
 
   File Creation Date: February 11, 2016
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
@@ -39,7 +39,7 @@
 <?php
     function getApplication()
     {
-        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
+        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
         $STH = $DBH->prepare("SELECT * FROM application join scholarship join student WHERE application.scholarshipID = scholarship.scholarshipID AND application.studentID = student.studentID");
 

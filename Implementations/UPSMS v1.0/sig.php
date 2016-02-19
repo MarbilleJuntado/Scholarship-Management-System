@@ -144,7 +144,8 @@
                         </div>
 
                         <div id="pending-div" style="display:none">
-                            <h2> Pending Applications </h2>
+                            <h2> Pending Applications </h2> <h3> <?php echo "Logged in as: Signatory " . $_SESSION['currentUserID'] ?> </h3>
+                            <br>
                             <h4> For Review </h4>
 
                             <table class = "table table-hover table-condensed">
