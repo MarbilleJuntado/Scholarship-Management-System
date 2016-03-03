@@ -27,62 +27,52 @@
  the AY 2015-2016
 
  Code History:
-  February 16, 2016: Patricia Regarde added the feature of the system that allows the admin account to accept/reject an
-                     application. If accepted, the system will write 1 to status field of the application table. If rejected,
-                     write 2 instead.
-  February 18, 2016: Patricia Regarde finished the accept feature. System can now also write the information of the student and
-                     his/her respective scholarship in the studentscholarship table.
+  March 1, 2016: Patricia Regarde added the feature of the system that allows the admin account to delete an
+                 existing scholarship.
+  March 3, 2016: Patricia Regarde added the add scholarship feature. 
 
-  File Creation Date: February 16, 2016
+  File Creation Date: March 1, 2016
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
-
-
 <?php
 	session_start();
 	try{
 		/*Open a connection to mySQL*/
 		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-		/*If the accept button was clicked*/
-		if ($_POST['accrej'] == 'Accept'){
+		/*If the delete button was clicked*/
+		if($_POST['deladd'] == 'Delete'){
 			/*For each ticked checkbox*/
-			foreach($_POST['studID'] as $id){
-				if(isset($_POST["acceptreject{$id}"])){
-					$student = $_POST["acceptreject{$id}"];
+			foreach($_POST['schoID'] as $id){
+				if(isset($_POST["delete{$id}"])){
 					$scholarship = $_POST["scholarshipID{$id}"];
-
-					$data = array('student' => $student);
-					/*Update the status in the application table*/
-					$STH = $DBH->prepare("UPDATE application SET status = 1 WHERE studentID = :student");
-
+					
+					$data = array('scholarship' => $scholarship);
+					/*Delete corresponding row in the table*/
+					$STH = $DBH->prepare("DELETE FROM scholarship WHERE scholarshipID = :scholarship");
 					$STH->execute($data);
 
-					/*Insert data to studentscholarship table*/
-					$row = $DBH->lastInsertId();
-					$data = array('studentID' => $student, 'scholarshipID' => $scholarship);
-					$STH = $DBH->prepare("INSERT INTO studentscholarship (studentID, scholarshipID, startDate, endDate) VALUES (:studentID, :scholarshipID, NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR))");
-
-					$STH->execute($data);
-
+	
 				}
 			}
 		}
 
-		/*If the reject button was clicked*/
-		else {
-			foreach($_POST['studID'] as $id){
-				if(isset($_POST["acceptreject{$id}"])){
-					$student = $_POST["acceptreject{$id}"];
+		/*If the add button was clicked*/
+		else{
+			/*Get form data*/
+			$name = $_POST['schname'];
+			$benefactor = $_POST['benefactor'];
+			$deadline = $_POST['appdeadline'];
+			$grantees = $_POST['granteesNum'];
+			$order = $_POST['sigsOrder'];
 
-					$data = array('student' => $student);
-					/*Update the status in the application table*/
-					$STH = $DBH->prepare("UPDATE application SET status = 2 WHERE studentID = :student");
-					$STH->execute($data);
-				}
-			}
+			$data = array('name' => $name, 'benefactor' => $benefactor, 'deadline' => $deadline, 'grantees' => $grantees, 'order' => $order);
+			/*Insert into scholarship table*/
+			$STH = $DBH->prepare("INSERT INTO scholarship (name, benefactor, appDeadline, numofGrantees, signatoryOrder) VALUES (:name, :benefactor, :deadline, :grantees, :order)");
+
+			$STH->execute($data);
 		}
 
 		$DBH = null;

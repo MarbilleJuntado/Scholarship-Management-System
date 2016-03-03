@@ -36,6 +36,9 @@
                      write 2 instead.
   February 18, 2016: Patricia Regarde finished the accept feature. System can now also write the information of the student and
                      his/her respective scholarship in the studentscholarship table.
+  March 1, 2016: The system can now display the contents of the scholarship table in the UI.
+                 Patricia Regarde added the delete scholarship feature.
+  March 3, 2016: Patricia Regarde added the add scholarship feature.
 
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
@@ -50,6 +53,7 @@
 /*Include files for the backend*/
 
   include 'backend/getApplication.php';
+  include 'backend/getScholarship.php';
 
 ?>
 
@@ -314,35 +318,86 @@
                                     </div>
                                   </div>
                                 </div>
-
-
-
-
                         </div>
 
                         <div id="reviewed-div" style="display:none">
+                          <form method = "post" name = "scholarshiplist" action = "backend/adminAddDelSch.php">
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
                                   <th class = "col-md-1">Scholarship</th>
-                                  <th class = "col-md-1">Application Form</th>
-                                  <th class = "col-md-1">Status</th>
-                                  <th class = "col-md-1">Free Slots/<br />Total Slots</th>
+                                  <th class = "col-md-1">Form</th>
+                                  <th class = "col-md-1">Application Status</th>
+                                  <th class = "col-md-1">Total Slots</th>
                                   <th class = "col-md-1">Grantees</th>
+                                  <th class = "col-md-1"></th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td><a href="#" data-toggle="modal" data-target="#scholarshipDescription">COOPERATE</a></td>
-                                  <td><button type="button" class="btn btn-info btn-block">Upload New</td>
-                                  <td>Ongoing</td>
-                                  <td>0/2</td>
-                                  <td>
-                                    <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#grantees">View</button>
-                                  </td>
-                                </tr>
+                                <?php
+                                  $scholarship = getScholarship();
+                                  foreach($scholarship as $temp){
+                                    ?>
+                                    <tr>
+                                      <input type = "hidden" name = "schoID[]" value = "<?php echo $temp->scholarshipID; ?>">
+                                     
+                                      <td><a href="#" data-toggle="modal" data-target="#scholarshipDescription"><?php echo $temp->name?></a></td>
+                                      <td><button type="button" class="btn btn-info btn-block">Upload New</td>
+                                      <td>
+                                        <?php 
+                                          $now = time();
+                                          $date = $temp->appDeadline;
+
+                                          if (strtotime($date) > $now){
+                                            echo "Ongoing", "(", $date, ")";
+                                          }
+
+                                          else{
+                                              echo "Finished";
+                                          }
+                                        ?>  
+                                      </td>
+                                      <td><?php echo $temp->numofGrantees?></td>
+                                      <td>
+                                        <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#grantees">View</button>
+                                      </td>
+                                      <td>
+                                        <input type = "hidden" name = "scholarshipID<?php echo $temp->scholarshipID;?>" id = "scholarshipID" value = "<?php echo $temp->scholarshipID; ?>">
+                                        <input type = "checkbox" name = "delete<?php echo $temp->scholarshipID;?>" id = "delete" value = "<?php echo $temp->scholarshipID; ?>">
+                                      </td>
+                                    </tr>
                               </tbody>
+                              <?php
+                                }
+                              ?>
                             </table>
+
+                            <br>
+
+                            <label>Scholarship Name</label><br><input type = "text" name = "schname">
+                            <br><br>
+
+                            <label>Benefactor</label><br><input type = "text" name = "benefactor">
+                            <br><br>
+
+                            <label>Application Deadline</label><br><input type = "date" name = "appdeadline">
+                            <br><br>
+
+                            <label>Number of grantees</label><br><input type = "text" name = "granteesNum">
+                            <br><br>
+
+                            <label>Signatory Order</label><br><input type = "text" name = "sigsOrder">
+                            <br>
+                            <br>
+
+
+
+
+
+                            <input type = "submit" name = "deladd" value = "Add">
+                            <input type = "submit" name = "deladd" value = "Delete"> <br>
+
+                          </form>
 
                             <div class="modal fade" id="scholarshipDescription" role="Dialog">
                               <div class="modal-dialog">
@@ -411,9 +466,11 @@
                               </div>
                             </div>
                             <br />
+
                             <div>
-                              <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#newScholarship"> Define New Scholarship </button>
+                              <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#newScholarship" disabled> Define New Scholarship </button>
                             </div>
+
                             <div id="newScholarship" class="modal fade" role="dialog">
                               <div class="modal-dialog">
                                 <div class = "modal-content">
