@@ -38,6 +38,9 @@
                      write 0 instead.
   February 18, 2016: Cyan Villarin implemented the filtering of applications. The UI will now display the only applications
                       that has the sigID included in the scholarship's sigOrder. Order restriction not yet implemented.
+  February 28, 2016: Cyan Villarin started working on the forwarding and returning of application. Order of signatories has been
+  					         considered.
+  March 2, 2016: Cyan Villarin finally implemented Signatory Order.
 
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
@@ -49,8 +52,8 @@
 /* Start a session so that other files can access these variables */
   session_start();
   $_SESSION['currentUserTYPE'] = 'sig';
-  $_SESSION['currentUserID'] = 3;
-  $_SESSION['selectedAppID'] = 1;
+  $_SESSION['currentUserID'] = 1;
+  $_SESSION['selectedAppID'] = 0;
   $_SESSION['appList'] = NULL;
 
   /* Connect to database */
@@ -154,129 +157,245 @@
                                   <th class = "col-md-1">Applicant</th>
                                   <th class = "col-md-1">Scholarship</th>
                                   <th class = "col-md-1">Received on</th>
+                                  
+                                  <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
                                 </tr>
                               </thead>
                               <tbody>
 
-                              <?php
-                                $to_query = "select S.signatoryOrder, N.lastName, N.firstName, N.middleName,  A.applicationID, A.scholarshipID, S.name, A.appdate, N.studentID from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
+                            <?php
+                                $to_query = "select S.signatoryOrder, A.status, A.applicationID, N.lastName, N.firstName, N.middleName, A.scholarshipID, S.name, A.appdate, N.studentID from student N join application A on N.studentID = A.studentID join scholarship S on S.scholarshipID = A.scholarshipID order by N.lastName";
 
                                 /*
-                                N.studentID = 0
-                                N.lastName = 1
-                                N.firstName = 2
-                                N.middleName = 3
-                                A.applicationID = 4
-                                A.scholarshipID = 5
-                                S.name = 6
-                                S.appDate = 7
-                                S.signatoryOrder = 8
+
+                                S.signatoryOrder = 0
+                                A.status = 1
+                                A.applicationID = 2
+
+                                N.lastName = 3
+                                N.firstName = 4
+                                N.middleName = 5
+                                
+                                A.scholarshipID = 6
+                                S.name = 7
+                                S.appDate = 8
+                                N.studentID = 9
+
                                 */
 
                                 $sql_result = mysqli_query($conn,$to_query);
-                                while($rows=mysqli_fetch_row($sql_result)){
-                                 $presentInSigOrder = 0;
-                                 foreach ($rows as $key => $value){
 
-                                   if ($key == 0) {
-                                     $str = $value;
-                                     $delimiter = ',';
-                                     $order = preg_split("/$delimiter/", $str);
-                                     $numOfSigs = count($order);
+                                // Get every row of the table formed from the query
+                                while($rows=mysqli_fetch_row($sql_result))
+                                {
+                                	// For every row, these variables are reset to 0
+                                	$presentInSigOrder = 0;
+                                  $doShow = 0;
+                                  $isCurrentSig = 0;
+                                  $isAlreadyAccepted = 0;
+                                  $isPrevSig = 0;
+                                  $prev_sigID = 0;
+                                 	$status = 0;
+                                 	$appID = 0;
+                                  $isNULL = 0;
 
-                                     for ($i=0; $i < $numOfSigs; $i++) {
-                                       if ($order[$i] == $_SESSION['currentUserID']) {
-                                         $presentInSigOrder = 1;
-                                         break;
-                                       }
-                                     }
-                                   }
+                                 	
+                                 	// Traverses through the columns of a row
+                                  	foreach ($rows as $key => $value)
+                                  	{
+                                   		if ($key == 0)
+                                   		{
+                                   			// Gets the first column which is the sigOrder, then stores it in a list
+		                                    $str = $value;
+		                                    $delimiter = ',';
+		                                    $order = preg_split("/$delimiter/", $str);
+		                                    $numOfSigs = count($order);                   
 
-                                   if ($presentInSigOrder == 1) {
-                                     if($key == 1){
-                                   			$name = $value;
+		                                    // Traverses through the sigOrder list
+                                     		for ($i=0; $i < $numOfSigs; $i++)
+                                     		{
+                                     			// Checks if the currently signed in sigUser is included in the sigOrder
+                                       			if ($order[$i] == $_SESSION['currentUserID'])
+                                       			{
+                                              // If we determine the logged sigID in the SigOrder, find it's prevID.
+                                              if($i != 0)
+                                              {
+                                                // If the sig is NOT the 1st, the prevID is the previous sigID in the order
+                                                $prev_sigID = $order[$i - 1];
+                                              }
+                                              else
+                                              {
+                                                // Else if it is the 1st, the prevID is the admin (denoted by -1)
+                                                $prev_sigID = -1;
+                                              }
+                                              
+                                         			$presentInSigOrder = 1;
+                                        			break;
+                                      			}
+                                     		}
                                    		}
 
-                                     if($key == 2){
-                                       $name = $name . ", " . $value;
-                                     }
-                                     if($key == 3){
-                                       $name = $name . " " . $value;
-                                      ?>
+                                   	   // Checks if the application is included in the sigOrder
+	                                   if ($presentInSigOrder == 1)
+	                                   {
+	                                   		// If it is, check if it verified by the admin by checking if key.value == 1 (if A.status == 1)
+                									   		if($key == 1)
+                									   		{
+	                                       		if($value == 1)
+	                                       		{
+	                                       			// If the status from the table is 1, set $status = 1
+	                                         		$status = 1;
+	                                       		}
+	                                     	}
 
-                                    <tr>
-                                     <td>
-                                       <?php
-                                         echo $name;
-                                       ?>
-                                     </td>
+                                        // Application ID
+                                        if($key == 2)
+                                        {
+                                            $appID = $value;
 
-                                     <?php
-                                      }
-                                     if($key == 6){
-                                    ?>
-                                       <td>
-                                         <?php echo $value; ?>
-                                       </td>
+                                            // In here, so it will be run only once
+                                            $query2 = "select Z.sigID, Z.applicationID, Z.sStatus from sigstatus Z where applicationID = '".$appID."'";
 
-                                    <?php
-                                     }
-                                     if($key == 7){
+                                            
 
-                                    ?>
-                                      <td>
-                                        <?php echo $value; ?>
-                                      </td>
-                                       <?php
-                                     }
-                                   }
-                                  }
-                                  if($presentInSigOrder == 1){
-                                    ?>
+                                            $sql_result2 = mysqli_query($conn, $query2);
 
-                                    <td style = "padding-left:40px">
-                                        <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                    </td>
+                                            if (is_null($sql_result2))
+                                            {
+                                              
+                                              $isNULL = 1; // Curr Sig NULL is TRUE
+                                            }
 
-                                    <td style = "padding-left:40px">
-                                      <div class = "checkbox">
-                                        <label><input type = "checkbox" value = ""></label>
-                                      </div>
-                                    </td>
-                                  <?php
-                                  }
-                                 }
-                                ?>
+                                            while($rows2 = mysqli_fetch_row($sql_result2))
+                                            {
+                                              
+                                                foreach ($rows2 as $key2 => $value2)
+                                                {
+                                                    if($key2 == 0)
+                                                    {
+                                                      if ($value2 == $_SESSION['currentUserID'])
+                                                      {
+                                                          $isCurrentSig = 1;
+                                                      }
 
-                                <tr>
-                                  <td>John Doe</td>
-                                  <td>MOVE UP</td>
-                                  <td>November 3, 2015</td>
-                                  <td style = "padding-left:40px">
-                                      <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                  </td>
-                                  <td style = "padding-left:40px">
-                                    <div class = "checkbox">
-                                      <label><input type = "checkbox" value = ""></label>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
+                                                      if ($value2 == $prev_sigID)
+                                                      {
+                                                          $isPrevSig = 1;
+                                                      }
+                                                    }
+
+                                                    if ($key2 == 1) 
+                                                    {
+                                                      echo "do nothing";
+                                                    }
+
+                                                   // If status = 1
+                                                   if($key2 == 2)
+                                                   {
+                                                      if ($isCurrentSig == 1)
+                                                      {
+                                                         if ($value2 == 1) 
+                                                         {
+                                                           $isAlreadyAccepted = 1;
+                                                         }
+                                                      }
+
+                                                      if ($isPrevSig == 1)
+                                                      {
+                                                        echo $value2;
+                                                         if($value2 == 1)
+                                                          {
+                                                          // If the status in sigstatus is 1
+                                                            $doShow = 1;                             
+                                                          }
+                                                          if($value2 == 0)
+                                                          {
+                                                            $doShow = 0;    
+                                                          }
+                                                      }                                               
+                                                   }
+                                                }
+                                            }
+                                        }
+
+
+
+                                   			if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1)
+                                   			{
+
+                                   				// Last Name
+		                                    	if($key == 3)
+		                                    	{
+		                                   			$name = $value;
+		                                   		}
+
+		                                   		// First Name
+			                                    if($key == 4)
+			                                    {
+			                                       $name = $name . ", " . $value;
+			                                    }
+
+			                                    // Middle Name and then display to UI
+                                     			if($key == 5)
+                                     			{
+                                       				$name = $name . " " . $value;
+                            ?>
+                                    				<tr><td><?php echo $name;?></td>
+                            <?php
+                                     			}
+
+                                     			// Scholarship Name
+                                     			if($key == 7)
+                                     			{
+                            ?>
+                                       				<td><?php echo $value; ?></td>
+                            <?php
+                                     			}
+
+                                     			// Date of Application
+                                     			if($key == 8)
+                                     			{
+                            ?>
+		                                      		<td><?php echo $value; ?></td>
+                            <?php
+                                     			}
+											}
+                                  		}
+                                	}
+
+
+                                  	if($presentInSigOrder == 1)
+                                  	{
+                                    	if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1)
+                                    	{
+                            ?> 			
+                                    		<td style = "padding-left:40px">
+                                        	<button type = "button" name="reviewButton" value="<?php echo $appID; ?>" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Application 	<?php echo $appID; ?> </button>
+                                    		</td>
+                                    		<td>
+                                    		
+	                                    	<form action="sigaccept.php" method="get">
+	                                          <button type="submit" name="accept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept <?php echo $appID?></button>
+	                                        </form>
+	                                        </td>
+	                                        <td>
+	                                        <form action="sigreject.php" method="get">
+	                                          <button type="submit" name="reject" value="<?php echo $appID?>" class="btn btn-danger">Reject <?php echo $appID?></button>
+	                                        </form>
+	                                        
+	                                        </td>
+                                    		
+                            <?php
+                                		}
+                                  	}
+                                }
+                            ?>
+
+                            </tbody>
                             </table>
-                            <div class = "col-md-offset-10">
-                              <div class= "dropdown">
-                                <button class = "btn btn-info" type = "button" data-toggle = "dropdown"> Accept
-                                <span class = "caret"> </span>
-                                </button>
-                                <ul class = "dropdown-menu">
-                                  <li><a href = "#">Accept</a></li>
-                                  <li><a href = "#">Reject</a></li>
-                                  <li><a href = "#">Return</a></li>
-                                </ul>
-                              </div>
-                            </div>
+                            
                             <br>
                             <h4>Returned Applications</h4>
                             <table class = "table table-hover table-condensed">
@@ -301,12 +420,14 @@
                                 </tr>
                               </tbody>
                             </table>
+
+                            <!--  Modal when the button is clicked --> 
                             <div class = "modal fade" id = "myModal" role = "dialog">
                               <div class = "modal-dialog">
                                 <div class = "modal-content">
                                   <div class = "modal-header">
                                     <button type = "button" class = "close" data-dismiss = "modal">&times;</button>
-                                    <h4 class = "modal-title">Documents</h4>
+                                    <h4 class = "modal-title">Documents from Application <?php echo $_SESSION["selectedAppID"]?></h4>
                                   </div>
                                   <div class = "modal-body">
                                     <table class = "table table-condensed">
@@ -428,5 +549,6 @@
        }
     }
     </script>
+
 </body>
 </html>

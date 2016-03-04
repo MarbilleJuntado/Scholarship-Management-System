@@ -52,9 +52,11 @@
 /* Start a session and get the session variables defined from sig.php */
   session_start();
   $currID = $_SESSION["currentUserID"];
-  $selAppID = $_SESSION["selectedAppID"];
+  $selAppID = $_GET["accept"];
 
   /* The value on status is 0 because it is accepted */
-  $SQL = "INSERT INTO sigstatus (sigID, applicationID, status) VALUES (1, 1, 1)";
+  $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($currID, $selAppID, 1)";
   $plswork = mysqli_query($conn, $SQL);
+
+  header("Location: sig.php");
 ?>
