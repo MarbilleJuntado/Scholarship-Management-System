@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2016 at 12:53 AM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Mar 04, 2016 at 05:24 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,13 +26,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-CREATE TABLE IF NOT EXISTS `admin` (
+CREATE TABLE `admin` (
   `adminID` int(11) NOT NULL,
   `upMail` varchar(255) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -43,41 +43,61 @@ INSERT INTO `admin` (`adminID`, `upMail`, `firstName`, `middleName`, `lastName`)
 (2, 'admin2@up.edu.ph', 'Sa', 'Shi', 'Mi');
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `student`
+--
 
+CREATE TABLE `student` (
+  `studentID` int(11) NOT NULL,
+  `upMail` varchar(255) NOT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `middleName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `nationality` varchar(255) NOT NULL,
+  `gender` varchar(255) NOT NULL,
+  `birthDate` date NOT NULL,
+  `birthPlace` varchar(255) NOT NULL,
+  `presStreetAddr` varchar(255) NOT NULL,
+  `presMunBrgy` varchar(255) NOT NULL,
+  `presProvCity` varchar(255) NOT NULL,
+  `presRegion` varchar(255) NOT NULL,
+  `permStreetAddr` varchar(255) NOT NULL,
+  `permMunBrgy` varchar(255) NOT NULL,
+  `permProvCity` varchar(255) NOT NULL,
+  `permRegion` varchar(255) NOT NULL,
+  `contactNo` int(20) NOT NULL,
+  `dept` varchar(255) NOT NULL,
+  `college` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `student`
+--
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`studentID`);
+--
+-- AUTO_INCREMENT for table `student`
+--
+ALTER TABLE `student`
+  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------------------------------------------
 --
 -- Table structure for table `application`
 --
 
-CREATE TABLE IF NOT EXISTS `application` (
+CREATE TABLE `application` (
   `applicationID` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL,
-  `appDate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `status` int(11) NOT NULL DEFAULT '0',
+  `appDate` date NOT NULL,
   `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `application`
---
-
-INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `status`, `verifiedByAdmin`) VALUES
-(1, 2, 1, '2016-02-19 10:50:23', 1, 0),
-(2, 1, 1, '2016-02-28 19:23:19', 1, 0),
-(3, 3, 1, '2016-02-28 19:24:06', 1, 0),
-(4, 7, 4, '2016-02-08 00:00:00', 0, 0),
-(5, 9, 5, '2016-02-19 11:34:26', 1, 0),
-(6, 9, 4, '2016-02-19 11:34:26', 1, 0),
-(7, 5, 3, '2016-03-01 07:37:45', 1, 0),
-(8, 4, 4, '2016-03-01 07:37:45', 1, 0);
-
--- --------------------------------------------------------
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `applicationform`
 --
 
-CREATE TABLE IF NOT EXISTS `applicationform` (
+CREATE TABLE `applicationform` (
   `formID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -88,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `applicationform` (
 -- Table structure for table `fields`
 --
 
-CREATE TABLE IF NOT EXISTS `fields` (
+CREATE TABLE `fields` (
   `fieldname` varchar(255) NOT NULL,
   `formID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -99,25 +119,25 @@ CREATE TABLE IF NOT EXISTS `fields` (
 -- Table structure for table `scholarship`
 --
 
-CREATE TABLE IF NOT EXISTS `scholarship` (
+CREATE TABLE `scholarship` (
   `scholarshipID` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `benefactor` varchar(255) NOT NULL,
   `appDeadline` date NOT NULL,
   `numofGrantees` int(11) NOT NULL,
   `signatoryOrder` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
 --
 
 INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`, `signatoryOrder`) VALUES
-(1, 'COOPERATE', 'OIL', '2016-02-05', 5, '1,2,3,4'),
-(2, 'MOVE UP', 'OIL', '2016-02-05', 10, '2,4'),
-(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, '2,3,4'),
-(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, '3,4'),
-(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4');
+(1, 'COOPERATE', 'OIL', '2016-02-05', 5, ''),
+(2, 'MOVE UP', 'OIL', '2016-02-05', 10, ''),
+(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, ''),
+(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, ''),
+(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '');
 
 -- --------------------------------------------------------
 
@@ -125,7 +145,7 @@ INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`,
 -- Table structure for table `scholarshipsig`
 --
 
-CREATE TABLE IF NOT EXISTS `scholarshipsig` (
+CREATE TABLE `scholarshipsig` (
   `sigID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -136,14 +156,14 @@ CREATE TABLE IF NOT EXISTS `scholarshipsig` (
 -- Table structure for table `signatory`
 --
 
-CREATE TABLE IF NOT EXISTS `signatory` (
+CREATE TABLE `signatory` (
   `sigID` int(11) NOT NULL,
   `upMail` varchar(255) NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `signatory`
@@ -167,91 +187,58 @@ INSERT INTO `signatory` (`sigID`, `upMail`, `firstName`, `middleName`, `lastName
 -- Table structure for table `sigstatus`
 --
 
-CREATE TABLE IF NOT EXISTS `sigstatus` (
+CREATE TABLE `sigstatus` (
   `sigID` int(11) NOT NULL,
   `applicationID` int(11) NOT NULL,
-  `sStatus` int(11) NOT NULL
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sigstatus`
 --
 
-INSERT INTO `sigstatus` (`sigID`, `applicationID`, `sStatus`) VALUES
-(1, 2, 1),
-(2, 2, 1);
+INSERT INTO `sigstatus` (`sigID`, `applicationID`, `status`) VALUES
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 1),
+(1, 1, 0),
+(1, 1, 1),
+(1, 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student`
+-- Table structure for table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `student` (
-  `studentID` int(11) NOT NULL,
-  `upMail` varchar(255) NOT NULL,
-  `firstName` varchar(255) NOT NULL,
-  `middleName` varchar(255) NOT NULL,
-  `lastName` varchar(255) NOT NULL,
+CREATE TABLE `user` (
+  `name` varchar(255) NOT NULL,
   `nationality` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
-  `birthDate` date NOT NULL,
-  `birthPlace` varchar(255) NOT NULL,
-  `presStreetAddr` varchar(255) NOT NULL,
-  `presMunBrgy` varchar(255) NOT NULL,
-  `presProvCity` varchar(255) NOT NULL,
-  `presRegion` varchar(255) NOT NULL,
-  `permStreetAddr` varchar(255) NOT NULL,
-  `permMunBrgy` varchar(255) NOT NULL,
-  `permProvCity` varchar(255) NOT NULL,
-  `permRegion` varchar(255) NOT NULL,
-  `contactNo` int(20) NOT NULL,
+  `birth` date NOT NULL,
+  `place` varchar(255) NOT NULL,
+  `present` varchar(255) NOT NULL,
+  `permanent` varchar(255) NOT NULL,
+  `contact` varchar(20) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `degree` varchar(255) NOT NULL,
+  `sn` int(11) NOT NULL,
+  `college` varchar(255) NOT NULL,
   `dept` varchar(255) NOT NULL,
-  `college` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+  `userID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `student`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `student` (`studentID`, `upMail`, `firstName`, `middleName`, `lastName`, `nationality`, `gender`, `birthDate`, `birthPlace`, `presStreetAddr`, `presMunBrgy`, `presProvCity`, `presRegion`, `permStreetAddr`, `permMunBrgy`, `permProvCity`, `permRegion`, `contactNo`, `dept`, `college`) VALUES
-(1, 'gggryffindor', 'Cyan', 'G', 'Gryffindor', 'Filipino', 'Male', '1986-01-14', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering '),
-(2, 'ptregarde@up.edu.ph', 'Patricia Ann', 'Torres', 'Regarde', 'Filipino', 'Female', '1997-06-05', 'Manila', '6132 Osias Street', 'Poblacion', 'Makati City', 'NCR', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science ', 'College of Engineering'),
-(3, 'hhhufflepuff@up.edu.ph', 'Helga', 'H', 'Hufflepuff', 'Filipino', 'Female', '1992-09-02', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Computer Science', 'College of Engineering'),
-(4, 'rrravenclaw@up.edu.ph', 'Rowena', 'R', 'Ravenclaw', 'Filipino', 'Female', '1995-07-19', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', '456 MNO Street ', 'PQR', 'STU City', 'VWX', 1234567, 'Institute of Civil Engineering', 'College of Engineering'),
-(5, 'ssslytherin@up.edu.ph', 'Salazar', 'S', 'Slytherin', 'Filipino', 'Male', '1986-06-28', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same ', 'same', 'same', 'same', 123456, 'Electrical and Electronics Engineering Institute', 'College of Engineering'),
-(6, 'ssnape@up.edu.ph', 'Severus', '', 'Snape', 'Filipino', 'Male', '1992-10-02', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 123456, 'Department of Industrial Engineering and Operations Research', 'College of Engineering'),
-(7, 'nscamander@up.edu.ph', 'Newt', '', 'Scamander', 'Filipino', 'Male', '1995-07-19', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Industrial Engineering and Operations Research', 'College of Engineering'),
-(8, 'sblack@up.edu.ph', 'Sirius', '', 'Black', 'Filipino', 'Male', '1989-08-26', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mechanical Engineering', 'College of Engineering'),
-(9, 'llovegood@up.edu.ph', 'Luna', '', 'Lovegood', 'Filipino', 'Female', '1994-01-05', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mechanical Engineering', 'College of Engineering'),
-(10, 'mmcgonagall', 'Minerva', '', 'McGonagall', 'Filipino', 'Female', '1980-06-27', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mining, Metallurgical and Materials Engineering', 'College of Engineering');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `studentscholarship`
---
-
-CREATE TABLE IF NOT EXISTS `studentscholarship` (
-  `ssID` int(11) NOT NULL,
-  `studentID` int(11) NOT NULL,
-  `scholarshipID` int(11) NOT NULL,
-  `startDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `endDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `studentscholarship`
---
-
-INSERT INTO `studentscholarship` (`ssID`, `studentID`, `scholarshipID`, `startDate`, `endDate`) VALUES
-(1, 2, 1, '2016-02-19 10:50:23', '2017-02-19 10:50:23'),
-(2, 9, 5, '2016-02-19 11:34:26', '2017-02-19 11:34:26'),
-(3, 9, 5, '2016-02-19 11:34:26', '2017-02-19 11:34:26'),
-(4, 1, 1, '2016-02-28 19:23:19', '2017-02-28 19:23:19'),
-(5, 3, 1, '2016-02-28 19:24:06', '2017-02-28 19:24:06'),
-(6, 5, 3, '2016-03-01 07:37:45', '2017-03-01 07:37:45'),
-(7, 4, 4, '2016-03-01 07:37:46', '2017-03-01 07:37:46');
+INSERT INTO `user` (`name`, `nationality`, `gender`, `birth`, `place`, `present`, `permanent`, `contact`, `email`, `degree`, `sn`, `college`, `dept`, `userID`) VALUES
+('Marbille Juntado', 'Filipino', 'Male', '1997-03-23', 'Naga City', '10 Panganiban St., Krus na Ligas, Diliman, Q.C., Philippines', '81 Belen St., Goa, Camarines Sur, Philippines', '9301693256', 'mjuntado@up.edu.ph', 'BS Computer Science', 201350378, 'College of Engineering', 'Department of Computer Science', 2),
+('Kim Chiu', 'Chinese', 'Female', '1990-04-21', 'Cebu', 'Bahay ni Kuya, Quezon City, Philippines', 'Cebu City, Cebu', '9301693257', 'kimchiu@up.edu.ph', 'BS Commerce', 201350379, 'College of Commerce', 'Department of Commerce', 3),
+('Chang Sul Kim', 'Korean', 'Male', '1994-01-01', 'Incheon, South Korea', 'International Center, UP Diliman', 'Seoul, South Korea', '93012345678', 'csk@up.edu.ph', 'BS Electrical Engineering', 201350380, 'College of Engineering', 'IEEE', 4),
+('Patricia Ann Regarde', 'Filipino', 'Female', '1996-01-01', 'Quezon cogjdo', '1jdgjgj', 'dfjxghdi', '92334', 'shdhiud', 'dfjkgjdk', 21919, 'shtkhdek', 'detjdkhg', 5),
+('Ann Li', 'Chinese', 'Female', '2000-01-01', 'Hong Kong', 'Quezon City', 'jssfjisfjs', '930152083', 'al@up.edu.ph', 'BS Computer Science', 201311111, 'Engineering', 'sdfsidhgdihidhi', 6);
 
 --
 -- Indexes for dumped tables
@@ -266,9 +253,9 @@ ALTER TABLE `admin`
 --
 -- Indexes for table `application`
 --
+--
 ALTER TABLE `application`
   ADD PRIMARY KEY (`applicationID`);
-
 --
 -- Indexes for table `applicationform`
 --
@@ -288,31 +275,24 @@ ALTER TABLE `signatory`
   ADD PRIMARY KEY (`sigID`);
 
 --
--- Indexes for table `student`
+-- Indexes for table `user`
 --
-ALTER TABLE `student`
-  ADD PRIMARY KEY (`studentID`);
-
---
--- Indexes for table `studentscholarship`
---
-ALTER TABLE `studentscholarship`
-  ADD PRIMARY KEY (`ssID`);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
+ALTER TABLE `application`
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `application`
 --
-ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
@@ -322,22 +302,18 @@ ALTER TABLE `applicationform`
 -- AUTO_INCREMENT for table `scholarship`
 --
 ALTER TABLE `scholarship`
-  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `signatory`
 --
 ALTER TABLE `signatory`
-  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
--- AUTO_INCREMENT for table `student`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `student`
-  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT for table `studentscholarship`
---
-ALTER TABLE `studentscholarship`
-  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+ALTER TABLE `user`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -33,6 +33,8 @@
   Decemeber 10, 2015: Cyan Villarin  finished Front End of Protoype for user.php
   February 19, 2016: Marbille Juntado added input feature of data to User Profile which
                      is writable to the database. 
+  March 4, 2016: Marbille Juntado made possible the tagging of applicationID for an applicant
+                 with the corresponding studentID.
 
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
@@ -140,84 +142,124 @@
 
                           <form method="POST" action="userdata.php" class="form-horizontal" role="form">
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="name">Name:</label>
+                              <label class="control-label col-sm-2" for="lastName">Last Name:</label>
                               <div class="col-sm-10">
-                                <input type="name" class="form-control" name="name" placeholder="Enter name">
+                                <input type="name" class="form-control" name="lastName" placeholder="Smith">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="firstName">First Name:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="firstName" placeholder="John">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="middleName">M.I.:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="middleName" placeholder="N">
                               </div>
                             </div>
                             <div class="form-group">
                               <label class="control-label col-sm-2" for="nationality">Nationality:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="nationality" placeholder="Enter nationality">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="gender">Gender:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="gender" placeholder="Enter gender">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="birth">Date of birth:</label>
-                              <div class="col-sm-10">
-                                <input type="date" class="form-control"name="birth" placeholder="mm/dd/yyyy">
-                              </div>
-                            </div>       <div class="form-group">
-                              <label class="control-label col-sm-2" for="place">Place of Birth:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="place" placeholder="Enter place of birth">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="present">Present address:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control"name="present" placeholder="Enter present address">
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="nationality" placeholder="Filipino">
                               </div>
                             </div> 
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="permanent">Permanent address:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="permanent" placeholder="Enter permanent address">
+                              <label class="control-label col-sm-2" for="gender">Gender:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="gender" placeholder="Male">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="birthDate">Birthdate:</label>
+                              <div class="col-sm-10"> 
+                                <input type="date" class="form-control" name="birthDate">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="contact">Contact number:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="contact" placeholder="Ex: 930xxxxxxx">
+                              <label class="control-label col-sm-2" for="birthPlace">Birthplace:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="birthPlace" placeholder="Enter birthplace">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="email">UP Email address:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="email" placeholder="Ex: john.doe@up.edu.ph">
+                              <label class="control-label col-sm-2" for="presStreetAddr">Pres. Street Address:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="presStreetAddr" placeholder="Enter present street address (e.g. 10 Panganiban St.)">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="presMunBrgy">Pres. Municipality:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="presMunBrgy" placeholder="Enter present municipality or barangay (e.g. Barangay Krus na Ligas.)">
+                              </div>
+                            </div>  
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="presProvCity">Pres. Province/City:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="presProvCity" placeholder="Enter present province/city (e.g. Quezon City)">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="degree">Degree program:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="degree" placeholder="Enter degree program">
+                              <label class="control-label col-sm-2" for="presRegion">Pres. Region:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="presRegion" placeholder="Enter present region (e.g. National Capital Region)">
                               </div>
-                            </div>                   
+                            </div>      
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="sn">Student number:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="sn" placeholder="20xxxxxxx">
+                              <label class="control-label col-sm-2" for="permStreetAddr">Perm. Street Address:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="permStreetAddr" placeholder="Enter permanent street address">
+                              </div>
+                            </div>     
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="permNumBrgy">Perm. Municipality:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="permMunBrgy" placeholder="Enter permanent municipality">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="permProvCity">Perm. Province/City:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="permProvCity" placeholder="Enter permanent province/city">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="permRegion">Perm. Region:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="permRegion" placeholder="Enter permanent region">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="contactNo">Contact Number:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="contactNo" placeholder="9301234567">
+                              </div>
+                            </div> 
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" for="dept">Department:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="dept" placeholder="Department of Computer Science">
                               </div>
                             </div> 
                             <div class="form-group">
                               <label class="control-label col-sm-2" for="college">College:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="college" placeholder="Enter college">
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="college" placeholder="College of Engineering">
                               </div>
-                            </div>               
+                            </div>  
                             <div class="form-group">
-                              <label class="control-label col-sm-2" for="dept">Department:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="dept" placeholder="Enter department">
+                              <label class="control-label col-sm-2" for="upMail">UP Mail:</label>
+                              <div class="col-sm-10"> 
+                                <input type="name" class="form-control" name="upMail" placeholder="ex. jsmith@up.edu.ph">
                               </div>
-
+                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                            <div class="form-group"> 
+                              <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Submit</button>
+                              </div>
                             </div>
-                            <br><input type="submit" value="Save User Profile">
                           </form>
                             <br><p>Mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
 
@@ -303,8 +345,8 @@
                             </div>
                             <br>
 
-                            <form method="get" action="forms/MOVEUP.rar">
-                              <button type="submit" class="btn btn-success">Download Application Form</button>
+                            <form method="POST" action="apply.php">
+                              <button type="submit" class="btn btn-success">Apply</button>
                             </form>
 
                         </div>
