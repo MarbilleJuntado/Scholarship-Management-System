@@ -7,23 +7,39 @@ define('DB_PASSWORD','');
 
 $con=mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("Failed to connect to MySQL: " . mysql_error()); 
 $db=mysql_select_db(DB_NAME,$con) or die("Failed to connect to MySQL: " . mysql_error());
+
+session_start();
+$currID = $_SESSION["currentUserID"];
+$selAppID = $_SESSION["selectedAppID"];
+
+
 //inserting Record to the database
-$name = $_POST['name'];
+
+$upMail = $_POST['upMail'];
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$middleName = $_POST['middleName'];
 $nationality = $_POST['nationality'];
 $gender = $_POST['gender'];
-$birth = $_POST['birth'];
-$place = $_POST['place'];
-$present = $_POST['present'];
-$permanent = $_POST['permanent'];
-$contact = $_POST['contact'];
-$email = $_POST['email'];
-$degree = $_POST['degree'];
-$sn = $_POST['sn'];
-$college = $_POST['college'];
+$birthDate = $_POST['birthDate'];
+$birthPlace = $_POST['birthPlace'];
+$presStreetAddr = $_POST['presStreetAddr'];
+$presMunBrgy = $_POST['presMunBrgy'];
+$presProvCity = $_POST['presProvCity'];
+$presRegion = $_POST['presRegion'];
+$permStreetAddr = $_POST['permStreetAddr'];
+$permMunBrgy = $_POST['permMunBrgy'];
+$permProvCity = $_POST['permProvCity'];
+$permRegion = $_POST['permRegion'];
+$contactNo = $_POST['contactNo'];
 $dept = $_POST['dept'];
+$college = $_POST['college'];
 
-$query = "INSERT INTO user(name, nationality, gender, birth, place, present, permanent, contact, email, degree, sn, college, dept)VALUES('$name', '$nationality', '$gender', '$birth', '$place', '$present', '$permanent', '$contact', '$email', '$degree', '$sn', '$college', '$dept')";
+$query = "INSERT INTO student (upMail, firstName, lastName, middleName, nationality, gender, birthDate, birthPlace, presStreetAddr,
+	presMunBrgy, presProvCity, presRegion, permStreetAddr, permMunBrgy, permProvCity, permRegion, contactNo, dept, college) VALUES('$upMail', '$firstName', '$middleName', '$lastName', '$nationality', '$gender', '$birthDate', '$birthPlace', '$presStreetAddr', '$presMunBrgy',
+'$presProvCity', '$presRegion', '$permStreetAddr', '$permMunBrgy', '$permProvCity', '$permRegion', '$contactNo', '$dept', '$college')";
 $result = mysql_query($query);
+
 if($result)
 	{
 	    echo "Successfully updated database";
