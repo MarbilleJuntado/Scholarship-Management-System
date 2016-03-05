@@ -312,29 +312,31 @@
                         <div id="apply-div" style="display:none">
                           <h1>Apply for Scholarship</h1>
                           <p>Please choose the scholarship you want to apply for from the dropdown menu. Read the description of the scholarship. Download the form and follow all instructions given. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
-                          <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Scholarship
-                            <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                              <?php
-                                $to_query = "select * from scholarship";
-                                $sql_result = mysqli_query($conn,$to_query);
-                                while($rows=mysqli_fetch_row($sql_result)){
-                                  foreach ($rows as $key => $value){
-                                    if($key == 1){
+                            <div class = "col-md-4">
+                              <form method="POST" action="apply.php">
+                                <div class = "form-group">
+                                  <select name = "schlist" id = "schlist" class = "form-control">
+                                    <?php
+                                      $to_query = "SELECT * FROM scholarship";
+                                      $sql_result = mysqli_query($conn, $to_query);
+                                      while($row=mysqli_fetch_row($sql_result)){
+                                        ?>
+                                        <option value = "<?php echo $row[0]; ?>">
+                                          <a href = "#">
+                                            <?php echo $row[1]; ?>
+                                          </a>
+                                        </option>
+                                        <?php
+                                      }
                                     ?>
-                                    <li role="presentation">
-                                      <a role="menuitem" tabindex="-1" href="#">                                                                                                
-                                        <?php echo $value; ?>
-                                      </a>
-                                    </li>
-                                    <?php                                         
-                                    }
-                                  }
-                                }
-                              ?>                           
-                            </ul>  
-                          </div>
+
+                                  </select>
+                                </div>
+                                <br><br>
+                                <button type="submit" class="btn btn-success">Apply</button>
+                              </form>
+                            </div>
+                        </div>
 
 
                             <div id="hideaway" style="display:none;" class="panel panel-info">
@@ -345,9 +347,7 @@
                             </div>
                             <br>
 
-                            <form method="POST" action="apply.php">
-                              <button type="submit" class="btn btn-success">Apply</button>
-                            </form>
+
 
                         </div>
 
@@ -435,6 +435,11 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+
+    $('#schlist option').click(function(){
+      $('#schbox').val($(this).text());
+    });
+
     </script>
 
     <!-- Display Div Script -->

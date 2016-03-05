@@ -10,11 +10,12 @@
   session_start();
   $currID = $_SESSION["currentUserID"];
   $selAppID = $_SESSION["selectedAppID"];
+  $schID = $_POST["schlist"];
 
   /* Tinsert once Apply button is clicked */
-  $date = date('Y-m-d');
 
-  $SQL = "INSERT INTO application (studentID, appDate) SELECT studentID, '$date' FROM student";
+
+  $SQL = "INSERT INTO application (studentID, scholarshipID, appDate) VALUES ($currID, $schID, NOW())";
   $plswork = mysqli_query($conn, $SQL);
   if($plswork){
   	echo "Successfully updated database";

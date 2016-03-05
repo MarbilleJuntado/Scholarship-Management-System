@@ -52,7 +52,7 @@
 /* Start a session so that other files can access these variables */
   session_start();
   $_SESSION['currentUserTYPE'] = 'sig';
-  $_SESSION['currentUserID'] = 1;
+  $_SESSION['currentUserID'] = 3;
   $_SESSION['selectedAppID'] = 0;
   $_SESSION['appList'] = NULL;
 
@@ -288,7 +288,7 @@
 
                                                     if ($key2 == 1) 
                                                     {
-                                                      echo "do nothing";
+                                                      // pass
                                                     }
 
                                                    // If status = 1
@@ -304,7 +304,7 @@
 
                                                       if ($isPrevSig == 1)
                                                       {
-                                                        echo $value2;
+                                                        
                                                          if($value2 == 1)
                                                           {
                                                           // If the status in sigstatus is 1
