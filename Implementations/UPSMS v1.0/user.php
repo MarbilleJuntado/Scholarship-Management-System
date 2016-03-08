@@ -45,8 +45,7 @@
 <?php
 /* Start a session so that other files can access these variables */
   session_start();
-  $_SESSION['currentUserTYPE'] = 'user';
-  $_SESSION['currentUserID'] = 1;
+ 
   $_SESSION['selectedAppID'] = 1;
 
   /* Connect to database */
@@ -92,7 +91,7 @@
                 <li><a href="javascript:displayDiv('financial-div','user-div','apply-div','view-div','home-div','accomplishments-div','about-div')">Financial Report</a></li>
                 <li><a href="javascript:displayDiv('accomplishments-div','user-div','apply-div','view-div','financial-div','home-div','about-div')">Accomplishments Form</a></li>
                 <li><a href="javascript:displayDiv('about-div','user-div','apply-div','view-div','financial-div','accomplishments-div','home-div')">About</a></li>
-                <li><a href="login.html">Logout</a></li>
+                <li><a href="backend/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

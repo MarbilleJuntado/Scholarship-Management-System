@@ -51,8 +51,6 @@
 <?php
 /* Start a session so that other files can access these variables */
   session_start();
-  $_SESSION['currentUserTYPE'] = 'sig';
-  $_SESSION['currentUserID'] = 3;
   $_SESSION['selectedAppID'] = 0;
   $_SESSION['appList'] = NULL;
 
@@ -103,7 +101,7 @@
                 <li><a href="javascript:displayDiv('pending-div','home-div','reviewed-div','about-div')">Pending Applications</a></li>
                 <li><a href="javascript:displayDiv('reviewed-div','pending-div', 'home-div','about-div')">Reviewed Applications</a></li>
                 <li><a href="javascript:displayDiv('about-div','pending-div', 'reviewed-div','home-div')">About</a></li>
-                <li><a href="login.html">Logout</a></li>
+                <li><a href="backend/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

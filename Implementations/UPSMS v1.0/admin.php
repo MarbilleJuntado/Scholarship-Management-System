@@ -103,7 +103,7 @@
                 <li><a href="javascript:displayDiv('pending-div','home-div','reviewed-div','about-div')">Applications</a></li>
                 <li><a href="javascript:displayDiv('reviewed-div','pending-div', 'home-div','about-div')">Scholarships</a></li> 
                 <li><a href="javascript:displayDiv('about-div','pending-div', 'reviewed-div','home-div')">About</a></li>
-                <li><a href="login.html">Logout</a></li>
+                <li><a href="backend/logout.php">Logout</a></li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
