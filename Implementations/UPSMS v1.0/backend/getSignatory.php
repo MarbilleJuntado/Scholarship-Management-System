@@ -4,6 +4,7 @@
  Authors:
    Back-End Developer: Patricia Regarde
 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
@@ -27,62 +28,26 @@
  the AY 2015-2016
 
  Code History:
-  March 1, 2016: Patricia Regarde added the feature of the system that allows the admin account to delete an
-                 existing scholarship.
-  March 3, 2016: Patricia Regarde added the add scholarship feature. 
+  March 15, 2016: Patricia Regarde added the backend for getting data from the signatory table
+           to display on the multiple select option in the Scholarship tab.
 
-  File Creation Date: March 1, 2016
+  File Creation Date: March 15, 2016
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
 <?php
-	session_start();
-	try{
-		/*Open a connection to mySQL*/
-		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
+    function getSignatory()
+    {
+        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-		/*If the delete button was clicked*/
-		if($_POST['deladd'] == 'Delete'){
-			/*For each ticked checkbox*/
-			foreach($_POST['schoID'] as $id){
-				if(isset($_POST["delete{$id}"])){
-					$scholarship = $_POST["scholarshipID{$id}"];
-					
-					$data = array('scholarship' => $scholarship);
-					/*Delete corresponding row in the table*/
-					$STH = $DBH->prepare("DELETE FROM scholarship WHERE scholarshipID = :scholarship");
-					$STH->execute($data);
+        $STH = $DBH->prepare("SELECT * FROM signatory");
 
-	
-				}
-			}
-		}
+        $STH->execute();
+        $sigs = $STH->fetchAll(PDO::FETCH_OBJ);
 
-		/*If the add button was clicked*/
-		else{
-			/*Get form data*/
-			$name = $_POST['schname'];
-			$benefactor = $_POST['benefactor'];
-			$deadline = $_POST['appdeadline'];
-			$grantees = $_POST['granteesNum'];
-			$ordersig = $_POST['selSigList'];
+        $DBH = null;
 
-			$ordersig = implode(",", $ordersig);
-
-			$data = array('name' => $name, 'benefactor' => $benefactor, 'deadline' => $deadline, 'grantees' => $grantees, 'order' => $ordersig);
-			/*Insert into scholarship table*/
-			$STH = $DBH->prepare("INSERT INTO scholarship (name, benefactor, appDeadline, numofGrantees, signatoryOrder) VALUES (:name, :benefactor, :deadline, :grantees, :order)");
-
-			$STH->execute($data);
-		}
-
-		$DBH = null;
-		/*Return to homepage*/
-		header("Location: ../admin.php");
-	}
-
-	catch(PDOException $e){
-		echo $e->getMessage();
-	}
+        return $sigs;
+    }
 ?>
