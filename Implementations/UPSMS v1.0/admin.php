@@ -39,6 +39,9 @@
   March 1, 2016: The system can now display the contents of the scholarship table in the UI.
                  Patricia Regarde added the delete scholarship feature.
   March 3, 2016: Patricia Regarde added the add scholarship feature.
+  March 15, 2016: Patricia Regarde fixed the form for inputting signatory orders. 
+  March 15, 2016: Patricia Regarde added the add signatory and add admin feature.
+  March 17, 2016: Patricia Regarde added the add student feature.
 
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
@@ -54,6 +57,9 @@
 
   include 'backend/getApplication.php';
   include 'backend/getScholarship.php';
+  include 'backend/getSignatory.php';
+  include 'backend/getCollege.php';
+  include 'backend/getDepartment.php';
 
 ?>
 
@@ -99,10 +105,11 @@
                 </form>
 
 
-                <li><a href="javascript:displayDiv('home-div','pending-div','reviewed-div','about-div')">Home</a></li>
-                <li><a href="javascript:displayDiv('pending-div','home-div','reviewed-div','about-div')">Applications</a></li>
-                <li><a href="javascript:displayDiv('reviewed-div','pending-div', 'home-div','about-div')">Scholarships</a></li> 
-                <li><a href="javascript:displayDiv('about-div','pending-div', 'reviewed-div','home-div')">About</a></li>
+                <li><a href="javascript:displayDiv('home-div','application-div','scholarship-div', 'users-div', 'about-div')">Home</a></li>
+                <li><a href="javascript:displayDiv('application-div','home-div','scholarship-div', 'users-div', 'about-div')">Applications</a></li>
+                <li><a href="javascript:displayDiv('scholarship-div','home-div','application-div', 'users-div', 'about-div')">Scholarships</a></li> 
+                <li><a href="Javascript:displayDiv('users-div','home-div','application-div', 'scholarship-div', 'about-div')">Users</a></li>
+                <li><a href="javascript:displayDiv('about-div','home-div','application-div', 'scholarship-div', 'users-div')">About</a></li>
                 <li><a href="backend/logout.php">Logout</a></li>
             </ul>
         </div>
@@ -152,7 +159,7 @@
                         </div>
                         <br />
                         <br />
-                        <div id="pending-div" style="display:none">
+                        <div id="application-div" style="display:none">
                           <form method = "post" name = "studentlist" action = "backend/adminAcceptReject.php">
                                                                       
                             
@@ -320,8 +327,8 @@
                                 </div>
                         </div>
 
-                        <div id="reviewed-div" style="display:none">
-                          <form method = "post" name = "scholarshiplist" action = "backend/adminAddDelSch.php">
+                        <div id="scholarship-div" style="display:none">
+                          <form method = "post" name = "scholarshiplist" id = "scholarshiplist" action = "backend/adminAddDelSch.php">
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
@@ -386,15 +393,35 @@
                             <label>Number of grantees</label><br><input type = "text" name = "granteesNum">
                             <br><br>
 
-                            <label>Signatory Order</label><br><input type = "text" name = "sigsOrder">
                             <br>
                             <br>
 
+                            <label>Signatory Order</label><br>
 
+                            <button type = "button" class = "btn btn-default" id = "addSig" name = "addSig">+</button>
+                            <button type = "button" class = "btn btn-default" id = "remSig" name = "remSig">x</button>
+                            <button type = "button" class = "btn btn-default" id = "upSig" name = "upSig">^</button>
+                            <button type = "button" class = "btn btn-default" id = "downSig" name = "downSig">v</button>
+                            <br><br>
 
+                            <select name = "sigList" id = "sigList" multiple size = "10" style = "width:200px;">
+                              <?php
+                                $signatory = getSignatory();
+                                foreach($signatory as $temp){
+                              ?>
 
+                              <option value = "<?php echo $temp->sigID; ?>"><?php echo $temp->firstName, " ", $temp->lastName; ?></option>
 
-                            <input type = "submit" name = "deladd" value = "Add">
+                              <?php } ?>
+
+                            </select>
+
+                            <select name = "selSigList[]" id = "selSigList" multiple size = "10"  style = "width:200px;">
+                            </select>
+                            
+                            <br><br>
+
+                            <input type = "submit" name = "deladd" value = "Add" onclick = "selectAll();">
                             <input type = "submit" name = "deladd" value = "Delete"> <br>
 
                           </form>
@@ -494,6 +521,140 @@
                             </div>
                         </div>
 
+                        <div id = "users-div" style = "display:none">
+                          <div class = "form-group">
+                            <select id = "userType" name = "userType" class = "form-control">
+                              <option>Add user account...</option>
+                              <option value = "studopt">Student</option>
+                              <option value = "adminopt">Admin</option>
+                              <option value = "sigopt">Signatory</option>
+                            </select>
+                          </div>
+
+                            <form id = "studopt" style = "display:none" method = "post" action = "backend/addStudent.php">
+                              
+                              <button type = "button" onClick = "addRow('studTable')" class = "btn btn-default"> Add Student </button>
+                              <button type = "button" onClick = "deleteRow('studTable')" class = "btn btn-default"> Remove Student </button>
+
+                              <table id = "studTable" class = "table table-striped table-hover table-bordered table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th>Information</th>
+                                  
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type = "checkbox" name = "chkbox[]"><br></td>
+                                    <td>
+
+                                    First Name: <input type = "text" name = "fname[]"><br><br>
+                                    
+                                    Middle Name: <input type = "text" name = "mname[]"><br><br>
+                                    
+                                    Last Name: <input type = "text" name = "lname[]"><br><br>
+                                    
+                                    UP Mail: <input type = "text" name = "mail[]"><br><br>
+                                    
+                                    College: <select id = "college" name = "college[]" class = "form-control">
+                                        <option>...</option>
+                                        <?php 
+                                          $college = getCollege();
+                                          foreach($college as $temp){
+                                        ?>
+
+                                        <option value = "<?php echo $temp->collegeID; ?>" name = "<?php echo $temp->name; ?>"><?php echo $temp->name; ?></option>
+                                        <?php } ?>
+                                      </select>
+                                      <br>
+                                      Department: <select id = "dept" name = "dept[]" class = "form-control">
+                                        <option value = "">...</option>
+
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "Submit">
+
+
+
+                            </form>
+
+                            <form id = "adminopt" style = "display:none" method = "post" action = "backend/addAdmin.php">
+                              
+                              <button type = "button" onClick = "addRow('adminTable')" class = "btn btn-default"> Add Admin </button>
+                              <button type = "button" onClick = "deleteRow('adminTable')" class = "btn btn-default"> Remove Admin </button>
+
+                              <table id = "adminTable" class = "table table-striped table-hover table-bordered table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th>Information</th>
+                                  
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type = "checkbox" name = "chkbox[]"><br></td>
+                                    <td>
+
+                                    First Name: <input type = "text" name = "fname[]"><br><br>
+                                    
+                                    Middle Name: <input type = "text" name = "mname[]"><br><br>
+                                    
+                                    Last Name: <input type = "text" name = "lname[]"><br><br>
+                                    
+                                    UP Mail: <input type = "text" name = "mail[]"><br><br>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "Submit">
+
+
+
+                            </form>
+
+
+                            <form id = "sigopt" style = "display:none" method = "post" action = "backend/addSig.php">
+                              
+                              <button type = "button" onClick = "addRow('sigTable')" class = "btn btn-default"> Add Signatory </button>
+                              <button type = "button" onClick = "deleteRow('sigTable')" class = "btn btn-default"> Remove Signatory </button>
+
+                              <table id = "sigTable" class = "table table-striped table-hover table-bordered table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th>Information</th>
+                                  
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type = "checkbox" name = "chkbox[]"><br></td>
+                                    <td>
+
+                                    First Name: <input type = "text" name = "fname[]"><br><br>
+                                    
+                                    Middle Name: <input type = "text" name = "mname[]"><br><br>
+                                    
+                                    Last Name: <input type = "text" name = "lname[]"><br><br>
+                                    
+                                    UP Mail: <input type = "text" name = "mail[]"><br><br>
+
+                                    Position: <input type = "text" name = "position[]"><br><br>                                    
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "Submit">
+                            </form>
+                        </div>
+
                         <div id="about-div" style="display:none">
                           <h1>About</h1>
                           <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
@@ -512,7 +673,12 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="js/jquery.js">
+      $(document).ready(function(){
+
+      });
+
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
@@ -524,6 +690,136 @@
         $("#wrapper").toggleClass("toggled");
     });
 
+    $('#userType').on('change', function() {
+      var val = $(this).val();
+      $('#studopt').hide();
+      $('#adminopt').hide();
+      $('#sigopt').hide();
+      $('#' + val).show();
+    });
+
+    $('#studTable').on('change', 'select', function() {
+      var val = $(this).val();
+
+      if (val == "1"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "2"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Art Studies'>Department of Art Studies</option><option value = 'Department of English and Comparative Literature'>Department of English and Comparative Literature</option><option value = 'Department of European Languages'>Department of European Languages</option><option value = 'Departamento ng Filipino at Panitikan ng Pilipinas'>Departamento ng Filipino at Panitikan ng Pilipinas</option><option value = 'Department of Speech Communication and Theatre Arts'>Department of Speech Communication and Theatre Arts</option>")
+      }
+      else if (val == "3"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "4"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "5"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Business Administration'>Department of Business Administration</option><option value = 'Department of Accounting and Finance'>Department of Accounting and Finance</option>");
+      }
+      else if (val == "6"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "7"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "8"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Institute of Civil Engineering'>Institute of Civil Engineering</option><option value = 'Department of Chemical Engineering'>Department of Chemical Engineering</option><option value = 'Department of Computer Science'>Department of Computer Science</option><option value = 'Institute of Electrical and Electronics Engineering'>Institute of Electrical and Electronics Engineering</option><option value = 'Department of Geodetic Engineering'>Department of Geodetic Engineering</option><option value = 'Department of Industrial Engineering and Operations Research'>Department of Industrial Engineering and Operations Research</option><option value = 'Department of Mechanical Engineering'>Department of Mechanical Engineering</option><option value = 'Department of Mining, Metallurgical, and Materials Engineering'>Department of Mining, Metallurgical, and Materials Engineering</option><option value = 'Energy Engineering Program'>Energy Engineering Program</option><option value = 'Environmental Engineering Program'>Environmental Engineering Program</option>");
+      }
+      else if (val == "9"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Studio Arts'>Department of Studio Arts</option><option value = 'Department of Theory'>Department of Theory</option><option value = 'Department of Visual Communication'>Department of Visual Communication</option><option value = 'CFA Graduate Program'>CFA Graduate Program</option>");
+      }
+      else if (val == "10"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Clothing, Textiles, and Interior Design'>Department of Clothing, Textiles, and Interior Design</option><option value = 'Department of Family Life and Child Development'>Department of Family Life and Child Development</option><option value = 'Department of Food Science and Nutrition'>Department of Food Science and Nutrition</option><option value = 'Department of Home Economics Education'>Department of Home Economics Education</option><option value = 'Department of Hotel, Restaurant and Institution Management'>Department of Hotel, Restaurant and Institution Management</option>");
+      }
+      else if (val == "11"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Physical Education'>Department of Physical Education</option><option value = 'Department of Sports Science'>Department of Sports Science</option><option value = 'Graduate Studies Program'>Graduate Studies Program</option>");
+      }
+      else if (val == "12"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "13"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "14"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "15"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "16"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Broadcast Communication'>Department of Broadcast Communication</option><option value = 'Department of Communication Research'>Department of Communication Research</option><option value = 'Film Institute'>Film Institute</option><option value = 'Department of Journalism'>Department of Journalism</option><option value = 'Department of Graduate Studies'>Department of Graduate Studies</option>");
+      }
+      else if (val == "17"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "18"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "19"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Institute of Biology'>Institute of Biology</option><option value = 'Institute of Chemistry'>Institute of Chemistry</option><option value = 'Institute of Environmental Science and Meteorology'>Institute of Environmental Science and Meteorology</option><option value = 'Institute of Math'>Institute of Math</option><option value = 'National Institute of Molecular Biology and Biotechnology'>National Institute of Molecular Biology and Biotechnology</option><option value = 'Marine Science Institute'>Marine Science Institute</option><option value = 'National Institute of Geological Sciences'>National Institute of Geological Sciences</option><option value = 'National Institute of Physics'>National Institute of Physics</option><option value = 'Materials Science and Engineering Program'>Materials Science and Engineering Program</option>");
+      }
+      else if (val == "20"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Anthropology'>Department of Anthropology</option><option value = 'Department of Geography'>Department of Geography</option><option value = 'Departamento ng Kasaysayan'>Departamento ng Kasaysayan</option><option value = 'Departamento ng Linggwistiks'>Departamento ng Linggwistiks</option><option value = 'Department of Philosophy'>Department of Philosophy</option><option value = 'Department of Political Science'>Department of Political Science</option><option value = 'Department of Psychology'>Department of Psychology</option><option value = 'Department of Sociology'>Department of Sociology</option><option value = 'Population Institute'>Population Institute</option>");
+      }
+      else if (val == "21"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'Department of Community Development'>Department of Community Development</option><option value = 'Department of Social Work'>Department of Social Work</option><option value = 'Department of Women and Development Studies'>Department of Women and Development Studies</option><option value = 'Doctor of Social Development Program'>Doctor of Social Development Program</option>");
+      }
+      else if (val == "22"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "23"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "24"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "25"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "26"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+      else if (val == "27"){
+        $(this).closest('tr').find('select[name="dept[]"]').html("<option value = 'N/A'>N/A</option>");
+      }
+
+    });
+
+    $('#addSig').click(function(){
+      $('#sigList option:selected').each( function() {
+        $('#selSigList').append("<option value = '"+$(this).val()+"'>" + $(this).text() + "</option>");
+        $(this).remove();
+      });
+    });
+
+
+    $('#remSig').click(function(){
+      $('#selSigList option:selected').each( function() {
+        $('#sigList').append("<option value = '"+$(this).val()+"'>" + $(this).text() + "</option>");
+        $(this).remove();
+      });
+    });
+
+    $('#upSig').on('click', function(){
+      $('#selSigList option:selected').each( function(){
+        var newPos = $('#selSigList option').index(this) - 1;
+        if (newPos > -1){
+          $('#selSigList option').eq(newPos).before("<option value='"+$(this).val()+"' selected='selected'>"+$(this).text()+"</option>");
+          $(this).remove();
+        }
+      });
+    });
+
+    $('#downSig').on('click', function(){
+      var countOptions = $('#selSigList option').size();
+      $('#selSigList option:selected').each( function(){
+        var newPos = $('#selSigList option').index(this) + 1;
+        if (newPos < countOptions){
+          $('#selSigList option').eq(newPos).after("<option value='"+$(this).val()+"' selected='selected'>"+$(this).text()+"</option>");
+          $(this).remove();
+        }
+      });
+    });
 
     </script>
 
@@ -538,13 +834,14 @@
 
     <!-- Display Div Script -->
     <script type="text/javascript">
-    function displayDiv(div1, div2, div3, div4, div5)
+    function displayDiv(div1, div2, div3, div4, div5, div6)
     {
        d1 = document.getElementById(div1);  // this is the div we want to disply
        d2 = document.getElementById(div2);  // the divs below are the div, pardon for inefficiency
        d3 = document.getElementById(div3);
        d4 = document.getElementById(div4);
        d5 = document.getElementById(div5);
+       d6 = document.getElementById(div6);
 
        if( d1.style.display == "none" )
        {
@@ -553,8 +850,48 @@
           d3.style.display = "none";
           d4.style.display = "none";
           d5.style.display = "none";
+          d6.style.display = "none";
        }
 
+    }
+
+    function addRow(tableID){
+      var table = document.getElementById(tableID);
+      var rowCount = table.rows.length;
+      
+      var row = table.insertRow(rowCount);
+      var colCount = table.rows[1].cells.length;
+      
+      for (var i = 0; i < colCount; i++){
+        var newcell = row.insertCell(i);
+        newcell.innerHTML = table.rows[1].cells[i].innerHTML;
+      }
+    }
+
+    function deleteRow(tableID){
+      var table = document.getElementById(tableID);
+      var rowCount = table.rows.length;
+
+      for (var i = 0; i < rowCount; i++){
+        var row = table.rows[i];
+        var chkbox = row.cells[0].childNodes[0];
+        if (null != chkbox && true == chkbox.checked){
+          if (rowCount <= 2){
+            alert("You cannot remove all students");
+            break;
+          }
+          table.deleteRow(i);
+          rowCount--;
+          i--;
+        }
+      }
+    }
+
+    function selectAll(){
+      sel = document.getElementById("selSigList");
+      for (var i = 0; i < sel.options.length; i++){
+        sel.options[i].selected = true;
+      }
     }
 
     </script>
