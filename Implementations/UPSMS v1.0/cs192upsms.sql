@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2016 at 03:48 PM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Mar 17, 2016 at 08:52 PM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `cs192upsms`
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `firstName` varchar(255) NOT NULL,
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `application` (
   `appDate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
   `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
@@ -70,7 +70,8 @@ INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDa
 (6, 9, 4, '2016-03-05 22:43:02', 0, 0),
 (7, 5, 3, '2016-03-05 22:43:02', 0, 0),
 (8, 4, 4, '2016-03-05 22:43:02', 0, 0),
-(9, 1, 4, '2016-03-05 22:47:43', 1, 0);
+(9, 1, 4, '2016-03-05 22:47:43', 1, 0),
+(10, 2, 1, '2016-03-08 21:12:26', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -82,6 +83,141 @@ CREATE TABLE IF NOT EXISTS `applicationform` (
   `formID` int(11) NOT NULL,
   `scholarshipID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `college`
+--
+
+CREATE TABLE IF NOT EXISTS `college` (
+  `collegeID` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `college`
+--
+
+INSERT INTO `college` (`collegeID`, `name`) VALUES
+(1, 'College of Architecture'),
+(2, 'College of Arts and Letters'),
+(3, 'Asian Center'),
+(4, 'Asian Institute of Tourism'),
+(5, 'Cesar E.A. Virata School of Business'),
+(6, 'School of Economics'),
+(7, 'College of Education'),
+(8, 'College of Engineering'),
+(9, 'College of Fine Arts'),
+(10, 'College of Home Economics'),
+(11, 'College of Human Kinetics'),
+(12, 'Institute of Islamic Studies'),
+(13, 'School of Labor and Industrial Relations'),
+(14, 'College of Law'),
+(15, 'School of Library and Information Studies'),
+(16, 'College of Mass Communication'),
+(17, 'College of Music'),
+(18, 'National College of Public Administration and Governance'),
+(19, 'College of Science'),
+(20, 'College of Social Sciences and Philosophy'),
+(21, 'College of Social Work and Community Development'),
+(22, 'School of Statistics'),
+(23, 'School of Urban and Regional Planning'),
+(24, 'UP Diliman Extension Program in Olongapo'),
+(25, 'UP Diliman Extension Program in Pampanga'),
+(26, 'Archaeological Studies Program'),
+(27, 'Technology Management Center');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dept`
+--
+
+CREATE TABLE IF NOT EXISTS `dept` (
+  `deptID` int(11) NOT NULL,
+  `collegeID` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dept`
+--
+
+INSERT INTO `dept` (`deptID`, `collegeID`, `name`) VALUES
+(1, 1, 'N/A'),
+(2, 2, 'Department of Art Studies'),
+(3, 2, 'Department of English and Comparative Literature'),
+(4, 2, 'Department of European Languages'),
+(5, 2, 'Departamento ng Filipino at Panitikan ng Pilipinas'),
+(6, 2, 'Department of Speech Communication and Theatre Arts'),
+(7, 3, 'N/A'),
+(8, 4, 'N/A'),
+(9, 5, 'Department of Business Administration'),
+(10, 5, 'Department of Accounting and Finance'),
+(11, 6, 'N/A'),
+(12, 7, 'N/A'),
+(13, 8, 'Institute of Civil Engineering'),
+(14, 8, 'Department of Chemical Engineering'),
+(15, 8, 'Department of Computer Science'),
+(16, 8, 'Institute of Electrical and Electronics Engineering'),
+(17, 8, 'Department of Geodetic Engineering'),
+(18, 8, 'Department of Industrial Engineering and Operations Research'),
+(19, 8, 'Department of Mechanical Engineering'),
+(20, 8, 'Department of Mining, Metallurgical, and Materials Engineering'),
+(21, 8, 'Energy Engineering Program'),
+(22, 8, 'Environmental Engineering Program'),
+(23, 9, 'Department of Studio Arts'),
+(24, 9, 'Department of Theory'),
+(25, 9, 'Department of Visual Communication'),
+(26, 9, 'CFA Graduate Program'),
+(27, 10, 'Department of Clothing, Textiles and Interior Design'),
+(28, 10, 'Department of Family Life and Child Development'),
+(29, 10, 'Department of Food Science and Nutrition'),
+(30, 10, 'Department of Home Economics Education'),
+(31, 10, 'Department of Hotel, Restaurant and Institution Management'),
+(32, 11, 'Department of Physical Education'),
+(33, 11, 'Department of Sports Science'),
+(34, 11, 'Graduate Studies Program'),
+(35, 12, 'N/A'),
+(36, 13, 'N/A'),
+(37, 14, 'N/A'),
+(38, 15, 'N/A'),
+(39, 16, 'Department of Broadcast Communication'),
+(40, 16, 'Department of Communication Research'),
+(41, 16, 'Film Institute'),
+(42, 16, 'Department of Journalism'),
+(43, 16, 'Department of Graduate Studies'),
+(44, 17, 'N/A'),
+(45, 18, 'N/A'),
+(46, 19, 'Institute of Biology'),
+(47, 19, 'Institute of Chemistry'),
+(48, 19, 'Institute of Environmental Science and Meteorology'),
+(49, 19, 'Institute of Mathematics'),
+(50, 19, 'National Institute of Molecular Biology and Biotechnology'),
+(51, 19, 'Marine Science Institute'),
+(52, 19, 'National Institute of Geological Sciences'),
+(53, 19, 'National Institute of Physics'),
+(54, 19, 'Materials Science and Engineering Program'),
+(55, 20, 'Department of Anthropology'),
+(56, 20, 'Department of Geography'),
+(57, 20, 'Departamento ng Kasaysayan'),
+(58, 20, 'Departamento ng Linggwistiks'),
+(59, 20, 'Department of Philosophy'),
+(60, 20, 'Department of Political Science'),
+(61, 20, 'Department of Psychology'),
+(62, 20, 'Department of Sociology'),
+(63, 20, 'Population Institute'),
+(64, 21, 'Department of Community Development'),
+(65, 21, 'Department of Social Work'),
+(66, 21, 'Department of Women and Development Studies'),
+(67, 21, 'Doctor of Social Development Program'),
+(68, 22, 'N/A'),
+(69, 23, 'N/A'),
+(70, 24, 'N/A'),
+(71, 25, 'N/A'),
+(72, 26, 'N/A'),
+(73, 27, 'N/A');
 
 -- --------------------------------------------------------
 
@@ -107,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `scholarship` (
   `appDeadline` date NOT NULL,
   `numofGrantees` int(11) NOT NULL,
   `signatoryOrder` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
@@ -144,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `signatory` (
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `signatory`
@@ -194,22 +330,22 @@ CREATE TABLE IF NOT EXISTS `student` (
   `firstName` varchar(255) NOT NULL,
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
-  `nationality` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL,
-  `birthDate` date NOT NULL,
-  `birthPlace` varchar(255) NOT NULL,
-  `presStreetAddr` varchar(255) NOT NULL,
-  `presMunBrgy` varchar(255) NOT NULL,
-  `presProvCity` varchar(255) NOT NULL,
-  `presRegion` varchar(255) NOT NULL,
-  `permStreetAddr` varchar(255) NOT NULL,
-  `permMunBrgy` varchar(255) NOT NULL,
-  `permProvCity` varchar(255) NOT NULL,
-  `permRegion` varchar(255) NOT NULL,
-  `contactNo` int(20) NOT NULL,
+  `nationality` varchar(255) DEFAULT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `birthDate` date DEFAULT NULL,
+  `birthPlace` varchar(255) DEFAULT NULL,
+  `presStreetAddr` varchar(255) DEFAULT NULL,
+  `presMunBrgy` varchar(255) DEFAULT NULL,
+  `presProvCity` varchar(255) DEFAULT NULL,
+  `presRegion` varchar(255) DEFAULT NULL,
+  `permStreetAddr` varchar(255) DEFAULT NULL,
+  `permMunBrgy` varchar(255) DEFAULT NULL,
+  `permProvCity` varchar(255) DEFAULT NULL,
+  `permRegion` varchar(255) DEFAULT NULL,
+  `contactNo` int(20) DEFAULT NULL,
   `dept` varchar(255) NOT NULL,
   `college` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `student`
@@ -280,6 +416,18 @@ ALTER TABLE `applicationform`
   ADD PRIMARY KEY (`formID`);
 
 --
+-- Indexes for table `college`
+--
+ALTER TABLE `college`
+  ADD PRIMARY KEY (`collegeID`);
+
+--
+-- Indexes for table `dept`
+--
+ALTER TABLE `dept`
+  ADD PRIMARY KEY (`deptID`);
+
+--
 -- Indexes for table `scholarship`
 --
 ALTER TABLE `scholarship`
@@ -311,32 +459,42 @@ ALTER TABLE `studentscholarship`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
 ALTER TABLE `applicationform`
   MODIFY `formID` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `college`
+--
+ALTER TABLE `college`
+  MODIFY `collegeID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT for table `dept`
+--
+ALTER TABLE `dept`
+  MODIFY `deptID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
+--
 -- AUTO_INCREMENT for table `scholarship`
 --
 ALTER TABLE `scholarship`
-  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `signatory`
 --
 ALTER TABLE `signatory`
-  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `studentscholarship`
 --
