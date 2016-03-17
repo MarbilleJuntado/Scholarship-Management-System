@@ -30,6 +30,8 @@
  Code History:
   March 8, 2016: Patricia Regarde added the login functionality for the system. System can now recognize user IDs 
                   for all types of users.
+  March 14, 2016: Patricia Regarde fixed a bug where login redirects to signatory page when email is not in database.
+                  Added error message.
 
   File Creation Date: March 8, 2016
   Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
@@ -42,6 +44,7 @@
 
     try
     {
+        
         $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
         $email = $_POST['email'];
@@ -69,8 +72,11 @@
         $DBH = null;
         if ($_SESSION['currentUserTYPE'] == 1) header('Location: ../user.php');
         elseif ($_SESSION['currentUserTYPE'] == 2) header('Location: ../admin.php');
-        else header('Location: ../sig.php');
-
+        elseif ($_SESSION['currentUserTYPE'] == 3) header('Location: ../sig.php');
+        else {
+          $_SESSION['errMsg'] = "The email you've entered doesn't match any account";
+          header('Location: ../index.php');
+        }
 
 
     }
