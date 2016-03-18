@@ -35,7 +35,7 @@
                      is writable to the database. 
   March 4, 2016: Marbille Juntado made possible the tagging of applicationID for an applicant
                  with the corresponding studentID.
-
+  March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
@@ -362,17 +362,27 @@
                             </thead>
                             <tbody>
                               <tr>
-                                <td style="width:90%">MOVE UP (Mobility for Vigor and Excellence)</td>
-                                <td class = "success">Approved</td>
-                              </tr>
-                              <tr>
-                                <td style="width:90%">COOPERATE (Continuous Operational and Outcomes-based Partnership for Excellence in Research and Academic Training Enhancement)</td>
-                                <td class = "info">Pending</td>
-                              </tr>
-                              <tr>
-                                <td style="width:90%">MOVE DOWN (Mobility for Walang Masabi and Extras)</td>
-                                <td class = "warning">Rejected</td>
-                              </tr>
+                                <td style="width:90%">
+                                <?php
+                                  $queryScholarship = "SELECT name FROM scholarship, application, student WHERE application.studentID = student.studentID AND scholarship.scholarshipID = application.scholarshipID";
+                                  $qSchoResult = mysqli_query($conn, $queryScholarship);
+                                  $row = $qSchoResult->fetch_assoc();
+                                  echo $row["name"];
+                                ?>
+                                </td>
+                                <?php
+                                  $queryStatus = "SELECT status FROM application";
+                                  $qStatResult = mysqli_query($conn, $queryStatus);
+                                  $row = $qStatResult->fetch-assoc();
+                                  if($row == "1"){
+                                    ?>
+                                      <td class = "success">Approved</td>
+                                    <?php
+                                  }else{
+                                    ?>
+                                    <td class = "info">Pending</td>
+                                    <?php
+                                  }?>
                             </tbody>
                           </table>
 
