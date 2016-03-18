@@ -361,28 +361,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td style="width:90%">
                                 <?php
-                                  $queryScholarship = "SELECT name FROM scholarship, application, student WHERE application.studentID = student.studentID AND scholarship.scholarshipID = application.scholarshipID";
+                                  $queryScholarship = "SELECT S.name, A.status FROM application A join scholarship S on A.scholarshipID = S.scholarshipID WHERE studentID = $_SESSION[currentUserID]";
                                   $qSchoResult = mysqli_query($conn, $queryScholarship);
-                                  $row = $qSchoResult->fetch_assoc();
-                                  echo $row["name"];
+                            
+
+                                  while($rows=mysqli_fetch_row($qSchoResult))
+                                  { 
+                                  	foreach($rows as $key => $value){
+                                  		if ($key == 0){
+                                  			?> <tr><td> <?php echo $value;
+                                  		}
+                                  		if ($key == 1){
+                             				if ($value == 1){
+                             					?> <td class="success"> <?php echo "Approved";
+                             				}
+                             				if ($value == 0){
+                             					?> <td class="warning"> <?php echo "Pending";
+                             				}
+                                  			
+                                  		}
+                                  	}
+
+                                  }
                                 ?>
-                                </td>
-                                <?php
-                                  $queryStatus = "SELECT status FROM application";
-                                  $qStatResult = mysqli_query($conn, $queryStatus);
-                                  $row = $qStatResult->fetch-assoc();
-                                  if($row == "1"){
-                                    ?>
-                                      <td class = "success">Approved</td>
-                                    <?php
-                                  }else{
-                                    ?>
-                                    <td class = "info">Pending</td>
-                                    <?php
-                                  }?>
+                                
+                                
                             </tbody>
                           </table>
 
