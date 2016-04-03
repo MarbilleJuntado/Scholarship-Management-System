@@ -38,9 +38,10 @@
                      write 0 instead.
   February 18, 2016: Cyan Villarin implemented the filtering of applications. The UI will now display the only applications
                       that has the sigID included in the scholarship's sigOrder. Order restriction not yet implemented.
-  February 28, 2016: Cyan Villarin started working on the forwarding and returning of application. Order of signatories has been
+  February 28, 2016: Cyan Villarin started working on the forwarding of application. Order of signatories has been
   					         considered.
-  March 2, 2016: Cyan Villarin finally implemented Signatory Order.
+  March 2, 2016: Cyan Villarin finally implemented Signatory Order, returning pending.
+  March 31, 2016: Cyan Villarin started working on returning and rejection of application on signatory account's side.
 
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
@@ -52,6 +53,7 @@
 /* Start a session so that other files can access these variables */
   session_start();
   $_SESSION['selectedAppID'] = 0;
+
   $_SESSION['appList'] = NULL;
 
   /* Connect to database */
@@ -159,6 +161,7 @@
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -193,6 +196,8 @@
                                   $doShow = 0;
                                   $isCurrentSig = 0;
                                   $isAlreadyAccepted = 0;
+                                  $isAlreadyRejected = 0;
+                                  $isReturned = 0;
                                   $isPrevSig = 0;
                                   $prev_sigID = 0;
                                  	$status = 0;
@@ -298,6 +303,14 @@
                                                          {
                                                            $isAlreadyAccepted = 1;
                                                          }
+                                                         if ($value2 == 2)
+                                                         {
+                                                         	 $isReturned = 1;
+                                                         }
+                                                         if ($value2 == 0)
+                                                         {
+                                                           $isAlreadyRejected = 1;
+                                                         }
                                                       }
 
                                                       if ($isPrevSig == 1)
@@ -320,7 +333,7 @@
 
 
 
-                                   			if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1)
+                                   			if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1 && $isReturned != 1 && $isAlreadyRejected != 1)
                                    			{
 
                                    				// Last Name
@@ -366,7 +379,7 @@
 
                                   	if($presentInSigOrder == 1)
                                   	{
-                                    	if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1)
+                                    	if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1 && $isReturned != 1 && $isAlreadyRejected != 1)
                                     	{
                             ?> 			
                                     		<td style = "padding-left:40px">
@@ -381,6 +394,13 @@
 	                                        <td>
 	                                        <form action="sigreject.php" method="get">
 	                                          <button type="submit" name="reject" value="<?php echo $appID?>" class="btn btn-danger">Reject <?php echo $appID?></button>
+	                                        </form>
+	                                        
+	                                        </td>
+	                                        <td>
+	                                        <form action="sigreturn.php" method="get">
+                                            <input type="hidden" name="prevID" value="<?php echo $prev_sigID?>">
+	                                          <button type="submit" name="return" value="<?php echo $appID?>" class="btn btn-warning">Return <?php echo $appID?></button>
 	                                        </form>
 	                                        
 	                                        </td>
@@ -399,23 +419,143 @@
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
-                                  <th class = "col-md-1">Applicant</th>
+                                  <th class = "col-md-1">Returned By</th>
                                   <th class = "col-md-1">Scholarship</th>
-                                  <th class = "col-md-1">Returned by</th>
-                                  <th class = "col-md-1">Notes</th>
                                   <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
+
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>John Smith</td>
-                                  <td>MOVE UP</td>
-                                  <td>Rhodora Azanza</td>
-                                  <td>Incomplete Documents</td>
-                                  <td>
-                                      <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Review </button>
-                                  </td>
-                                </tr>
+
+                              <?php
+                              $to_query3 = "select R.appID, S.lastName, S.firstName, S.middleName, R.returnedBy, Z.name, Z.signatoryOrder from sigreturn R JOIN signatory S on R.returnedBy = S.sigID JOIN application A on A.applicationID = R.appID JOIN scholarship Z on Z.scholarshipID = A.scholarshipID where returnedTo = '".$_SESSION['currentUserID']."'";
+                              $sql_result3 = mysqli_query($conn, $to_query3);
+
+                              while($rows=mysqli_fetch_row($sql_result3))
+                                {
+                                $appID = 0;
+                                $scholarshipName = "";
+                                $returnedByID = 0;
+                                $Rprev_sigID = 0;
+                                $Rnext_sigID = 0;
+
+						        foreach ($rows as $key => $value)
+						            {
+						            	if ($key == 0)
+                                   		{
+                                   			$appID = $value;
+                                   		}
+// Last Name
+		                                if($key == 1)
+		                                {
+		                                   	$name = $value;
+		                                }
+
+		                                // First Name
+			                            if($key == 2)
+			                            {
+			                            $name = $name . ", " . $value;
+			                            }
+
+			                            // Middle Name and then display to UI
+                                     	if($key == 3)
+                                     	{
+                                       	$name = $name . " " . $value;
+                            ?>
+                                    	<tr><td><?php echo $name;?></td>
+                            <?php
+                                     	}
+
+
+                                      if ($key == 4)
+                                      {
+                                        $returnedByID = $value;
+                                      }
+
+                                   		if ($key == 5)
+                                   		{
+                                   			$scholarshipName = $value;
+                                   			?>
+                                    		<td><?php echo $scholarshipName;?></td>
+                           					 <?php
+                                   		}
+
+                                      if ($key == 6)
+                                      {
+// Gets the first column which is the sigOrder, then stores it in a list
+                                        $str = $value;
+                                        $delimiter = ',';
+                                        $order = preg_split("/$delimiter/", $str);
+                                        $numOfSigs = count($order);                   
+
+                                        // Traverses through the sigOrder list
+                                        for ($i=0; $i < $numOfSigs; $i++)
+                                        {
+                                          // Checks if the currently signed in sigUser is included in the sigOrder
+                                            if ($order[$i] == $_SESSION['currentUserID'])
+                                            {
+                                              // If we determine the logged sigID in the SigOrder, find it's prevID.
+                                              if($i != 0)
+                                              {
+                                                // If the sig is NOT the 1st, the prevID is the previous sigID in the order
+                                                $Rprev_sigID = $order[$i - 1];
+                                              }
+                                              else
+                                              {
+                                                // Else if it is the 1st, the prevID is the admin (denoted by -1)
+                                                $Rprev_sigID = -1;
+                                              }
+
+                                              if($i != ($numOfSigs - 1))
+                                              {
+                                                $Rnext_sigID = $order[$i + 1];
+                                              }
+                                              else
+                                              {
+                                                $Rnext_sigID = -1;
+                                              }
+
+                                              break;
+                                            }
+                                        }
+                                      }
+						            }
+						         ?>
+											<td style = "padding-left:40px">
+                                        	<button type = "button" name="reviewButton" value="<?php echo $appID; ?>" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Application 	<?php echo $appID; ?> </button>
+                                    		</td>
+                                    		<td>
+                                    		
+	                                    	<form action="sigRaccept.php" method="get">
+                                             <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
+	                                          <button type="submit" name="returnAccept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept <?php echo $appID?></button>
+	                                        </form>
+	                                        </td>
+	                                        <td>
+
+	                                        <form action="sigRreject.php" method="get">
+                                            <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
+	                                          <button type="submit" name="returnReject" value="<?php echo $appID?>" class="btn btn-danger">Reject <?php echo $appID?></button>
+	                                        </form>
+	                                        
+	                                        </td>
+	                                        <td>
+	                                        <form action="sigRreturn.php" method="get">
+                                            <input type="hidden" name="RprevID" value="<?php echo $Rprev_sigID?>">
+                                            <input type="hidden" name="RnextID" value="<?php echo $Rnext_sigID?>">
+	                                          <button type="submit" name="returnReturn" value="<?php echo $appID?>" class="btn btn-warning">Return <?php echo $appID?></button>
+	                                        </form>
+	                                        
+	                                        </td>
+
+                              <?php
+                                }
+
+                              ?>
+
                               </tbody>
                             </table>
 
@@ -458,6 +598,9 @@
                                         </form>
                                         <form action="sigreject.php" method="get">
                                           <button style = "margin:5px" type="submit" class="btn btn-danger">Reject</button>
+                                        </form>
+                                        <form action="sigreturn.php" method="get">
+                                          <button style = "margin:5px" type="submit" class="btn btn-danger">Return</button>
                                         </form>
                                       </div>
                                     <button type = "button" class = "btn btn-default" data-dismiss = "modal"> Close </button>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2016 at 08:52 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Apr 03, 2016 at 05:30 AM
+-- Server version: 5.6.26
+-- PHP Version: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `cs192upsms`
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `firstName` varchar(255) NOT NULL,
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -55,23 +55,14 @@ CREATE TABLE IF NOT EXISTS `application` (
   `appDate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
   `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
 --
 
 INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `status`, `verifiedByAdmin`) VALUES
-(1, 2, 1, '2016-03-05 22:43:02', 0, 0),
-(2, 1, 1, '2016-03-05 22:43:18', 1, 0),
-(3, 3, 1, '2016-03-05 22:43:02', 0, 0),
-(4, 7, 4, '2016-02-08 00:00:00', 0, 0),
-(5, 9, 5, '2016-03-05 22:43:02', 0, 0),
-(6, 9, 4, '2016-03-05 22:43:02', 0, 0),
-(7, 5, 3, '2016-03-05 22:43:02', 0, 0),
-(8, 4, 4, '2016-03-05 22:43:02', 0, 0),
-(9, 1, 4, '2016-03-05 22:47:43', 1, 0),
-(10, 2, 1, '2016-03-08 21:12:26', 0, 0);
+(20, 1, 1, '2016-04-03 11:10:03', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -243,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `scholarship` (
   `appDeadline` date NOT NULL,
   `numofGrantees` int(11) NOT NULL,
   `signatoryOrder` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
@@ -254,7 +245,10 @@ INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`,
 (2, 'MOVE UP', 'OIL', '2016-02-05', 10, '2,4'),
 (3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, '2,3,4'),
 (4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, '3,4'),
-(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4');
+(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4'),
+(12, 'JASSO', 'OILD-OVCAA', '2016-03-31', 15, '2,3,1'),
+(13, 'RUSSE', 'OILD', '2016-03-30', 10, '1,3,5,8,10,6'),
+(14, 'FREES', 'OIL', '2016-03-23', 10, '3,6,9,4');
 
 -- --------------------------------------------------------
 
@@ -280,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `signatory` (
   `middleName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `signatory`
@@ -301,6 +295,18 @@ INSERT INTO `signatory` (`sigID`, `upMail`, `firstName`, `middleName`, `lastName
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sigreturn`
+--
+
+CREATE TABLE IF NOT EXISTS `sigreturn` (
+  `appID` int(11) NOT NULL,
+  `returnedBy` int(11) NOT NULL,
+  `returnedTo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sigstatus`
 --
 
@@ -315,8 +321,8 @@ CREATE TABLE IF NOT EXISTS `sigstatus` (
 --
 
 INSERT INTO `sigstatus` (`sigID`, `applicationID`, `sStatus`) VALUES
-(1, 2, 1),
-(2, 2, 1);
+(1, 20, 1),
+(2, 20, 1);
 
 -- --------------------------------------------------------
 
@@ -345,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `contactNo` int(20) DEFAULT NULL,
   `dept` varchar(255) NOT NULL,
   `college` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `student`
@@ -361,7 +367,9 @@ INSERT INTO `student` (`studentID`, `upMail`, `firstName`, `middleName`, `lastNa
 (7, 'nscamander@up.edu.ph', 'Newt', '', 'Scamander', 'Filipino', 'Male', '1995-07-19', 'Manila', '123 ABC Street', 'DEF ', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Industrial Engineering and Operations Research', 'College of Engineering'),
 (8, 'sblack@up.edu.ph', 'Sirius', '', 'Black', 'Filipino', 'Male', '1989-08-26', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mechanical Engineering', 'College of Engineering'),
 (9, 'llovegood@up.edu.ph', 'Luna', '', 'Lovegood', 'Filipino', 'Female', '1994-01-05', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mechanical Engineering', 'College of Engineering'),
-(10, 'mmcgonagall', 'Minerva', '', 'McGonagall', 'Filipino', 'Female', '1980-06-27', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mining, Metallurgical and Materials Engineering', 'College of Engineering');
+(10, 'mmcgonagall', 'Minerva', '', 'McGonagall', 'Filipino', 'Female', '1980-06-27', 'Manila', '123 ABC Street', 'DEF', 'GHI City', 'JKL', 'same', 'same', 'same', 'same', 1234567, 'Department of Mining, Metallurgical and Materials Engineering', 'College of Engineering'),
+(15, 'saitama@up.edu.ph', 'Saitama', 'Lol', 'Hello', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Department of Computer Science', 'College of Engineering'),
+(16, 'peter@up.edu.ph', 'Peter', 'Lol', 'Vee', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Institute of Electrical and Electronics Engineering', 'College of Engineering');
 
 -- --------------------------------------------------------
 
@@ -375,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `studentscholarship` (
   `scholarshipID` int(11) NOT NULL,
   `startDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `endDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `studentscholarship`
@@ -391,7 +399,30 @@ INSERT INTO `studentscholarship` (`ssID`, `studentID`, `scholarshipID`, `startDa
 (7, 4, 4, '2016-03-01 07:37:46', '2017-03-01 07:37:46'),
 (8, 1, 1, '2016-03-05 22:43:18', '2017-03-05 22:43:18'),
 (9, 1, 4, '2016-03-05 22:47:44', '2017-03-05 22:47:44'),
-(10, 1, 4, '2016-03-05 22:47:44', '2017-03-05 22:47:44');
+(10, 1, 4, '2016-03-05 22:47:44', '2017-03-05 22:47:44'),
+(11, 3, 1, '2016-03-18 06:49:43', '2017-03-18 06:49:43'),
+(12, 1, 4, '2016-03-18 12:21:30', '2017-03-18 12:21:30'),
+(13, 1, 4, '2016-03-18 12:21:30', '2017-03-18 12:21:30'),
+(14, 1, 4, '2016-03-18 12:21:30', '2017-03-18 12:21:30'),
+(15, 1, 4, '2016-03-18 12:21:30', '2017-03-18 12:21:30'),
+(16, 1, 1, '2016-03-31 21:01:28', '2017-03-31 21:01:28'),
+(17, 1, 2, '2016-04-03 06:42:03', '2017-04-03 06:42:03'),
+(18, 1, 2, '2016-04-03 06:42:03', '2017-04-03 06:42:03'),
+(19, 1, 2, '2016-04-03 07:17:43', '2017-04-03 07:17:43'),
+(20, 1, 2, '2016-04-03 07:17:43', '2017-04-03 07:17:43'),
+(21, 1, 2, '2016-04-03 07:17:43', '2017-04-03 07:17:43'),
+(22, 1, 4, '2016-04-03 09:52:55', '2017-04-03 09:52:55'),
+(23, 1, 4, '2016-04-03 09:52:55', '2017-04-03 09:52:55'),
+(24, 1, 4, '2016-04-03 09:52:55', '2017-04-03 09:52:55'),
+(25, 1, 4, '2016-04-03 09:52:55', '2017-04-03 09:52:55'),
+(26, 1, 4, '2016-04-03 09:52:55', '2017-04-03 09:52:55'),
+(27, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(28, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(29, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(30, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(31, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(32, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
+(33, 1, 1, '2016-04-03 11:10:03', '2017-04-03 11:10:03');
 
 --
 -- Indexes for dumped tables
@@ -459,12 +490,12 @@ ALTER TABLE `studentscholarship`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `adminID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
@@ -484,22 +515,22 @@ ALTER TABLE `dept`
 -- AUTO_INCREMENT for table `scholarship`
 --
 ALTER TABLE `scholarship`
-  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `scholarshipID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `signatory`
 --
 ALTER TABLE `signatory`
-  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `sigID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `studentID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `studentscholarship`
 --
 ALTER TABLE `studentscholarship`
-  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
