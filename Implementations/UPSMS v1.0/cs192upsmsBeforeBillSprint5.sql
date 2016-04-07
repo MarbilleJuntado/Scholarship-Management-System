@@ -233,23 +233,22 @@ CREATE TABLE IF NOT EXISTS `scholarship` (
   `benefactor` varchar(255) NOT NULL,
   `appDeadline` date NOT NULL,
   `numofGrantees` int(11) NOT NULL,
-  `signatoryOrder` varchar(255) NOT NULL,
-  `description` varchar(4095) NOT NULL
+  `signatoryOrder` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scholarship`
 --
 
-INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`, `signatoryOrder`, `description`) VALUES
-(1, 'COOPERATE', 'OIL', '2016-02-05', 5, '1,2,3,4', 'Donec ut pellentesque quam. Proin tincidunt vehicula nisi ut euismod. Praesent molestie accumsan turpis quis gravida. In turpis mauris, pharetra rutrum dapibus id, pellentesque vitae quam. Curabitur ornare, justo quis auctor aliquam, massa augue semper massa, sagittis consectetur turpis odio in augue.'),
-(2, 'MOVE UP', 'OIL', '2016-02-05', 10, '2,4', 'In scelerisque magna nunc, id lacinia lacus porta blandit. Etiam id mollis magna. Sed vitae eros feugiat, lacinia lectus at, bibendum turpis. Fusce auctor massa in enim lacinia, iaculis pharetra elit tempor.'),
-(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, '2,3,4', 'Nunc eu placerat sem. Mauris tellus metus, aliquam a mi et, gravida tincidunt enim. Mauris mollis tellus ipsum, eget cursus diam interdum sit amet.'),
-(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, '3,4', 'Integer ac tellus velit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam convallis sem eget velit porttitor interdum.'),
-(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4', 'Duis sed gravida justo. Donec posuere dictum eros vel scelerisque. Nullam quis congue ligula.'),
-(12, 'JASSO', 'OILD-OVCAA', '2016-03-31', 15, '2,3,1', 'Aliquam vel eros nec erat porttitor lobortis sed ac purus. Maecenas suscipit ultrices aliquam. Sed aliquam, est id dictum pretium, ipsum lorem varius sapien, at porta dolor nisi vel lorem.'),
-(13, 'RUSSE', 'OILD', '2016-03-30', 10, '1,3,5,8,10,6', 'Donec tempus eros arcu, nec blandit lorem tincidunt vitae. Curabitur consectetur porta faucibus. Aenean aliquam velit et tellus maximus pulvinar.'),
-(14, 'FREES', 'OIL', '2016-03-23', 10, '3,6,9,4', 'Etiam non tincidunt sapien. Pellentesque tempor porttitor sem, et malesuada neque mattis aliquet. Vivamus egestas, velit at molestie maximus, nisi nunc rhoncus metus, nec suscipit metus quam a tellus.');
+INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`, `numofGrantees`, `signatoryOrder`) VALUES
+(1, 'COOPERATE', 'OIL', '2016-02-05', 5, '1,2,3,4'),
+(2, 'MOVE UP', 'OIL', '2016-02-05', 10, '2,4'),
+(3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, '2,3,4'),
+(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, '3,4'),
+(5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4'),
+(12, 'JASSO', 'OILD-OVCAA', '2016-03-31', 15, '2,3,1'),
+(13, 'RUSSE', 'OILD', '2016-03-30', 10, '1,3,5,8,10,6'),
+(14, 'FREES', 'OIL', '2016-03-23', 10, '3,6,9,4');
 
 -- --------------------------------------------------------
 

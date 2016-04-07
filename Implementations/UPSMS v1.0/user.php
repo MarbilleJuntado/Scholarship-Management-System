@@ -321,10 +321,30 @@
                                       while($row=mysqli_fetch_row($sql_result)){
                                         ?>
                                         <option value = "<?php echo $row[0]; ?>">
-                                          <a href = "#">
+                                          <a href = "#" data-toggle="modal" data-target="#<?php echo $row[0]; ?>" class="btn btn-lg btn-success">
                                             <?php echo $row[1]; ?>
+                  
                                           </a>
+
                                         </option>
+
+                                        </form>
+                                          <div class="modal fade" id="<?php echo $row[0]; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $row[0]; ?>" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+                                                <h4 class="modal-title" id="infoLabel">Scholarship Information</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                  <p><?php echo $row[6]; ?></p>
+                                                </div>
+                                                <div class="modal-footer">     
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>                                  
                                         <?php
                                       }
                                     ?>
@@ -335,6 +355,19 @@
                                 <button type="submit" class="btn btn-success">Apply</button>
                               </form>
                             </div>
+                            <?php
+                              $to_query = "SELECT * FROM scholarship";
+                              $sql_result = mysqli_query($conn, $to_query);
+                              while($row=mysqli_fetch_row($sql_result)){
+                                ?>
+                                <form id = "<?php echo $row[0]; ?>" style="display:none">
+                                  <a href = "#">
+                                    <?php echo $row[6]; ?>
+                                  </a>
+                                </form>
+                                <?php
+                              }?>
+
                         </div>
 
 
