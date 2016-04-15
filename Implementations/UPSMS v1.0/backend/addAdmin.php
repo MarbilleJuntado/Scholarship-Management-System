@@ -39,25 +39,62 @@
   {
     $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-    $fname = $_POST['fname'];
-    $mname = $_POST['mname'];
-    $lname = $_POST['lname'];
-    $mail = $_POST['mail'];
+    if ($_POST['adminButton'] == 'Submit'){
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
 
 
 
-    foreach($fname as $a => $b){
-      $name1 = $fname[$a];
-      $name2 = $mname[$a];
-      $name3 = $lname[$a];
-      $email = $mail[$a];
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
 
-      $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email);
-      $STH = $DBH->prepare("INSERT INTO admin (firstName, middleName, lastName, upMail) VALUES (:firstName, :middleName, :lastName, :upMail)");
-      $STH->execute($data);
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email);
+        $STH = $DBH->prepare("INSERT INTO admin (firstName, middleName, lastName, upMail) VALUES (:firstName, :middleName, :lastName, :upMail)");
+        $STH->execute($data);
 
+      }
     }
 
+    else if ($_POST['adminButton'] == 'Delete'){
+      foreach ($_POST['admnID'] as $id){
+        if(isset($_POST["edit{$id}"])){
+          $adminID = $_POST["adminID{$id}"];
+          
+          $data = array('id' => $adminID);
+
+          $STH = $DBH->prepare("DELETE FROM admin WHERE adminID = :id");
+          $STH->execute($data);
+        }
+      }
+    }
+
+    else{
+      $id = $_POST['adList'];
+
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
+
+
+
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
+
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'id' => $id);
+        $STH = $DBH->prepare("UPDATE admin SET firstName = :firstName, middleName = :middleName, lastName = :lastName, upMail = :upMail WHERE adminID = :id");
+        $STH->execute($data);
+
+      }
+  }
    $DBH = null;
    header('Location: ../admin.php');
     

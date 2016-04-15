@@ -35,38 +35,94 @@
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
 <?php
+  session_start();
+
+  if(isset($_POST['sID'])){
+    $_SESSION['sID'] = $_POST['sID'];
+  }
+
   try
   {
     $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-    $fname = $_POST['fname'];
-    $mname = $_POST['mname'];
-    $lname = $_POST['lname'];
-    $mail = $_POST['mail'];
-    $college = $_POST['college'];
-    $dept = $_POST['dept'];
+    if ($_POST['studButton'] == 'Submit'){
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
+      $college = $_POST['college'];
+      $dept = $_POST['dept'];
 
 
-    foreach($fname as $a => $b){
-      $name1 = $fname[$a];
-      $name2 = $mname[$a];
-      $name3 = $lname[$a];
-      $email = $mail[$a];
-      $collegeID = $college[$a];
-      $dep = $dept[$a];
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
+        $collegeID = $college[$a];
+        $dep = $dept[$a];
 
-      $data = array('collegeID' => $collegeID);
+        $data = array('collegeID' => $collegeID);
 
-      $STH = $DBH->prepare("SELECT * FROM college WHERE collegeID = :collegeID");
-      $STH->execute($data);
+        $STH = $DBH->prepare("SELECT * FROM college WHERE collegeID = :collegeID");
+        $STH->execute($data);
 
-      $collname = $STH->fetchAll(PDO::FETCH_OBJ);
+        $collname = $STH->fetchAll(PDO::FETCH_OBJ);
 
-      echo $collname[0]->name;
+        echo $collname[0]->name;
 
-      $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'college' => $collname[0]->name, 'dept' => $dep);
-      $STH = $DBH->prepare("INSERT INTO student (firstName, middleName, lastName, upMail, college, dept) VALUES (:firstName, :middleName, :lastName, :upMail, :college, :dept)");
-      $STH->execute($data);
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'college' => $collname[0]->name, 'dept' => $dep);
+        $STH = $DBH->prepare("INSERT INTO student (firstName, middleName, lastName, upMail, college, dept) VALUES (:firstName, :middleName, :lastName, :upMail, :college, :dept)");
+        $STH->execute($data);
+
+      }
+    }
+
+    else if ($_POST['studButton'] == 'Delete'){
+      foreach ($_POST['stdntID'] as $id){
+        if(isset($_POST["edit{$id}"])){
+          $studentID = $_POST["studentID{$id}"];
+          
+          $data = array('id' => $studentID);
+
+          $STH = $DBH->prepare("DELETE FROM student WHERE studentID = :id");
+          $STH->execute($data);
+        }
+      }
+    }
+
+    else{
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
+      $college = $_POST['college'];
+      $dept = $_POST['dept'];
+      $id = $_POST['studList'];
+
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
+        $collegeID = $college[$a];
+        $dep = $dept[$a];
+
+        $data1 = array('collegeID' => $collegeID);
+
+        $STH = $DBH->prepare("SELECT * FROM college WHERE collegeID = :collegeID");
+        $STH->execute($data1);
+
+        $collname = $STH->fetchAll(PDO::FETCH_OBJ);
+
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'college' => $collname[0]->name, 'dept' => $dep, 'id' => $id);
+        $STH = $DBH->prepare("UPDATE student SET firstName = :firstName, middleName = :middleName, lastName = :lastName, upMail = :upMail, college = :college, dept = :dept WHERE studentID = :id");
+        $STH->execute($data);
+
+      }
+
+
+
 
     }
 

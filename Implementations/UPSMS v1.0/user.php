@@ -401,20 +401,20 @@
 
                                   while($rows=mysqli_fetch_row($qSchoResult))
                                   { 
-                                  	foreach($rows as $key => $value){
-                                  		if ($key == 0){
-                                  			?> <tr><td> <?php echo $value;
-                                  		}
-                                  		if ($key == 1){
-                             				if ($value == 1){
-                             					?> <td class="success"> <?php echo "Approved";
-                             				}
-                             				if ($value == 0){
-                             					?> <td class="warning"> <?php echo "Pending";
-                             				}
-                                  			
-                                  		}
-                                  	}
+                                    foreach($rows as $key => $value){
+                                      if ($key == 0){
+                                        ?> <tr><td> <?php echo $value;
+                                      }
+                                      if ($key == 1){
+                                    if ($value == 1){
+                                      ?> <td class="success"> <?php echo "Approved";
+                                    }
+                                    if ($value == 0){
+                                      ?> <td class="warning"> <?php echo "Pending";
+                                    }
+                                        
+                                      }
+                                    }
 
                                   }
                                 ?>

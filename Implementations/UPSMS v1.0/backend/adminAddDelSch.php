@@ -42,25 +42,8 @@
 		/*Open a connection to mySQL*/
 		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-		/*If the delete button was clicked*/
-		if($_POST['deladd'] == 'Delete'){
-			/*For each ticked checkbox*/
-			foreach($_POST['schoID'] as $id){
-				if(isset($_POST["delete{$id}"])){
-					$scholarship = $_POST["scholarshipID{$id}"];
-					
-					$data = array('scholarship' => $scholarship);
-					/*Delete corresponding row in the table*/
-					$STH = $DBH->prepare("DELETE FROM scholarship WHERE scholarshipID = :scholarship");
-					$STH->execute($data);
-
-	
-				}
-			}
-		}
-
 		/*If the add button was clicked*/
-		else{
+		if($_POST['deladd'] == 'Add'){
 			/*Get form data*/
 			$name = $_POST['schname'];
 			$benefactor = $_POST['benefactor'];
@@ -74,6 +57,25 @@
 			/*Insert into scholarship table*/
 			$STH = $DBH->prepare("INSERT INTO scholarship (name, benefactor, appDeadline, numofGrantees, signatoryOrder) VALUES (:name, :benefactor, :deadline, :grantees, :order)");
 
+			$STH->execute($data);
+		}
+
+		else{
+			$name = $_POST['schname'];
+			$benefactor = $_POST['benefactor'];
+			$deadline = $_POST['appdeadline'];
+			$grantees = $_POST['granteesNum'];
+			$ordersig = $_POST['selSigList'];
+
+			$id = $_POST['schoList'];
+
+			echo $id;
+
+			$ordersig = implode(",", $ordersig);
+
+			$data = array('id' => $id, 'name' => $name, 'benefactor' => $benefactor, 'deadline' => $deadline, 'grantees' => $grantees, 'order' => $ordersig);
+
+			$STH = $DBH->prepare("UPDATE scholarship SET name = :name, benefactor = :benefactor, appDeadline = :deadline, numofGrantees = :grantees, signatoryOrder = :order WHERE scholarshipID = :id");
 			$STH->execute($data);
 		}
 

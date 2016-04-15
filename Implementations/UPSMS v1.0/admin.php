@@ -60,6 +60,8 @@
   include 'backend/getSignatory.php';
   include 'backend/getCollege.php';
   include 'backend/getDepartment.php';
+  include 'backend/getStudents.php';
+  include 'backend/getAdmins.php';
 
 ?>
 
@@ -337,7 +339,7 @@
                                   <th class = "col-md-1">Application Status</th>
                                   <th class = "col-md-1">Total Slots</th>
                                   <th class = "col-md-1">Grantees</th>
-                                  <th class = "col-md-1"></th>
+
                                 </tr>
                               </thead>
                               <tbody>
@@ -367,10 +369,6 @@
                                       <td><?php echo $temp->numofGrantees?></td>
                                       <td>
                                         <button type = "button" class = "btn btn-info" data-toggle = "modal" data-target = "#grantees">View</button>
-                                      </td>
-                                      <td>
-                                        <input type = "hidden" name = "scholarshipID<?php echo $temp->scholarshipID;?>" id = "scholarshipID" value = "<?php echo $temp->scholarshipID; ?>">
-                                        <input type = "checkbox" name = "delete<?php echo $temp->scholarshipID;?>" id = "delete" value = "<?php echo $temp->scholarshipID; ?>">
                                       </td>
                                     </tr>
                               </tbody>
@@ -421,8 +419,22 @@
                             
                             <br><br>
 
+                              <select id = "schoList" name = "schoList" class = "form-control">
+                                <option>...</option>
+                                <?php 
+                                  $scho = getScholarship();
+                                  foreach($scho as $temp){
+                                    ?>
+
+                                    <option value = "<?php echo $temp->scholarshipID; ?>" name = "<?php echo $temp->scholarshipID; ?>"><?php echo $temp->name; ?></option>
+                                    <?php
+                                  }
+                                    ?>
+                              </select>
+
+
+                            <input type = "submit" name = "deladd" value = "Edit" onclick = "selectAll();">
                             <input type = "submit" name = "deladd" value = "Add" onclick = "selectAll();">
-                            <input type = "submit" name = "deladd" value = "Delete"> <br>
 
                           </form>
 
@@ -532,7 +544,54 @@
                           </div>
 
                             <form id = "studopt" style = "display:none" method = "post" action = "backend/addStudent.php">
-                              
+
+                            <table class = "table table-hover table-condensed">
+                              <thead>
+                                <tr>
+
+                                  <th class = "col-md-1">Student</th>
+                                  <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php 
+                                  /*Get all applications in the application table. Uses getApplication.php*/
+                                  $student = getStudents();
+                                  foreach($student as $temp) {
+                                    ?>
+                                  
+                                  
+                                    <tr>
+                                      <input type = "hidden" name = "stdntID[]" value = "<?php echo $temp->studentID; ?>">
+                                      <input type = "hidden" name = "sID" value = "<?php echo $temp->studentID; ?>">
+                                     
+
+                                      <td><a href="#" data-toggle="modal" data-target="#1Modal"><?php echo $temp->lastName, ", ", $temp->firstName, " ", $temp->middleName; ?></a></td>
+
+                                      <td>
+                                        <input type = "submit" class = "btn btn-default" value = "Edit" name = "studButton">
+                                      </td>
+
+                                      <td>
+                                          <input type = "hidden" name = "studentID<?php echo $temp->studentID; ?>" id = "studentID" value = "<?php echo $temp->studentID; ?>">
+                                          <input type = "checkbox" name = "edit<?php echo $temp->studentID; ?>" id = "edit" value = "<?php echo $temp->studentID; ?>">
+                                      </td>
+                                    </tr>
+                                  
+                                </tbody>
+
+                                <?php
+                                  }
+                                ?>
+                              </table>
+                              <br>
+
+                              <input type = "submit" class = "btn btn-default" value = "Delete" name = "studButton">
+                              <br><br>
+
+
                               <button type = "button" onClick = "addRow('studTable')" class = "btn btn-default"> Add Student </button>
                               <button type = "button" onClick = "deleteRow('studTable')" class = "btn btn-default"> Remove Student </button>
 
@@ -569,20 +628,85 @@
                                       </select>
                                       <br>
                                       Department: <select id = "dept" name = "dept[]" class = "form-control">
-                                        <option value = "">...</option>
+                                        <option value = "">...</option></select>
 
                                     </td>
                                   </tr>
                                 </tbody>
                               </table>
 
-                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "Submit">
+                              <select id = "studList" name = "studList" class = "form-control">
+                                <option>...</option>
+                                <?php 
+                                  $student = getStudents();
+                                  foreach($student as $temp){
+                                    ?>
+
+                                    <option value = "<?php echo $temp->studentID; ?>" name = "<?php echo $temp->studentID; ?>"><?php echo $temp->lastName, ", ", $temp->firstName, " ", $temp->middleName; ?></option>
+                                    <?php
+                                  }
+                                    ?>
+                              </select>
+
+                              <br>
+
+
+                              <input type = "submit" class = "btn btn-default" value = "Edit" name = "studButton">  
+
+                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "studButton">
 
 
 
                             </form>
 
                             <form id = "adminopt" style = "display:none" method = "post" action = "backend/addAdmin.php">
+
+                             <table class = "table table-hover table-condensed">
+                              <thead>
+                                <tr>
+
+                                  <th class = "col-md-1">Admin</th>
+                                  <th class = "col-md-1"></th>
+                                  <th class = "col-md-1"></th>
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php 
+                                  /*Get all applications in the application table. Uses getApplication.php*/
+                                  $admin = getAdmins();
+                                  foreach($admin as $temp) {
+                                    ?>
+                                  
+                                  
+                                    <tr>
+                                      <input type = "hidden" name = "admnID[]" value = "<?php echo $temp->adminID; ?>">
+                                     
+
+                                      <td><a href="#" data-toggle="modal" data-target="#1Modal"><?php echo $temp->lastName, ", ", $temp->firstName, " ", $temp->middleName; ?></a></td>
+
+                                      <td>
+                                        <button type = "submit" class = "btn btn-info" name = "adminButton">Edit</button>
+                                      </td>
+
+                                      <td>
+                                          <input type = "hidden" name = "adminID<?php echo $temp->adminID; ?>" id = "adminID" value = "<?php echo $temp->adminID; ?>">
+                                          <input type = "checkbox" name = "edit<?php echo $temp->adminID; ?>" id = "edit" value = "<?php echo $temp->adminID; ?>">
+                                      </td>
+                                    </tr>
+                                  
+                                </tbody>
+
+                                <?php
+                                  }
+                                ?>
+                              </table>
+                              <br>
+                                
+                              <input type = "submit" class = "btn btn-default" value = "Delete" name = "adminButton">
+                              <br><br>
+
+
                               
                               <button type = "button" onClick = "addRow('adminTable')" class = "btn btn-default"> Add Admin </button>
                               <button type = "button" onClick = "deleteRow('adminTable')" class = "btn btn-default"> Remove Admin </button>
@@ -612,7 +736,26 @@
                                 </tbody>
                               </table>
 
-                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "Submit">
+                              <select id = "adList" name = "adList" class = "form-control">
+                                <option>...</option>
+                                <?php 
+                                  $admin = getAdmins();
+                                  foreach($admin as $temp){
+                                    ?>
+
+                                    <option value = "<?php echo $temp->adminID; ?>" name = "<?php echo $temp->adminID; ?>"><?php echo $temp->lastName, ", ", $temp->firstName, " ", $temp->middleName; ?></option>
+                                    <?php
+                                  }
+                                    ?>
+                              </select>
+
+                              <br>
+
+
+                              <input type = "submit" class = "btn btn-default" value = "Edit" name = "adminButton">  
+
+
+                              <input type = "submit" class = "btn btn-default" value = "Submit" name = "adminButton">
 
 
 
