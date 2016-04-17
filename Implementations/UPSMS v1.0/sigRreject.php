@@ -55,6 +55,9 @@
   $returnedByID = $_GET["returnByID"];
   $selAppID = $_GET["returnReject"];
 
+  $SQL = "INSERT INTO rejectedapps (appID) VALUES ($selAppID)";
+  $plswork = mysqli_query($conn, $SQL);
+
   $SQL = "DELETE FROM sigreturn WHERE appID = $selAppID and returnedBy = $returnedByID and returnedTo = $currID";
   $plswork = mysqli_query($conn, $SQL);
 

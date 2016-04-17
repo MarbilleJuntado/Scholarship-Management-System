@@ -54,6 +54,9 @@
   $currID = $_SESSION["currentUserID"];
   $selAppID = $_GET["reject"];
 
+  $SQL = "INSERT INTO rejectedapps (appID) VALUES ($selAppID)";
+  $plswork = mysqli_query($conn, $SQL);
+
   /* The value on status is 0 because it is rejected */
   $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($currID, $selAppID, 0)";
   $plswork = mysqli_query($conn, $SQL);

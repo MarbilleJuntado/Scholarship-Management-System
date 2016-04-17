@@ -161,7 +161,10 @@
                         </div>
                         <br />
                         <br />
+
+
                         <div id="application-div" style="display:none">
+                        <h1>Release for Signatories</h1>
                           <form method = "post" name = "studentlist" action = "backend/adminAcceptReject.php">
                                                                       
                             
@@ -217,7 +220,190 @@
 
                           </form>
 
+                          <h1>Release for Accepted Students</h1>
 
+                          <table class = "table table-hover table-condensed">
+                              <thead>
+                                <tr>
+
+                                  <th class = "col-md-1">Application Number</th>
+                                  <th class = "col-md-1">Applicant</th>
+                                  <th class = "col-md-1">Scholarship</th>
+                                  <th class = "col-md-1">Start Date</th>
+                                  <th class = "col-md-1">Status</th>
+                                  
+                                </tr>
+                              </thead>
+                              <tbody>
+
+                              <?php
+                              /* Connect to database */
+                              $conn = new mysqli("localhost","root","","cs192upsms");
+                              /* Checks Connection */
+                              if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                              }
+
+                              $to_query = "select A.appID, S.lastName, S.firstName, S.middleName, R.name, A.startDate from acceptedapps A join application P on A.appID = P.applicationID join student S on S.studentID = P.studentID join scholarship R on R.scholarshipID = P.scholarshipID";
+                              $sql_result = mysqli_query($conn,$to_query);
+                              while($rows=mysqli_fetch_row($sql_result))
+                              {
+                                $appID = 0;
+                                foreach ($rows as $key => $value)
+                                    {
+                                      if ($key == 0)
+                                      {
+                                        $appID = $value;
+                                        ?><tr><td><?php echo $appID;?></td><?php
+                                      }
+                                      // Last Name
+                                          if($key == 1)
+                                          {
+                                            $name = $value;
+                                          }
+
+                                          // First Name
+                                          if($key == 2)
+                                          {
+                                             $name = $name . ", " . $value;
+                                          }
+
+                                          // Middle Name and then display to UI
+                                          if($key == 3)
+                                          {
+                                              $name = $name . " " . $value;
+                            ?>
+                                            <td><?php echo $name;?></td>
+                            <?php
+                                          }
+                                      if ($key == 4)
+                                      {
+                                        ?><td><?php echo $value;?></td><?php
+                                      }
+                                      if($key == 5){
+                                        ?>
+                                            <td><?php echo $value;?></td>
+                                  <?php
+                                      }
+                                    }
+
+
+                                    $to_query2 = "select R.appID, R.status from released R where R.appID = '".$appID."'";
+                                    $sql_result2 = mysqli_query($conn,$to_query2);
+                                    if (mysqli_num_rows($sql_result2) == 0)
+                                    {?>
+                                        <td>
+                                        <form action="release.php" method="get">
+                                          <input type="hidden" name="status" value="1">
+                                            <button type="submit" name="notify" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-info">Notify</button>
+                                          </form>
+                                          </td>
+                                    <?php
+                                    }
+                                    else{
+                                      ?> <td><button type="submit" class="btn btn-success" disabled>Notified</button></td>
+                                      <?php
+                                    }
+                                    ?>
+
+
+                                        
+                                          <?php
+
+                              }
+                              mysqli_close($conn);
+                              ?>  
+
+                              </tbody>
+                          </table>
+
+                          <h1>Release for Rejected Students</h1>
+
+                          <table class = "table table-hover table-condensed">
+                              <thead>
+                                <tr>
+
+                                  <th class = "col-md-1">Application Number</th>
+                                  <th class = "col-md-1">Applicant</th>
+                                  <th class = "col-md-1">Scholarship</th>
+                                  <th class = "col-md-1">Status</th>
+                                  
+                                </tr>
+                              </thead>
+                              <tbody>
+
+
+<?php
+                              /* Connect to database */
+                              $conn = new mysqli("localhost","root","","cs192upsms");
+                              /* Checks Connection */
+                              if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                              }
+
+                              $to_query = "select A.appID, S.lastName, S.firstName, S.middleName, R.name from rejectedapps A join application P on A.appID = P.applicationID join student S on S.studentID = P.studentID join scholarship R on R.scholarshipID = P.scholarshipID";
+                              $sql_result = mysqli_query($conn,$to_query);
+                              while($rows=mysqli_fetch_row($sql_result))
+                              {
+                                $appID = 0;
+                                foreach ($rows as $key => $value)
+                                    {
+                                      if ($key == 0)
+                                      {
+                                        $appID = $value;
+                                        ?><tr><td><?php echo $appID;?></td><?php
+                                      }
+                                      // Last Name
+                                          if($key == 1)
+                                          {
+                                            $name = $value;
+                                          }
+
+                                          // First Name
+                                          if($key == 2)
+                                          {
+                                             $name = $name . ", " . $value;
+                                          }
+
+                                          // Middle Name and then display to UI
+                                          if($key == 3)
+                                          {
+                                              $name = $name . " " . $value;
+                            ?>
+                                            <td><?php echo $name;?></td>
+                            <?php
+                                          }
+                                      if ($key == 4)
+                                      {
+                                        ?><td><?php echo $value;?></td><?php
+                                      }
+                                    }
+
+
+                                    $to_query2 = "select R.appID, R.status from released R where R.appID = '".$appID."'";
+                                    $sql_result2 = mysqli_query($conn,$to_query2);
+                                    if (mysqli_num_rows($sql_result2) == 0)
+                                    {?>
+                                        <td>
+                                        <form action="release.php" method="get">
+                                          <input type="hidden" name="status" value="0">
+                                            <button type="submit" name="notify" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-info">Notify</button>
+                                          </form>
+                                          </td>
+                                    <?php
+                                    }
+                                    else{
+                                      ?> <td><button type="submit" class="btn btn-success" disabled>Notified</button></td>
+                                      <?php
+                                    }
+                                    
+
+                              }
+                              mysqli_close($conn);
+                              ?>
+
+                              </tbody>
+                          </table>
 
                                     <div id="statusModal" class="modal fade" role="dialog">
                                       <div class="modal-dialog">

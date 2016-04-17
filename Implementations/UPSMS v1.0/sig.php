@@ -154,11 +154,12 @@
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
+                                  <th class = "col-md-1">Application Number</th>
                                   <th class = "col-md-1">Applicant</th>
                                   <th class = "col-md-1">Scholarship</th>
                                   <th class = "col-md-1">Received on</th>
                                   
-                                  <th class = "col-md-1"></th>
+                          
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
@@ -199,6 +200,7 @@
                                   $isAlreadyRejected = 0;
                                   $isReturned = 0;
                                   $isPrevSig = 0;
+                                  $isLastSig = 0;
                                   $prev_sigID = 0;
                                  	$status = 0;
                                  	$appID = 0;
@@ -238,6 +240,11 @@
                                         			break;
                                       			}
                                      		}
+                                   		}	
+
+                                   		if($_SESSION['currentUserID'] == $order[$numOfSigs - 1])
+                                   		{
+                                   			$isLastSig = 1;
                                    		}
 
                                    	   // Checks if the application is included in the sigOrder
@@ -351,9 +358,10 @@
 			                                    // Middle Name and then display to UI
                                      			if($key == 5)
                                      			{
+                                     				?><tr><td><?php echo $appID;?></td><?php
                                        				$name = $name . " " . $value;
                             ?>
-                                    				<tr><td><?php echo $name;?></td>
+                                    				<td><?php echo $name;?></td>
                             <?php
                                      			}
 
@@ -382,25 +390,24 @@
                                     	if($status == 1 && ($doShow == 1 || $prev_sigID == -1) && $isAlreadyAccepted != 1 && $isReturned != 1 && $isAlreadyRejected != 1)
                                     	{
                             ?> 			
-                                    		<td style = "padding-left:40px">
-                                        	<button type = "button" name="reviewButton" value="<?php echo $appID; ?>" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Application 	<?php echo $appID; ?> </button>
-                                    		</td>
+
                                     		<td>
                                     		
 	                                    	<form action="sigaccept.php" method="get">
-	                                          <button type="submit" name="accept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept <?php echo $appID?></button>
+	                                    	  <input type="hidden" name="isLastSig" value="<?php echo $isLastSig?>">
+	                                          <button type="submit" name="accept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept</button>
 	                                        </form>
 	                                        </td>
 	                                        <td>
 	                                        <form action="sigreject.php" method="get">
-	                                          <button type="submit" name="reject" value="<?php echo $appID?>" class="btn btn-danger">Reject <?php echo $appID?></button>
+	                                          <button type="submit" name="reject" value="<?php echo $appID?>" class="btn btn-danger">Reject</button>
 	                                        </form>
 	                                        
 	                                        </td>
 	                                        <td>
 	                                        <form action="sigreturn.php" method="get">
                                             <input type="hidden" name="prevID" value="<?php echo $prev_sigID?>">
-	                                          <button type="submit" name="return" value="<?php echo $appID?>" class="btn btn-warning">Return <?php echo $appID?></button>
+	                                          <button type="submit" name="return" value="<?php echo $appID?>" class="btn btn-warning">Return</button>
 	                                        </form>
 	                                        
 	                                        </td>
@@ -419,9 +426,10 @@
                             <table class = "table table-hover table-condensed">
                               <thead>
                                 <tr>
+                                  <th class = "col-md-1">Application Number</th>
                                   <th class = "col-md-1">Returned By</th>
                                   <th class = "col-md-1">Scholarship</th>
-                                  <th class = "col-md-1"></th>
+                                 
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
                                   <th class = "col-md-1"></th>
@@ -463,9 +471,10 @@
 			                            // Middle Name and then display to UI
                                      	if($key == 3)
                                      	{
+                                     	?><tr><td><?php echo $appID;?></td><?php
                                        	$name = $name . " " . $value;
                             ?>
-                                    	<tr><td><?php echo $name;?></td>
+                                    	<td><?php echo $name;?></td>
                             <?php
                                      	}
 
@@ -524,21 +533,19 @@
                                       }
 						            }
 						         ?>
-											<td style = "padding-left:40px">
-                                        	<button type = "button" name="reviewButton" value="<?php echo $appID; ?>" class = "btn btn-info" data-toggle = "modal" data-target = "#myModal"> Application 	<?php echo $appID; ?> </button>
-                                    		</td>
+											
                                     		<td>
                                     		
 	                                    	<form action="sigRaccept.php" method="get">
                                              <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
-	                                          <button type="submit" name="returnAccept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept <?php echo $appID?></button>
+	                                          <button type="submit" name="returnAccept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept</button>
 	                                        </form>
 	                                        </td>
 	                                        <td>
 
 	                                        <form action="sigRreject.php" method="get">
                                             <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
-	                                          <button type="submit" name="returnReject" value="<?php echo $appID?>" class="btn btn-danger">Reject <?php echo $appID?></button>
+	                                          <button type="submit" name="returnReject" value="<?php echo $appID?>" class="btn btn-danger">Reject</button>
 	                                        </form>
 	                                        
 	                                        </td>
@@ -546,7 +553,7 @@
 	                                        <form action="sigRreturn.php" method="get">
                                             <input type="hidden" name="RprevID" value="<?php echo $Rprev_sigID?>">
                                             <input type="hidden" name="RnextID" value="<?php echo $Rnext_sigID?>">
-	                                          <button type="submit" name="returnReturn" value="<?php echo $appID?>" class="btn btn-warning">Return <?php echo $appID?></button>
+	                                          <button type="submit" name="returnReturn" value="<?php echo $appID?>" class="btn btn-warning">Return</button>
 	                                        </form>
 	                                        
 	                                        </td>

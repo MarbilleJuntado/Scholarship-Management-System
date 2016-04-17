@@ -36,6 +36,7 @@
   March 4, 2016: Marbille Juntado made possible the tagging of applicationID for an applicant
                  with the corresponding studentID.
   March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
+  April 15, 2016: Marbille Juntado added the scholarship description.
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
@@ -312,7 +313,7 @@
                           <h1>Apply for Scholarship</h1>
                           <p>Please choose the scholarship you want to apply for from the dropdown menu. Read the description of the scholarship. Download the form and follow all instructions given. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
                             <div class = "col-md-4">
-                              <form method="POST" action="apply.php">
+                              <form style="width:500px" method="POST" action="apply.php">
                                 <div class = "form-group">
                                   <select name = "schlist" id = "schlist" class = "form-control">
                                     <?php
@@ -329,45 +330,40 @@
                                         </option>
 
                                         </form>
-                                          <div class="modal fade" id="<?php echo $row[0]; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $row[0]; ?>" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
-                                                <h4 class="modal-title" id="infoLabel">Scholarship Information</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <p><?php echo $row[6]; ?></p>
-                                                </div>
-                                                <div class="modal-footer">     
-                                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>                                  
+                               
                                         <?php
                                       }
                                     ?>
 
                                   </select>
                                 </div>
-                                <br><br>
+                                <br>
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Scholarship Name</th>
+                                      <th>Description</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <?php
+                                      $to_query = "SELECT * FROM scholarship ORDER BY name";
+                                      $sql_result = mysqli_query($conn, $to_query);
+                                      while($row=mysqli_fetch_row($sql_result)){
+                                        ?>
+                                        <tr>
+                                          <td><?php echo $row[1]; ?></td>
+                                          <td><?php echo $row[6]; ?></td>
+                                        </tr>
+                                        <?php
+                                      }?>
+                                  </tbody>
+                                </table>
+
                                 <button type="submit" class="btn btn-success">Apply</button>
                               </form>
                             </div>
-                            <?php
-                              $to_query = "SELECT * FROM scholarship";
-                              $sql_result = mysqli_query($conn, $to_query);
-                              while($row=mysqli_fetch_row($sql_result)){
-                                ?>
-                                <form id = "<?php echo $row[0]; ?>" style="display:none">
-                                  <a href = "#">
-                                    <?php echo $row[6]; ?>
-                                  </a>
-                                </form>
-                                <?php
-                              }?>
-
                         </div>
 
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2016 at 05:30 AM
+-- Generation Time: Apr 17, 2016 at 01:29 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -19,6 +19,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `cs192upsms`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acceptedapps`
+--
+
+CREATE TABLE IF NOT EXISTS `acceptedapps` (
+  `appID` int(11) NOT NULL,
+  `startDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `acceptedapps`
+--
+
+INSERT INTO `acceptedapps` (`appID`, `startDate`) VALUES
+(20, '2016-04-17 18:10:53'),
+(30, '2016-04-17 18:18:16'),
+(25, '2016-04-17 19:26:50');
 
 -- --------------------------------------------------------
 
@@ -55,14 +75,24 @@ CREATE TABLE IF NOT EXISTS `application` (
   `appDate` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
   `verifiedByAdmin` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
 --
 
 INSERT INTO `application` (`applicationID`, `studentID`, `scholarshipID`, `appDate`, `status`, `verifiedByAdmin`) VALUES
-(20, 1, 1, '2016-04-03 11:10:03', 1, 0);
+(20, 1, 1, '2016-04-03 11:10:03', 1, 0),
+(21, 1, 2, '2016-04-08 15:33:27', 1, 0),
+(22, 1, 1, '2016-04-14 07:04:40', 1, 0),
+(23, 2, 1, '2016-04-17 18:17:59', 1, 0),
+(24, 3, 1, '2016-04-14 07:06:06', 1, 0),
+(25, 4, 1, '2016-04-14 07:06:06', 1, 0),
+(26, 1, 1, '2016-04-15 10:08:23', 1, 0),
+(27, 1, 3, '2016-04-15 12:23:15', 1, 0),
+(28, 2, 5, '2016-04-17 18:17:59', 1, 0),
+(29, 1, 2, '2016-04-17 18:16:34', 1, 0),
+(30, 2, 2, '2016-04-17 18:17:59', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -224,6 +254,47 @@ CREATE TABLE IF NOT EXISTS `fields` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rejectedapps`
+--
+
+CREATE TABLE IF NOT EXISTS `rejectedapps` (
+  `appID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `rejectedapps`
+--
+
+INSERT INTO `rejectedapps` (`appID`) VALUES
+(22),
+(26),
+(28);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `released`
+--
+
+CREATE TABLE IF NOT EXISTS `released` (
+  `appID` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `released`
+--
+
+INSERT INTO `released` (`appID`, `status`) VALUES
+(20, 1),
+(30, 1),
+(22, 0),
+(25, 1),
+(28, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `scholarship`
 --
 
@@ -245,7 +316,7 @@ INSERT INTO `scholarship` (`scholarshipID`, `name`, `benefactor`, `appDeadline`,
 (1, 'COOPERATE', 'OIL', '2016-02-05', 5, '1,2,3,4', 'Donec ut pellentesque quam. Proin tincidunt vehicula nisi ut euismod. Praesent molestie accumsan turpis quis gravida. In turpis mauris, pharetra rutrum dapibus id, pellentesque vitae quam. Curabitur ornare, justo quis auctor aliquam, massa augue semper massa, sagittis consectetur turpis odio in augue.'),
 (2, 'MOVE UP', 'OIL', '2016-02-05', 10, '2,4', 'In scelerisque magna nunc, id lacinia lacus porta blandit. Etiam id mollis magna. Sed vitae eros feugiat, lacinia lectus at, bibendum turpis. Fusce auctor massa in enim lacinia, iaculis pharetra elit tempor.'),
 (3, 'Research/Creative Work Presentation in International Conferences', 'OIL', '2016-02-05', 6, '2,3,4', 'Nunc eu placerat sem. Mauris tellus metus, aliquam a mi et, gravida tincidunt enim. Mauris mollis tellus ipsum, eget cursus diam interdum sit amet.'),
-(4, 'Hosting of International Conferences, Meetings, Workshops', 'OIL', '2016-02-05', 3, '3,4', 'Integer ac tellus velit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam convallis sem eget velit porttitor interdum.'),
+(4, '', '', '0000-00-00', 0, '', 'Integer ac tellus velit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam convallis sem eget velit porttitor interdum.'),
 (5, 'World Experts Lecture Series', 'OIL', '2016-02-05', 15, '2,4', 'Duis sed gravida justo. Donec posuere dictum eros vel scelerisque. Nullam quis congue ligula.'),
 (12, 'JASSO', 'OILD-OVCAA', '2016-03-31', 15, '2,3,1', 'Aliquam vel eros nec erat porttitor lobortis sed ac purus. Maecenas suscipit ultrices aliquam. Sed aliquam, est id dictum pretium, ipsum lorem varius sapien, at porta dolor nisi vel lorem.'),
 (13, 'RUSSE', 'OILD', '2016-03-30', 10, '1,3,5,8,10,6', 'Donec tempus eros arcu, nec blandit lorem tincidunt vitae. Curabitur consectetur porta faucibus. Aenean aliquam velit et tellus maximus pulvinar.'),
@@ -323,7 +394,31 @@ CREATE TABLE IF NOT EXISTS `sigstatus` (
 
 INSERT INTO `sigstatus` (`sigID`, `applicationID`, `sStatus`) VALUES
 (1, 20, 1),
-(2, 20, 1);
+(2, 20, 1),
+(2, 21, 1),
+(4, 21, 0),
+(1, 26, 1),
+(1, 22, 1),
+(2, 27, 1),
+(3, 27, 1),
+(4, 27, 1),
+(3, 20, 1),
+(4, 20, 1),
+(2, 22, 0),
+(2, 26, 0),
+(1, 24, 1),
+(2, 24, 1),
+(3, 24, 1),
+(4, 24, 1),
+(2, 29, 1),
+(4, 29, 1),
+(2, 30, 1),
+(4, 30, 1),
+(1, 25, 1),
+(2, 25, 1),
+(3, 25, 1),
+(4, 25, 1),
+(2, 28, 0);
 
 -- --------------------------------------------------------
 
@@ -384,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `studentscholarship` (
   `scholarshipID` int(11) NOT NULL,
   `startDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `endDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `studentscholarship`
@@ -423,7 +518,33 @@ INSERT INTO `studentscholarship` (`ssID`, `studentID`, `scholarshipID`, `startDa
 (30, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
 (31, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
 (32, 1, 5, '2016-04-03 09:54:06', '2017-04-03 09:54:06'),
-(33, 1, 1, '2016-04-03 11:10:03', '2017-04-03 11:10:03');
+(33, 1, 1, '2016-04-03 11:10:03', '2017-04-03 11:10:03'),
+(34, 1, 2, '2016-04-08 15:33:28', '2017-04-08 15:33:28'),
+(35, 1, 2, '2016-04-08 15:33:28', '2017-04-08 15:33:28'),
+(36, 1, 1, '2016-04-14 07:04:41', '2017-04-14 07:04:41'),
+(37, 1, 1, '2016-04-14 07:04:41', '2017-04-14 07:04:41'),
+(38, 1, 1, '2016-04-14 07:04:41', '2017-04-14 07:04:41'),
+(39, 2, 1, '2016-04-14 07:06:06', '2017-04-14 07:06:06'),
+(40, 3, 1, '2016-04-14 07:06:06', '2017-04-14 07:06:06'),
+(41, 4, 1, '2016-04-14 07:06:06', '2017-04-14 07:06:06'),
+(42, 1, 1, '2016-04-15 10:08:23', '2017-04-15 10:08:23'),
+(43, 1, 1, '2016-04-15 10:08:23', '2017-04-15 10:08:23'),
+(44, 1, 1, '2016-04-15 10:08:23', '2017-04-15 10:08:23'),
+(45, 1, 1, '2016-04-15 10:08:23', '2017-04-15 10:08:23'),
+(46, 1, 3, '2016-04-15 12:23:15', '2017-04-15 12:23:15'),
+(47, 1, 3, '2016-04-15 12:23:15', '2017-04-15 12:23:15'),
+(48, 1, 3, '2016-04-15 12:23:15', '2017-04-15 12:23:15'),
+(49, 1, 3, '2016-04-15 12:23:15', '2017-04-15 12:23:15'),
+(50, 1, 3, '2016-04-15 12:23:15', '2017-04-15 12:23:15'),
+(51, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(52, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(53, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(54, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(55, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(56, 1, 2, '2016-04-17 18:16:34', '2017-04-17 18:16:34'),
+(57, 2, 2, '2016-04-17 18:17:59', '2017-04-17 18:17:59'),
+(58, 2, 2, '2016-04-17 18:17:59', '2017-04-17 18:17:59'),
+(59, 2, 2, '2016-04-17 18:17:59', '2017-04-17 18:17:59');
 
 --
 -- Indexes for dumped tables
@@ -496,7 +617,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `applicationform`
 --
@@ -531,7 +652,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `studentscholarship`
 --
 ALTER TABLE `studentscholarship`
-  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
+  MODIFY `ssID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=60;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
