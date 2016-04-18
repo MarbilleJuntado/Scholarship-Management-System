@@ -38,10 +38,10 @@
   March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
   April 15, 2016: Marbille Juntado added the scholarship description.
   File Creation Date: December 11, 2015
-  Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
+  Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin).
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
--->
+--> 
 <!DOCTYPE html>
 <?php
 /* Start a session so that other files can access these variables */
@@ -317,7 +317,7 @@
                                 <div class = "form-group">
                                   <select name = "schlist" id = "schlist" class = "form-control">
                                     <?php
-                                      $to_query = "SELECT * FROM scholarship";
+                                      $to_query = "SELECT * FROM scholarship ORDER by name";
                                       $sql_result = mysqli_query($conn, $to_query);
                                       while($row=mysqli_fetch_row($sql_result)){
                                         ?>
@@ -348,7 +348,7 @@
 
                                   <tbody>
                                     <?php
-                                      $to_query = "SELECT * FROM scholarship ORDER BY name";
+                                      $to_query = "SELECT * FROM scholarship ORDER by name";
                                       $sql_result = mysqli_query($conn, $to_query);
                                       while($row=mysqli_fetch_row($sql_result)){
                                         ?>
