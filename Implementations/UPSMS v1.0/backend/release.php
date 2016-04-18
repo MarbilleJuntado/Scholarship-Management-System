@@ -35,7 +35,7 @@
                      application. If accepted, the system will write 1 to status field of the sigstatus table. If rejected,
                      write 0 instead.
 
-  File Creation Date: December 11, 2015
+  File Creation Date: April 17, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
@@ -51,18 +51,11 @@
 
 /* Start a session and get the session variables defined from sig.php */
   session_start();
-  $currID = $_SESSION["currentUserID"];
-  $selAppID = $_GET["accept"];
-  $isLastSig = $_GET["isLastSig"];
+  $selAppID = $_GET["notify"];
+  $status = $_GET["status"];
 
-  if ($isLastSig == 1) {
-    $SQL = "INSERT INTO acceptedapps (appID) VALUES ($selAppID)";
-    $plswork = mysqli_query($conn, $SQL);
-  }
-
-  /* The value on status is 0 because it is accepted */
-  $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($currID, $selAppID, 1)";
+  $SQL = "INSERT INTO released (appID, status) VALUES ($selAppID, $status)";
   $plswork = mysqli_query($conn, $SQL);
 
-  header("Location: sig.php");
+  header("Location: ../admin.php");
 ?>

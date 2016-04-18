@@ -82,7 +82,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="admin.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
 
 </head>
 
@@ -293,7 +293,7 @@
                                     if (mysqli_num_rows($sql_result2) == 0)
                                     {?>
                                         <td>
-                                        <form action="release.php" method="get">
+                                        <form action="backend/release.php" method="get">
                                           <input type="hidden" name="status" value="1">
                                             <button type="submit" name="notify" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-info">Notify</button>
                                           </form>
@@ -385,7 +385,7 @@
                                     if (mysqli_num_rows($sql_result2) == 0)
                                     {?>
                                         <td>
-                                        <form action="release.php" method="get">
+                                        <form action="backend/release.php" method="get">
                                           <input type="hidden" name="status" value="0">
                                             <button type="submit" name="notify" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-info">Notify</button>
                                           </form>

@@ -62,5 +62,5 @@
   $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($prevID, $selAppID, 2)";
   $plswork = mysqli_query($conn, $SQL);
 
-  header("Location: sig.php");
+  header("Location: ../sig.php");
 ?>

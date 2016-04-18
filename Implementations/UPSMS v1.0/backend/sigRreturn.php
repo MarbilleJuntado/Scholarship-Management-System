@@ -29,13 +29,9 @@
 
  Code History:
   Decemeber 10, 2015: Patricia Regarde finished Front End of Protoype for sig.php
-  February 10, 2016: Cyan Villarin added the feature of the sig.php being able to read from cs192upsms.sql database.
-                     The system is also able to display the contents of the application table from the UI.
-  February 11, 2016: Cyan Villarin added the feature of the system that allows the signatory account to accept/reject an
-                     application. If accepted, the system will write 1 to status field of the sigstatus table. If rejected,
-                     write 0 instead.
+  April 3, 2016: Cyan Villarin added the return functionality of signatory user accounts.
 
-  File Creation Date: April 17, 2015
+  File Creation Date: April 3, 2016
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
@@ -51,11 +47,37 @@
 
 /* Start a session and get the session variables defined from sig.php */
   session_start();
-  $selAppID = $_GET["notify"];
-  $status = $_GET["status"];
+  $currID = $_SESSION["currentUserID"];
+  $prevID = $_GET["RprevID"];
+  $nextID = $_GET["RnextID"];
+  $selAppID = $_GET["returnReturn"];
 
-  $SQL = "INSERT INTO released (appID, status) VALUES ($selAppID, $status)";
+  /* The value on status is 0 because it is accepted */
+  $SQL = "INSERT INTO sigreturn (appID, returnedBy, returnedTo) VALUES ($selAppID, $currID, $prevID)";
   $plswork = mysqli_query($conn, $SQL);
 
-  header("Location: admin.php");
+  if ($nextID != -1)
+  {
+    $SQL = "DELETE FROM sigreturn where appID = $selAppID and returnedBy = $nextID and returnedTo = $currID";
+    $plswork = mysqli_query($conn, $SQL);
+  }
+
+  if ($prevID != -1)
+  {
+    $SQL = "DELETE FROM sigstatus WHERE sigID = $currID and applicationID = $selAppID and sStatus = 2";
+    $plswork = mysqli_query($conn, $SQL);
+
+    $SQL = "DELETE FROM sigstatus WHERE sigID = $prevID and applicationID = $selAppID and sStatus = 1";
+    $plswork = mysqli_query($conn, $SQL);
+
+    $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($prevID, $selAppID, 2)";
+    $plswork = mysqli_query($conn, $SQL);
+  }
+  if ($prevID == -1)
+  {
+    $SQL = "DELETE FROM sigstatus WHERE sigID = $currID and applicationID = $selAppID and sStatus = 2";
+    $plswork = mysqli_query($conn, $SQL);
+  }
+
+  header("Location: ../sig.php");
 ?>

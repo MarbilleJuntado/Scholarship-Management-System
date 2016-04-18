@@ -23,5 +23,7 @@
   	die('Error: '.mysqli_error($conn));
   }
   mysqli_close($conn);
+
+  header("Location: ../user.php");
   
 ?>

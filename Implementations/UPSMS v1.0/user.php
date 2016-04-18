@@ -73,7 +73,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="user.css" rel="stylesheet">
+    <link href="css/user.css" rel="stylesheet">
 
 </head>
 
@@ -140,7 +140,7 @@
 
                           <p>Quisque tincidunt maximus purus. Aliquam interdum erat tellus, sed vulputate sapien mollis id. Aliquam sollicitudin nibh vitae maximus vulputate. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum blandit augue id suscipit. Aliquam auctor eget tortor quis volutpat. Suspendisse cursus eros eget nunc cursus, at elementum nunc iaculis. Vestibulum convallis lorem sem. Vestibulum semper congue dolor ut dignissim. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
 
-                          <form method="POST" action="userdata.php" class="form-horizontal" role="form">
+                          <form method="POST" action="backend/userdata.php" class="form-horizontal" role="form">
                             <div class="form-group">
                               <label class="control-label col-sm-2" for="lastName">Last Name:</label>
                               <div class="col-sm-10">
@@ -313,7 +313,7 @@
                           <h1>Apply for Scholarship</h1>
                           <p>Please choose the scholarship you want to apply for from the dropdown menu. Read the description of the scholarship. Download the form and follow all instructions given. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
                             <div class = "col-md-4">
-                              <form style="width:500px" method="POST" action="apply.php">
+                              <form style="width:500px" method="POST" action="backend/apply.php">
                                 <div class = "form-group">
                                   <select name = "schlist" id = "schlist" class = "form-control">
                                     <?php

@@ -78,7 +78,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="sig.css" rel="stylesheet">
+    <link href="css/sig.css" rel="stylesheet">
 </head>
 
 <body>
@@ -393,19 +393,19 @@
 
                                     		<td>
                                     		
-	                                    	<form action="sigaccept.php" method="get">
+	                                    	<form action="backend/sigaccept.php" method="get">
 	                                    	  <input type="hidden" name="isLastSig" value="<?php echo $isLastSig?>">
 	                                          <button type="submit" name="accept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept</button>
 	                                        </form>
 	                                        </td>
 	                                        <td>
-	                                        <form action="sigreject.php" method="get">
+	                                        <form action="backend/sigreject.php" method="get">
 	                                          <button type="submit" name="reject" value="<?php echo $appID?>" class="btn btn-danger">Reject</button>
 	                                        </form>
 	                                        
 	                                        </td>
 	                                        <td>
-	                                        <form action="sigreturn.php" method="get">
+	                                        <form action="backend/sigreturn.php" method="get">
                                             <input type="hidden" name="prevID" value="<?php echo $prev_sigID?>">
 	                                          <button type="submit" name="return" value="<?php echo $appID?>" class="btn btn-warning">Return</button>
 	                                        </form>
@@ -536,21 +536,21 @@
 											
                                     		<td>
                                     		
-	                                    	<form action="sigRaccept.php" method="get">
+	                                    	<form action="backend/sigRaccept.php" method="get">
                                              <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
 	                                          <button type="submit" name="returnAccept" value="<?php echo $appID?>" onclick=saveAppID() class="btn btn-success">Accept</button>
 	                                        </form>
 	                                        </td>
 	                                        <td>
 
-	                                        <form action="sigRreject.php" method="get">
+	                                        <form action="backend/sigRreject.php" method="get">
                                             <input type="hidden" name="returnByID" value="<?php echo $returnedByID?>">
 	                                          <button type="submit" name="returnReject" value="<?php echo $appID?>" class="btn btn-danger">Reject</button>
 	                                        </form>
 	                                        
 	                                        </td>
 	                                        <td>
-	                                        <form action="sigRreturn.php" method="get">
+	                                        <form action="backend/sigRreturn.php" method="get">
                                             <input type="hidden" name="RprevID" value="<?php echo $Rprev_sigID?>">
                                             <input type="hidden" name="RnextID" value="<?php echo $Rnext_sigID?>">
 	                                          <button type="submit" name="returnReturn" value="<?php echo $appID?>" class="btn btn-warning">Return</button>
