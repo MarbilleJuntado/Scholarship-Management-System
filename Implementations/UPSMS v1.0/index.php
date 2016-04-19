@@ -13,29 +13,29 @@
       <title>Login</title>
 
       <link href="css/bootstrap.min.css" rel="stylesheet">
-      <link href="css/login.css" rel="stylesheet">
+      <!-- <link href="css/login.css" rel="stylesheet"> -->
+
+      <link href="css/style.css" rel="stylesheet">
+      
+
   </head>
 
   <body>
-
-    <div class="container-logo">
-        <div class="logo">
-        <img src="images/upsms-logo.jpg">
-        </div>
+    <div class="body"></div>
+    <div class="grad"></div>
+    <div class="header">
+      <div><header1>UPSMS<header1></div>
+      <div>Scholarship Management System</div>
     </div>
-
-    <div class="container-form">
-        <div class="container-form2">
-
-          <form action="backend/login.php" method="POST" name="login">
-            <input type="text" name="email" class="form-control" placeholder="Email Address" required autofocus>
-            <input type="password" name="password" class="form-control" placeholder="Password">
-            <div class="checkbox"><label><input type="checkbox" value="remember-me"> Remember me </label></div>
-            <div class="loginbutton"><input type="submit" button class="btn btn-lg btn-block btn-login"></div>
-          </form>
-
-        </div>
+    
+    <div class="login">
+      <form action="backend/login.php" method="POST" name="login">
+        <input type="text" name="email" placeholder="Email Address" required autofocus>
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit">
+      </form>
     </div>
+     
 
     <?php 
       if(!empty($_SESSION['errMsg'])){ ?>
