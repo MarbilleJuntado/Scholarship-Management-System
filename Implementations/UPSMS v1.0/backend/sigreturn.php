@@ -39,7 +39,7 @@
 
 <?php
   /* Connect to database */
-    $conn = new mysqli("localhost","root","password","cs192upsms");
+    $conn = new mysqli("localhost","root","","cs192upsms");
   /* Checks Connection */
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
@@ -62,5 +62,5 @@
   $SQL = "INSERT INTO sigstatus (sigID, applicationID, sStatus) VALUES ($prevID, $selAppID, 2)";
   $plswork = mysqli_query($conn, $SQL);
 
-  header("Location: ../sig.php");
+  header("Location: ../tempSigPending.php");
 ?>

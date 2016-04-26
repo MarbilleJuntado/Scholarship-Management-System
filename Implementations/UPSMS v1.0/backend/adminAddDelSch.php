@@ -40,7 +40,7 @@
 	session_start();
 	try{
 		/*Open a connection to mySQL*/
-		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
+		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
 		/*If the add button was clicked*/
 		if($_POST['deladd'] == 'Add'){

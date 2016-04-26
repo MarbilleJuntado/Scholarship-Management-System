@@ -43,7 +43,7 @@
 
   try
   {
-    $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
+    $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
     if ($_POST['studButton'] == 'Submit'){
       $fname = $_POST['fname'];

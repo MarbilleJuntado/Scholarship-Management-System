@@ -38,7 +38,7 @@
 -->
 <?php 
 	function getScholarship(){
-		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
+		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
 		$STH = $DBH->prepare("SELECT * FROM scholarship");
 
