@@ -40,7 +40,7 @@
 <?php
     function getDepartment()
     {
-        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
+        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
 
         $STH = $DBH->prepare("SELECT * FROM dept WHERE collegeID = :collegeID");
 

@@ -1,7 +1,7 @@
 <?php
     function getAdmins()
     {
-        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
+        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
 
         $STH = $DBH->prepare("SELECT * FROM admin ORDER BY lastName");
 

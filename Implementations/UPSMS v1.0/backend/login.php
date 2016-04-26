@@ -45,7 +45,7 @@
     try
     {
         
-        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
+        $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
 
         $email = $_POST['email'];
         $pass = $_POST['password'];
@@ -71,10 +71,10 @@
 
         $DBH = null;
         if ($_SESSION['currentUserTYPE'] == 1) header('Location: ../user.php');
-        elseif ($_SESSION['currentUserTYPE'] == 2) header('Location: ../admin.php');
+        elseif ($_SESSION['currentUserTYPE'] == 2) header('Location: ../tempAdmin.php');
         elseif ($_SESSION['currentUserTYPE'] == 3) header('Location: ../sig.php');
         else {
-          $_SESSION['errMsg'] = "The email you've entered doesn't match any account";
+          $_SESSION['errMsg'] = "User not found!";
           header('Location: ../index.php');
         }
 

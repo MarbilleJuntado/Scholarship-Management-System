@@ -37,7 +37,7 @@
 <?php
   try
   {
-    $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
+    $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "password");
 
     $fname = $_POST['fname'];
     $mname = $_POST['mname'];
