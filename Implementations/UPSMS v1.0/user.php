@@ -37,6 +37,7 @@
                  with the corresponding studentID.
   March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
   April 15, 2016: Marbille Juntado added the scholarship description.
+  April 27, 2016: Marbille Juntado added the Verify User Info under Apply for Scholarship .
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin).
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
@@ -361,7 +362,419 @@
                                   </tbody>
                                 </table>
 
-                                <button type="submit" class="btn btn-success">Apply</button>
+                                <div>
+                                  <script src="js/jquery.min.js"></script>
+                                  <script src="js/bootstrap.min.js"></script>
+                                  <!-- Trigger the modal with a button -->
+                                  <button type="button" class="btn btn-default btn-lg" id="applyBtn">Apply</button>
+                              
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          <h4 class="modal-title" id="useInfModal">Verify User Info</h4>
+                                        </div>
+                                        <div class="modal-body form-horizontal" role="document" >
+                                          <form id="userInfoForm" method="post" style="display: none;" action="backend/userdata.php">
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Last Name</label>
+                                              <div class="col-xs-5">
+                                                
+                                                <input align="left" type="text" class="form-control" name="lastName" 
+                                                <?php 
+                                                  $queryInfo = "SELECT lastName FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>"
+
+                                                      />
+                                                      <?php
+                                                    }
+                                                  }
+
+                                                ?>
+                                              </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">First Name</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="firstName" 
+                                                <?php 
+                                                  $queryInfo = "SELECT firstName FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>  
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">M.I</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="mi" 
+                                                <?php 
+                                                  $queryInfo = "SELECT middleName FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>       
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Nationality</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="nationality" 
+                                                <?php 
+                                                  $queryInfo = "SELECT nationality FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>    
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Gender</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="gender"
+                                                <?php 
+                                                  $queryInfo = "SELECT gender FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>   
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Birthdate</label>
+                                              <div class="col-xs-5">
+                                                <input type="date" class="form-control" name="birthdate" 
+                                                <?php 
+                                                  $queryInfo = "SELECT birthDate FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>  
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Birthplace</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="birthplace"
+                                                <?php 
+                                                  $queryInfo = "SELECT birthPlace FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Present Street Address</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="prStrAdd"
+                                                <?php 
+                                                  $queryInfo = "SELECT presStreetAddr FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Present Municipality</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="prMun"
+                                                <?php 
+                                                  $queryInfo = "SELECT presMunBrgy FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Present Province/City</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="prProvCity"
+                                                <?php 
+                                                  $queryInfo = "SELECT presProvCity FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>   
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Present Region</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="prReg"
+                                                <?php 
+                                                  $queryInfo = "SELECT presRegion FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>   
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Permanent Street Address</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="peStrAdd"
+                                                <?php 
+                                                  $queryInfo = "SELECT permStreetAddr FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>   
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Permanent Municipality</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="peMun"
+                                                <?php 
+                                                  $queryInfo = "SELECT permMunBrgy FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>       
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Permanent Province/City</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="peProvCity"
+                                                <?php 
+                                                  $queryInfo = "SELECT permProvCity FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Permanent Region</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="peReg"
+                                                <?php 
+                                                  $queryInfo = "SELECT permRegion FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Contact</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="contact"
+                                                <?php 
+                                                  $queryInfo = "SELECT contactNo FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>         
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">Department</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="department"
+                                                <?php 
+                                                  $queryInfo = "SELECT dept FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>     
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">College</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="college" 
+                                                <?php 
+                                                  $queryInfo = "SELECT college FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                                
+                                              </div>
+                                            </div>    
+
+                                            <div class="form-group">
+                                              <label class="col-xs-3 control-label">UP Mail</label>
+                                              <div class="col-xs-5">
+                                                <input type="text" class="form-control" name="upmail" 
+                                                <?php 
+                                                  $queryInfo = "SELECT upMail FROM student where studentID = $_SESSION[currentUserID]";
+                                                  $qInfoResult = mysqli_query($conn, $queryInfo);
+                                                  while($rows=mysqli_fetch_row($qInfoResult)){
+                                                    foreach($rows as $key => $value){
+                                                      $value = trim($value);
+                                                      ?>
+                                                      value="<?php
+                                                      echo trim($value);?>" />
+                                                      <?php
+                                                    }
+                                                  }
+                                                ?>                                              
+                                              </div>
+                                            </div> 
+                                          </form>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-success">Submit</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
                               </form>
                             </div>
                         </div>
@@ -482,6 +895,7 @@
       $('#schbox').val($(this).text());
     });
 
+
     </script>
 
     <!-- Display Div Script -->
@@ -518,6 +932,13 @@
             d7.style.display = "none";
          }
       }
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $("#applyBtn").click(function(){
+        $("#applyModal").modal();
+        });
+    });
     </script>
 </body>
 </html>
