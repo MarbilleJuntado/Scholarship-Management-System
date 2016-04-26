@@ -37,7 +37,7 @@
                  with the corresponding studentID.
   March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
   April 15, 2016: Marbille Juntado added the scholarship description.
-  April 27, 2016: Marbille Juntado added the Verify User Info under Apply for Scholarship.
+  April 27, 2016: Marbille Juntado added the Verify User Info under Apply for Scholarship .
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin).
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
