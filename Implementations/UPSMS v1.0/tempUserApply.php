@@ -1,54 +1,9 @@
-<!DOCTYPE html>
-
-<!--
- The MIT License (MIT)
- Copyright (c) 2016 UPSMS
- Authors:
-   Prototype Front-End Developer: Patricia Regarde
-   Front-End and Back-End Developer: Cyan Villarin
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-
- This is a course requirement for CS 192 Software Engineering II under the
- supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer
- Science, College of Engineering, University of the Philippines, Diliman for
- the AY 2015-2016
-
- Code History:
-  Decemeber 10, 2015: Cyan Villarin  finished Front End of Protoype for user.php
-  February 19, 2016: Marbille Juntado added input feature of data to User Profile which
-                     is writable to the database. 
-  March 4, 2016: Marbille Juntado made possible the tagging of applicationID for an applicant
-                 with the corresponding studentID.
-  March 18, 2016: Marbille Juntado added the 'View Scholarship Status' functionality.
-  April 15, 2016: Marbille Juntado added the scholarship description.
-  April 27, 2016: Marbille Juntado added the Verify User Info under Apply for Scholarship .
-  File Creation Date: December 11, 2015
-  Development Group: UPSMS (Marbille Juntado, Patricia Regarder, Cyan Villarin).
-  Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
-  Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
---> 
-<!DOCTYPE html>
 <?php
 /* Start a session so that other files can access these variables */
   session_start();
- 
-  $_SESSION['selectedAppID'] = 1;
+  $_SESSION['selectedAppID'] = 0;
+  $_SESSION['currentUserName'] = NULL;
+  $_SESSION['appList'] = NULL;
 
   /* Connect to database */
     $conn = new mysqli("localhost","root","","cs192upsms");
@@ -56,262 +11,97 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+
+$getName = "select S.firstName, S.middleName, S.lastName from student S where S.studentID = '".$_SESSION['currentUserID']."'";
+
+$nameResult = mysqli_query($conn,$getName);
+// Get every row of the table formed from the query
+while($rows9=mysqli_fetch_row($nameResult))
+{
+foreach ($rows9 as $key => $value)
+	{
+	 	if($key == 0)
+		{
+			$_SESSION['currentUserName'] = $value;
+		}
+
+		
+		if($key == 1)
+		{
+			$_SESSION['currentUserName'] = $_SESSION['currentUserName'] . " " . $value;
+		}
+
+		
+	    if($key == 2)
+	    {                                	
+			$_SESSION['currentUserName'] = $_SESSION['currentUserName'] . ". " . $value;
+		}
+	}
+}
 ?>
 
-<html lang="en">
+                                
 
-<head>
+<!DOCTYPE HTML>
+<!--
+	Twenty by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+      <title>Home</title>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="description" content="">
+      <meta name="author" content="">
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+  
+      <!-- Bootstrap Core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="css/user.css" rel="stylesheet">
+      <!-- Custom CSS -->
+      <link href="css/main.css" rel="stylesheet">
 
-</head>
+  </head>
 
-<body>
+  <body class = "no-sidebar">
+    <div id = "page-wrapper">
 
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="#">UP SMS</a></li>
-                <li><a href="javascript:displayDiv('home-div','user-div','apply-div','view-div','financial-div','accomplishments-div','about-div')">Home</a></li>
-                <li><a href="javascript:displayDiv('user-div','home-div','apply-div','view-div','financial-div','accomplishments-div','about-div')">User Profile</a></li>
-                <li><a href="javascript:displayDiv('apply-div','user-div','home-div','view-div','financial-div','accomplishments-div','about-div')">Apply For Scholarship</a></li>
-                <li><a href="javascript:displayDiv('view-div','user-div','apply-div','home-div','financial-div','accomplishments-div','about-div')">View Scholarship Status</a></li>
-                <li><a href="javascript:displayDiv('financial-div','user-div','apply-div','view-div','home-div','accomplishments-div','about-div')">Financial Report</a></li>
-                <li><a href="javascript:displayDiv('accomplishments-div','user-div','apply-div','view-div','financial-div','home-div','about-div')">Accomplishments Form</a></li>
-                <li><a href="javascript:displayDiv('about-div','user-div','apply-div','view-div','financial-div','accomplishments-div','home-div')">About</a></li>
-                <li><a href="backend/logout.php">Logout</a></li>
+      <!-- Header -->
+        <header id = "header">
+          <h1 id = "logo"><a href = "tempUserHome.php"><span>UP</span>SMS</a></h1>
+          <nav id = "nav">
+            <ul>
+              <li><a href = "tempUserHome.php">Home</a></li>
+              <li><a href = "tempUserProfile.php">User Profile</a></li>
+              <li class = "current"><a href = "#">Apply for Application</a></li>
+              <li><a href = "tempUserView.php">View Application Status</a></li>
+              <li><?php echo $_SESSION['currentUserName']. " (ID:" . $_SESSION['currentUserID'] . ")"?></li>
+              <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
             </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
+          </nav>
+        </header>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Menu</a>
 
-                        <div id="home-div" style="display:block">
+			<!-- Main -->
+				<article id="main">
 
-                          <h1>Home</h1>
+					<header class="special container">
+						<span class="icon fa-mobile"></span>
+					</header>
 
-                          <p>Aliquam eget bibendum tortor. Nulla quis dui ornare, dictum lorem eu, dignissim metus. Nulla aliquet purus ac enim condimentum, ac lobortis lacus sollicitudin. Vestibulum at mi ut nunc euismod maximus. Etiam nec purus et massa volutpat rhoncus a eget dolor. Proin convallis felis purus, a dignissim velit auctor vitae. Nulla facilisi. Etiam risus arcu, ultrices sit amet risus vel, scelerisque gravida augue. Sed auctor elit rhoncus vestibulum placerat. Integer convallis viverra viverra. Praesent non semper quam. Morbi vel fringilla nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut non ante facilisis, sodales urna in, accumsan lacus. Cras sit amet aliquam erat. Ut convallis metus vel tincidunt dapibus.</p>
-                          <div class="panel panel-info">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">Notifications</div>
+					<!-- One -->
+						<section class="wrapper style4 container">
 
-                            <!-- List group -->
-                            <ul class="list-group">
-                              <li class="list-group-item">Your application for COOPERATE has been approved.</li>
-                              <li class="list-group-item">Your application for MOVE UP has been signed by the OIL Vice President.</li>
-                            </ul>
-                          </div>
+							<!-- Content -->
+								<div class="content">
+									<section>	<!-- start -->
 
-                          <div class="panel panel-primary">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">Announcements</div>
-
-                            <!-- List group -->
-                            <ul class="list-group">
-                              <li class="list-group-item">Deadline of Submission of Accomplishments Form in on July 13, 2015 11:59 PM.</li>
-                              <li class="list-group-item">Deadline of Submission of Financial Reports is on December 5, 2015 11:59 PM.</li>
-                              <li class="list-group-item">The Application for MOVE UP is now open.</li>
-                              <li class="list-group-item">Porta ac consectetur acusamus et iusto odio dignissimos ducimus qui blanditiis praes</li>
-                              <li class="list-group-item">Vestibulum at eros corrupti quos dolores et quas molestia voluptas assumenda est, omnisat.</li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        <div id="user-div" style="display:none">
-                          <h1>User Profile</h1>
-
-                          <p>Quisque tincidunt maximus purus. Aliquam interdum erat tellus, sed vulputate sapien mollis id. Aliquam sollicitudin nibh vitae maximus vulputate. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fermentum blandit augue id suscipit. Aliquam auctor eget tortor quis volutpat. Suspendisse cursus eros eget nunc cursus, at elementum nunc iaculis. Vestibulum convallis lorem sem. Vestibulum semper congue dolor ut dignissim. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
-
-                          <form method="POST" action="backend/userdata.php" class="form-horizontal" role="form">
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="lastName">Last Name:</label>
-                              <div class="col-sm-10">
-                                <input type="name" class="form-control" name="lastName" placeholder="Smith">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="firstName">First Name:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="firstName" placeholder="John">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="middleName">M.I.:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="middleName" placeholder="N">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="nationality">Nationality:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="nationality" placeholder="Filipino">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="gender">Gender:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="gender" placeholder="Male">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="birthDate">Birthdate:</label>
-                              <div class="col-sm-10"> 
-                                <input type="date" class="form-control" name="birthDate">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="birthPlace">Birthplace:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="birthPlace" placeholder="Enter birthplace">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="presStreetAddr">Pres. Street Address:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="presStreetAddr" placeholder="Enter present street address (e.g. 10 Panganiban St.)">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="presMunBrgy">Pres. Municipality:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="presMunBrgy" placeholder="Enter present municipality or barangay (e.g. Barangay Krus na Ligas.)">
-                              </div>
-                            </div>  
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="presProvCity">Pres. Province/City:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="presProvCity" placeholder="Enter present province/city (e.g. Quezon City)">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="presRegion">Pres. Region:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="presRegion" placeholder="Enter present region (e.g. National Capital Region)">
-                              </div>
-                            </div>      
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="permStreetAddr">Perm. Street Address:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="permStreetAddr" placeholder="Enter permanent street address">
-                              </div>
-                            </div>     
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="permNumBrgy">Perm. Municipality:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="permMunBrgy" placeholder="Enter permanent municipality">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="permProvCity">Perm. Province/City:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="permProvCity" placeholder="Enter permanent province/city">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="permRegion">Perm. Region:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="permRegion" placeholder="Enter permanent region">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="contactNo">Contact Number:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="contactNo" placeholder="9301234567">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="dept">Department:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="dept" placeholder="Department of Computer Science">
-                              </div>
-                            </div> 
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="college">College:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="college" placeholder="College of Engineering">
-                              </div>
-                            </div>  
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" for="upMail">UP Mail:</label>
-                              <div class="col-sm-10"> 
-                                <input type="name" class="form-control" name="upMail" placeholder="ex. jsmith@up.edu.ph">
-                              </div>
-                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-                            <div class="form-group"> 
-                              <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Submit</button>
-                              </div>
-                            </div>
-                          </form>
-                            <br><p>Mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-
-                            <button id=showDivButton style="margin-bottom:15px" type="button" class="btn btn-primary">Edit User Profile</button>
-
-                            <div id="editDiv" style="display:none">
-                              <form class="form-inline" role="form">
-                                <div class="form-group">
-                                    <div class=row-bro>
-                                      <b>Full Name</b>
-                                      <input type="name" class="form-control" id="lastname" placeholder="Villarin" disabled>
-                                      <input type="name" class="form-control" id="firstname" placeholder="Cyan" disabled>
-                                      <input type="name" class="form-control" id="middlename" placeholder="Camit" disabled>
-                                      <b>Nationality</b> <input type="nationality" class="form-control" id="nationality" placeholder="Filipino" disabled>
-                                    </div>
-
-                                    <div class=row-bro>
-                                      <b>Gender</b> <input type="gender" class="form-control" id="gender" placeholder="Male" disabled>
-                                      <b>Date of Birth</b> <input type="birthdate" class="form-control" id="birthdate" placeholder="06/14/96" disabled>
-                                      <b>Place of Birth</b> <input type="birthplace" style="width: 305px" class="form-control" id="birthplace" placeholder="Quezon City, Philippines" disabled>
-                                    </div>
-
-                                    <div class=row-bro>
-                                      <b>Present Address</b> <input type="address" style="width: 830px" class="form-control" id="presentaddress" value="14A Maligaya st. Brgy. Pinyahan, Quezon City, Philippines, 1101">
-                                    </div>
-
-                                    <div class=row-bro>
-                                      <b>Permanent Address</b> <input type="address" style="width: 810px" class="form-control" id="permanentaddress" placeholder="Number, Street, District, City, Country, Zip Code">
-                                    </div>
-
-                                    <div class=row-bro>
-                                      <b>Contact Number</b> <input type="number" class="form-control" id="contactnumber" placeholder="Phone/Cellphone">
-                                      <b>Email Address</b> <input type="email" class="form-control" id="emailaddress" placeholder="myname@domain.com">
-                                      <b>Degree Course</b> <input type="degree" style="width: 225px" class="form-control" id="degree" placeholder="BS Computer Science" disabled>
-                                    </div>
-
-                                    <div class=row-bro>
-                                      <b>Student Number</b> <input type="studentnumber" class="form-control" id="studentnumber" placeholder="201310940" disabled>
-                                      <b>Department</b> <input type="department" style="width: 295px" class="form-control" id="department" placeholder="Department of Computer Science" disabled>
-                                      <b>College</b> <input type="college" class="form-control" id="college" placeholder="College of Engineering" disabled>
-                                    </div>
-
-                                    <button type="submit" style="margin-bottom:10px" class="btn btn-default">Submit</button>
-                                  </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- AKO UNG START --> <div id="apply-div" style="display:none">
-                          <h1>Apply for Scholarship</h1>
+                  <h1>Apply for Scholarship</h1>
                           <p>Please choose the scholarship you want to apply for from the dropdown menu. Read the description of the scholarship. Download the form and follow all instructions given. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
                             <div class = "col-md-4">
                               <form style="width:500px" method="POST" action="backend/apply.php">
@@ -368,6 +158,14 @@
                                   <!-- Trigger the modal with a button -->
                                   <button type="button" class="btn btn-default btn-lg" id="applyBtn">Apply</button>
                               
+                                  <script type="text/javascript">
+                                      $(document).ready(function(){
+                                        $("#applyBtn").click(function(){
+                                          $("#applyModal").modal();
+                                          });
+                                      });
+                                      </script>
+
                                   <!-- Modal -->
                                   <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -777,162 +575,99 @@
 
                               </form>
                             </div>
-                        </div> <!-- AKO UNG END -->
 
+									</section> <!-- end -->
+								</div>
 
-                            <div id="hideaway" style="display:none;" class="panel panel-info">
-                              <div class="panel-heading">Scholarship Description</div>
-                              <div class="panel-body">
-                                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-                              </div>
-                            </div>
-                            <br>
+						</section>
 
+					<!-- Two -->
+						<section class="wrapper style1 container special">
+							<div class="row">
+								<div class="4u 12u(narrower)">
 
+									<section>
+										<header>
+											<h3>This is Something</h3>
+										</header>
+										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+										<footer>
+											<ul class="buttons">
+												<li><a href="#" class="button small">Learn More</a></li>
+											</ul>
+										</footer>
+									</section>
 
-                        </div>
+								</div>
+								<div class="4u 12u(narrower)">
 
-                        <div id="view-div" style="display:none">
-                          <h1>View Scholarship Status</h1>
-                          <p>Nunc elementum aliquet ante. Quisque tempus nec quam sed iaculis. Maecenas nec dapibus nulla. Donec sit amet scelerisque neque. Ut non molestie sem. Aliquam interdum non nisi imperdiet pharetra. Quisque tincidunt bibendum turpis in rutrum. Nulla eu nulla sit amet lorem convallis commodo commodo eu risus. Praesent molestie lorem a urna vestibulum facilisis ut id nulla. Aenean porttitor risus at sagittis congue. Etiam et magna ac mi porttitor viverra quis ut est. Aliquam ac lacinia magna. Suspendisse potenti.</p>
-                          <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                  <th style="width:85%">Scholarship</th>
-                                  <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                  $queryScholarship = "SELECT S.name, A.status FROM application A join scholarship S on A.scholarshipID = S.scholarshipID WHERE studentID = $_SESSION[currentUserID]";
-                                  $qSchoResult = mysqli_query($conn, $queryScholarship);
-                            
+									<section>
+										<header>
+											<h3>Also Something</h3>
+										</header>
+										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+										<footer>
+											<ul class="buttons">
+												<li><a href="#" class="button small">Learn More</a></li>
+											</ul>
+										</footer>
+									</section>
 
-                                  while($rows=mysqli_fetch_row($qSchoResult))
-                                  { 
-                                    foreach($rows as $key => $value){
-                                      if ($key == 0){
-                                        ?> <tr><td> <?php echo $value;
-                                      }
-                                      if ($key == 1){
-                                    if ($value == 1){
-                                      ?> <td class="success"> <?php echo "Approved";
-                                    }
-                                    if ($value == 0){
-                                      ?> <td class="warning"> <?php echo "Pending";
-                                    }
-                                        
-                                      }
-                                    }
+								</div>
+								<div class="4u 12u(narrower)">
 
-                                  }
-                                ?>
-                                
-                                
-                            </tbody>
-                          </table>
+									<section>
+										<header>
+											<h3>Probably Something</h3>
+										</header>
+										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+										<footer>
+											<ul class="buttons">
+												<li><a href="#" class="button small">Learn More</a></li>
+											</ul>
+										</footer>
+									</section>
 
-                          <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+								</div>
+							</div>
+						</section>
 
-                        </div>
+				</article>
 
-                        <div id="financial-div" style="display:none">
-                          <h1>Financial Report</h1>
-                          <p>Proin sit amet velit vel justo euismod luctus vel ac quam. Cras euismod nulla sed nulla pharetra, at luctus lorem congue. In commodo ac lorem iaculis vestibulum. Integer commodo nisi quis orci volutpat, sit amet rutrum sem convallis. Phasellus ornare accumsan lectus eu bibendum. Curabitur non venenatis lacus, at placerat est. Proin bibendum lectus est, vel iaculis lectus porta sed. Mauris id volutpat leo.</p>
-                          <div class="form-group">
-                            <label for="comment">Write your report here:</label>
-                            <textarea class="form-control" rows="5" id="comment"></textarea>
-                            <button type="submit" style="margin-top:5px" class="btn btn-default">Submit</button>
-                          </div>
-                          <p>Duis molestie varius tristique. Sed vehicula ligula eget sollicitudin aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec consequat maximus leo quis cursus. Maecenas egestas fermentum risus. Duis ac erat ligula. Integer neque sapien, tincidunt in leo a, pulvinar varius velit.</p>
+			<!-- Footer -->
+				<footer id="footer">
 
-                        </div>
+					<ul class="icons">
+						<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+						<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
+						<li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
+					</ul>
 
-                        <div id="accomplishments-div" style="display:none">
-                          <h1>Accomplishments Form</h1>
-                          <p>Morbi vel elit ut dolor sollicitudin laoreet sit amet in magna. Integer maximus tellus est, ac semper tellus porta eu. Cras sit amet eros sit amet nisi posuere fringilla. Cras pretium dui et magna pulvinar iaculis. Fusce pellentesque nunc non magna finibus, scelerisque vestibulum urna malesuada. Praesent vulputate purus sit amet eleifend interdum. Sed at lacinia mi. Proin non dolor sed nunc aliquet commodo nec non urna.</p>
-                          <div class="form-group">
-                            <label for="comment">Write your report here:</label>
-                            <textarea class="form-control" rows="5" id="comment"></textarea>
-                            <button type="submit" style="margin-top:5px" class="btn btn-default">Submit</button>
-                          </div>
+					<ul class="copyright">
+						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
 
-                          <p>Ut eget tellus lectus. Ut quis orci et tellus condimentum venenatis vel sed erat. Aenean eget pretium felis. Nam finibus vulputate ex, quis vestibulum risus tempus gravida. Sed maximus rhoncus lacus, sit amet ullamcorper purus gravida vitae. Curabitur id tortor non tellus molestie ultrices volutpat quis metus. Ut finibus, sem vel gravida ultricies, sapien augue dignissim metus, a tempus mi quam accumsan odio. In id justo tristique, iaculis magna a, efficitur mauris. Proin convallis finibus orci, id aliquam ex porttitor ac. Fusce non bibendum sem. Ut lacinia vel elit ut rhoncus. Nulla hendrerit ultrices vulputate. Nulla facilisi. Vivamus placerat luctus volutpat. Cras ut scelerisque sem.</p>
+				</footer>
 
-                        </div>
+		</div>
 
-                        <div id="about-div" style="display:none">
-                          <h1>About</h1>
-                          <p>Pellentesque id scelerisque magna. Morbi eget nibh tellus. Nullam eget ullamcorper mauris. Donec quis gravida odio, sit amet elementum lorem. Duis laoreet laoreet sem, in faucibus augue feugiat sed. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque id pharetra urna, eu lacinia nulla.</p>
-                          <p>Quisque et imperdiet sem. Maecenas molestie bibendum mi, nec maximus leo lacinia quis. Quisque neque augue, maximus vel vehicula non, pulvinar vitae ipsum. Duis sit amet gravida velit, at sollicitudin nunc. Quisque nec diam accumsan risus interdum tincidunt ultricies nec orci. Fusce urna ex, auctor non odio ac, molestie viverra enim. Nunc in libero et velit pellentesque placerat sed in felis. Fusce eget mattis leo, in lacinia ante. Nulla et condimentum purus. Duis porttitor ante in quam tempus ultricies.</p>
-                          <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-                          <p>Quisque ac massa metus. Integer vitae aliquam lorem, ut pharetra nisl. Suspendisse euismod ex non volutpat condimentum. Etiam a elit vitae neque lacinia semper. Nulla dapibus nunc tristique accumsan sollicitudin. Maecenas vestibulum varius lorem elementum feugiat. Etiam ultrices aliquam risus euismod molestie. Aliquam erat volutpat.</p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
+		<!-- Scripts -->
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-
-    $('#schlist option').click(function(){
-      $('#schbox').val($(this).text());
-    });
-
-
-    </script>
-
-    <!-- Display Div Script -->
-    <script type="text/javascript">
-      var button = document.getElementById('showDivButton'); // Assumes element with id='button'
-      button.onclick = function() {
-          var div = document.getElementById('editDiv');
-          if (div.style.display !== 'none') {
-              div.style.display = 'none';
-          }
-          else {
-              div.style.display = 'block';
-          }
-      };
-
-      function displayDiv(div1, div2, div3, div4, div5, div6, div7)
-      {
-         d1 = document.getElementById(div1);  // this is the div we want to disply
-         d2 = document.getElementById(div2);  // the divs below are the div, pardon for inefficiency
-         d3 = document.getElementById(div3);
-         d4 = document.getElementById(div4);
-         d5 = document.getElementById(div5);
-         d6 = document.getElementById(div6);
-         d7 = document.getElementById(div7);
-
-         if( d1.style.display == "none" )
-         {
-            d1.style.display = "block";
-            d2.style.display = "none";
-            d3.style.display = "none";
-            d4.style.display = "none";
-            d5.style.display = "none";
-            d6.style.display = "none";
-            d7.style.display = "none";
-         }
-      }
-    </script>
+      <script src="js/jquery.min.js"></script>
+      <script src="js/jquery.dropotron.min.js"></script>
+      <script src="js/jquery.scrolly.min.js"></script>
+      <script src="js/jquery.scrollgress.min.js"></script>
+      <script src="js/skel.min.js"></script>
+      <script src="js/util.js"></script>
+      <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+      <script src="js/main.js"></script>
+    
     <script type="text/javascript">
     $(document).ready(function(){
       $("#applyBtn").click(function(){
@@ -940,5 +675,6 @@
         });
     });
     </script>
-</body>
+
+	</body>
 </html>
