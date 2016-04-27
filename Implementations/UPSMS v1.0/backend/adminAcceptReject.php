@@ -56,7 +56,7 @@
 
 					$data = array('student' => $student);
 					/*Update the status in the application table*/
-					$STH = $DBH->prepare("UPDATE application SET status = 1 WHERE studentID = :student");
+					$STH = $DBH->prepare("UPDATE application SET status = 1 WHERE applicationID = :student");
 
 					$STH->execute($data);
 
@@ -79,15 +79,23 @@
 
 					$data = array('student' => $student);
 					/*Update the status in the application table*/
-					$STH = $DBH->prepare("UPDATE application SET status = 2 WHERE studentID = :student");
+					$STH = $DBH->prepare("UPDATE application SET status = 2 WHERE applicationID = :student");
 					$STH->execute($data);
+
+					$row = $DBH->lastInsertId();
+					$data = array('studentID' => $student);
+					$STH = $DBH->prepare("INSERT INTO rejectedapps (appID) VALUES (:studentID)");
+
+					$STH->execute($data);
+
+
 				}
 			}
 		}
 
 		$DBH = null;
 		/*Return to homepage*/
-		header("Location: ../admin.php");
+		header("Location: ../tempSigRelease.php");
 	}
 
 	catch(PDOException $e){

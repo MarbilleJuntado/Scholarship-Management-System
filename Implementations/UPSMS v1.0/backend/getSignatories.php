@@ -37,20 +37,17 @@
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
 <?php
-    
-    function getSignatory()
+    function getSignatories()
     {
         $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-        $data = array('id' => $_SESSION['sig']);
+        $STH = $DBH->prepare("SELECT * FROM signatory");
 
-        $STH = $DBH->prepare("SELECT * FROM signatory WHERE sigID = :id");
-
-        $STH->execute($data);
+        $STH->execute();
         $sigs = $STH->fetchAll(PDO::FETCH_OBJ);
 
         $DBH = null;
 
-        return $sigs[0];
+        return $sigs;
     }
 ?>

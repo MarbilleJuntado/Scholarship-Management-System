@@ -35,33 +35,67 @@
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
 <?php
+  session_start();
   try
   {
     $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-    $fname = $_POST['fname'];
-    $mname = $_POST['mname'];
-    $lname = $_POST['lname'];
-    $mail = $_POST['mail'];
-    $pos = $_POST['position'];
+    if($_POST['sigButton'] == 'Submit'){
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
+      $pos = $_POST['position'];
 
 
 
-    foreach($fname as $a => $b){
-      $name1 = $fname[$a];
-      $name2 = $mname[$a];
-      $name3 = $lname[$a];
-      $email = $mail[$a];
-      $posi = $pos[$a];
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
+        $posi = $pos[$a];
 
-      $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'position' => $posi);
-      $STH = $DBH->prepare("INSERT INTO signatory (firstName, middleName, lastName, upMail, position) VALUES (:firstName, :middleName, :lastName, :upMail, :position)");
-      $STH->execute($data);
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'position' => $posi);
+        $STH = $DBH->prepare("INSERT INTO signatory (firstName, middleName, lastName, upMail, position) VALUES (:firstName, :middleName, :lastName, :upMail, :position)");
+        $STH->execute($data);
 
+      }
+    }
+
+    else if ($_POST['sigButton'] == 'Delete'){
+          
+          $data = array('id' => $_SESSION['sig']);
+
+          $STH = $DBH->prepare("DELETE FROM signatory WHERE sigID = :id");
+          $STH->execute($data);
+        
+    }
+
+    else{
+      $fname = $_POST['fname'];
+      $mname = $_POST['mname'];
+      $lname = $_POST['lname'];
+      $mail = $_POST['mail'];
+      $pos = $_POST['position'];
+      $id = $_SESSION['sig'];
+
+      foreach($fname as $a => $b){
+        $name1 = $fname[$a];
+        $name2 = $mname[$a];
+        $name3 = $lname[$a];
+        $email = $mail[$a];
+        $posi = $pos[$a];
+
+        $data = array('firstName' => $name1, 'middleName' => $name2, 'lastName' => $name3, 'upMail' => $email, 'position' => $posi, 'id' => $id);
+        $STH = $DBH->prepare("UPDATE signatory SET firstName = :firstName, middleName = :middleName, lastName = :lastName, upMail = :upMail, position = :position WHERE sigID = :id");
+        $STH->execute($data);
+
+      }
     }
 
    $DBH = null;
-   header('Location: ../admin.php');
+   header('Location: ../tempAdSig.php');
     
     
   }

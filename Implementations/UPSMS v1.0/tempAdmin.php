@@ -97,10 +97,24 @@
           <nav id = "nav">
             <ul>
               <li class = "current"><a href = "#">Home</a></li>
-              <li><a href = "tempApplication.php">Applications</a></li>
-              <li><a href = "#">Scholarships</a></li>
-              <li><a href = "#">Users</a></li>
-              <li><a href = "#" class = "button special">Logout</a></li>
+              <li class = "submenu">
+                <a href = "#">Applications</a>
+                <ul>
+                  <li><a href = "tempSigRelease.php">Signatory Release</a></li>
+                  <li><a href = "tempAcceptedApp.php">Accepted Students</a></li>
+                  <li><a href = "tempRejectedApp.php">Rejected Students</a></li>
+                </ul>
+              </li>
+              <li><a href = "tempScholarship.php">Scholarships</a></li>
+              <li class = "submenu">
+                <a href = "#">Users</a>
+                <ul>
+                  <li><a href = "tempAdStudent.php">Student</a></li>
+                  <li><a href = "tempAdSig.php">Signatory</a></li>
+                  <li><a href = "tempAdAdmin.php">Admin</a></li>
+                </ul>
+              </li>
+              <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
             </ul>
           </nav>
         </header>

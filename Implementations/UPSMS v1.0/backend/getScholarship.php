@@ -40,12 +40,14 @@
 	function getScholarship(){
 		$DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-		$STH = $DBH->prepare("SELECT * FROM scholarship");
+		$data = array('id' => $_SESSION['scholarship']);
 
-		$STH->execute();
+		$STH = $DBH->prepare("SELECT * FROM scholarship WHERE scholarshipID = :id");
+
+		$STH->execute($data);
 		$scholarships = $STH->fetchAll(PDO::FETCH_OBJ);
 
 		$DBH = null;
-		return $scholarships;
+		return $scholarships[0];
 	}
 ?>

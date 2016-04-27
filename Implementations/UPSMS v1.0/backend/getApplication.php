@@ -41,7 +41,7 @@
     {
         $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-        $STH = $DBH->prepare("SELECT * FROM application join scholarship join student WHERE application.scholarshipID = scholarship.scholarshipID AND application.studentID = student.studentID");
+        $STH = $DBH->prepare("SELECT * FROM application join scholarship join student WHERE application.scholarshipID = scholarship.scholarshipID AND application.studentID = student.studentID and application.status = 0");
 
         $STH->execute();
         $applications = $STH->fetchAll(PDO::FETCH_OBJ);

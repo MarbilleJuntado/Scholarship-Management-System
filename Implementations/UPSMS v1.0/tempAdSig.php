@@ -1,3 +1,10 @@
+<?php
+/*Start a session*/
+  session_start();
+/*Include files for the backend*/
+include 'backend/getSignatories.php';
+
+?>
 <!DOCTYPE HTML>
 <!--
 	Twenty by HTML5 UP
@@ -33,13 +40,28 @@
           <nav id = "nav">
             <ul>
               <li class = "current"><a href = "tempAdmin.php">Home</a></li>
-              <li><a href = "tempApplication.php">Applications</a></li>
-              <li><a href = "#">Scholarships</a></li>
-              <li><a href = "#">Users</a></li>
-              <li><a href = "#" class = "button special">Logout</a></li>
+              <li class = "submenu">
+                <a href = "#">Applications</a>
+                <ul>
+                  <li><a href = "tempSigRelease.php">Signatory Release</a></li>
+                  <li><a href = "tempAcceptedApp.php">Accepted Students</a></li>
+                  <li><a href = "tempRejectedApp.php">Rejected Students</a></li>
+                </ul>
+              </li>
+              <li><a href = "tempScholarship.php">Scholarships</a></li>
+              <li class = "submenu">
+                <a href = "#">Users</a>
+                <ul>
+                  <li><a href = "tempAdStudent.php">Student</a></li>
+                  <li><a href = "tempAdSig.php">Signatory</a></li>
+                  <li><a href = "tempAdAdmin.php">Admin</a></li>
+                </ul>
+              </li>
+              <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
             </ul>
           </nav>
         </header>
+
 
 
 			<!-- Main -->
@@ -55,14 +77,61 @@
 							<!-- Content -->
 								<div class="content">
 									<section>
-										<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
+										
 										<header>
-											<h3>Dolore Amet Consequat</h3>
+											<h3><strong></strong></h3>
 										</header>
-										<p>Aliquam massa urna, imperdiet sit amet mi non, bibendum euismod est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam quam, mollis at consectetur non, malesuada quis augue. Morbi tincidunt pretium interdum. Morbi mattis elementum orci, nec dictum massa. Morbi eu faucibus massa. Aliquam massa urna, imperdiet sit amet mi non, bibendum euismod est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam.</p>
-										<p>Vestibulum diam quam, mollis at consectetur non, malesuada quis augue. Morbi tincidunt pretium interdum. Morbi mattis elementum orci, nec dictum porta cursus justo. Quisque ultricies lorem in ligula condimentum, et egestas turpis sagittis. Cras ac nunc urna. Nullam eget lobortis purus. Phasellus vitae tortor non est placerat tristique. Sed id sem et massa ornare pellentesque. Maecenas pharetra porta accumsan. </p>
-										<p>In vestibulum massa quis arcu lobortis tempus. Nam pretium arcu in odio vulputate luctus. Suspendisse euismod lorem eget lacinia fringilla. Sed sed felis justo. Nunc sodales elit in laoreet aliquam. Nam gravida, nisl sit amet iaculis porttitor, risus nisi rutrum metus, non hendrerit ipsum arcu tristique est.</p>
+                         
+
+                             <table class = "table table-hover table-condensed">
+                              <thead>
+                                <tr>
+
+                                  <th class = "col-md-1">Signatory</th>
+                                  <th class = "col-md-1"></th>
+                                  
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php 
+                                  /*Get all applications in the application table. Uses getApplication.php*/
+                                  $sig = getSignatories();
+                                  foreach($sig as $temp) {
+                                    ?>
+                                  
+                                  
+                                    <tr>
+                                      <input type = "hidden" name = "sigID[]" value = "<?php echo $temp->sigID; ?>">
+                                     
+
+                                      <td><a href="#" data-toggle="modal" data-target="#1Modal"><?php echo $temp->lastName, ", ", $temp->firstName, " ", $temp->middleName; ?></a></td>
+
+                                      <td class = "pull-right">
+                                      	<form method = "post" name = "editSigForm" action = "tempEditSig.php">
+	                                      	<input type = "hidden" name = "sigID" value = "<?php echo $temp->sigID; ?>">
+	                                        <button type = "submit" class = "btn btn-info">Edit</button>
+                                     	</form>
+                                      </td>
+
+                                     
+                                    </tr>
+                                  
+                                </tbody>
+
+                                <?php
+                                  }
+                                ?>
+                              </table>
+                             	<form action = "tempAddSig.php" class = "text-center">
+									<input type = "submit" value = "Add Signatory">
+								</form>
+
+
+
+
 									</section>
+
 								</div>
 
 						</section>
@@ -148,5 +217,18 @@
       <script src="js/util.js"></script>
       <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
       <script src="js/main.js"></script>
+
+
+        <script src="js/creative.js"></script>
+
+		<!-- Script for enabling links to submit form !-->
+		<script type="text/javascript">
+		function submitEditSigForm(){
+			  document.editSigForm.submit();
+		}
+		</script>
+
+
 	</body>
 </html>
+

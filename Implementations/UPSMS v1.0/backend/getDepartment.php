@@ -42,9 +42,11 @@
     {
         $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
 
-        $STH = $DBH->prepare("SELECT * FROM dept WHERE collegeID = :collegeID");
+        $data = array('id' => $_SESSION['college']);
 
-        $STH->execute();
+        $STH = $DBH->prepare("SELECT * FROM dept WHERE collegeID = :id");
+
+        $STH->execute($data);
         $depts = $STH->fetchAll(PDO::FETCH_OBJ);
 
         $DBH = null;

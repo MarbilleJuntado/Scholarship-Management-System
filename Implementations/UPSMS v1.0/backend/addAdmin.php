@@ -35,6 +35,7 @@
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
 -->
 <?php
+  session_start();
   try
   {
     $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
@@ -61,20 +62,14 @@
     }
 
     else if ($_POST['adminButton'] == 'Delete'){
-      foreach ($_POST['admnID'] as $id){
-        if(isset($_POST["edit{$id}"])){
-          $adminID = $_POST["adminID{$id}"];
-          
-          $data = array('id' => $adminID);
+          $data = array('id' => $_SESSION['admin']);
 
           $STH = $DBH->prepare("DELETE FROM admin WHERE adminID = :id");
           $STH->execute($data);
-        }
-      }
     }
 
     else{
-      $id = $_POST['adList'];
+      $id = $_SESSION['admin'];
 
       $fname = $_POST['fname'];
       $mname = $_POST['mname'];
@@ -96,7 +91,7 @@
       }
   }
    $DBH = null;
-   header('Location: ../admin.php');
+   header('Location: ../tempAdAdmin.php');
     
     
   }

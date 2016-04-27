@@ -71,7 +71,7 @@
 
         $DBH = null;
         if ($_SESSION['currentUserTYPE'] == 1) header('Location: ../tempUserHome.php');
-        elseif ($_SESSION['currentUserTYPE'] == 2) header('Location: ../admin.php');
+        elseif ($_SESSION['currentUserTYPE'] == 2) header('Location: ../tempAdmin.php');
         elseif ($_SESSION['currentUserTYPE'] == 3) header('Location: ../tempSigHome.php');
         else {
           $_SESSION['errMsg'] = "User not found!";

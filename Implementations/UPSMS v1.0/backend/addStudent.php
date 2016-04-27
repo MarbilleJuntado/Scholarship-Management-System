@@ -37,10 +37,6 @@
 <?php
   session_start();
 
-  if(isset($_POST['sID'])){
-    $_SESSION['sID'] = $_POST['sID'];
-  }
-
   try
   {
     $DBH = new PDO("mysql:host=localhost;dbname=cs192upsms", "root", "");
@@ -79,17 +75,14 @@
     }
 
     else if ($_POST['studButton'] == 'Delete'){
-      foreach ($_POST['stdntID'] as $id){
-        if(isset($_POST["edit{$id}"])){
-          $studentID = $_POST["studentID{$id}"];
           
-          $data = array('id' => $studentID);
+          $data = array('id' => $_SESSION['student']);
 
           $STH = $DBH->prepare("DELETE FROM student WHERE studentID = :id");
           $STH->execute($data);
-        }
+        
       }
-    }
+    
 
     else{
       $fname = $_POST['fname'];
@@ -98,7 +91,7 @@
       $mail = $_POST['mail'];
       $college = $_POST['college'];
       $dept = $_POST['dept'];
-      $id = $_POST['studList'];
+      $id = $_SESSION['student'];
 
       foreach($fname as $a => $b){
         $name1 = $fname[$a];
@@ -127,7 +120,7 @@
     }
 
    $DBH = null;
-   header('Location: ../admin.php');
+   header('Location: ../tempAdStudent.php');
     
     
   }
