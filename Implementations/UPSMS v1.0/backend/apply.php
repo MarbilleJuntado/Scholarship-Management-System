@@ -24,6 +24,6 @@
   }
   mysqli_close($conn);
 
-  header("Location: ../user.php");
+  header("Location: ../tempUserView.php");
   
 ?>
