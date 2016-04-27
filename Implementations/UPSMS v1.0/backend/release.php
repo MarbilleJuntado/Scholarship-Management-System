@@ -57,5 +57,11 @@
   $SQL = "INSERT INTO released (appID, status) VALUES ($selAppID, $status)";
   $plswork = mysqli_query($conn, $SQL);
 
-  header("Location: ../admin.php");
+  if($status == "0"){
+    header("Location: ../tempRejectedApp.php");
+  }
+  elseif ($status == "1") {
+    header("Location: ../tempAcceptedApp.php");
+  }
+  
 ?>
