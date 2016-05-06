@@ -41,7 +41,7 @@
   March 2, 2016: Cyan Villarin finally implemented Signatory Order, returning pending.
   March 31, 2016: Cyan Villarin started working on returning and rejection of application on signatory account's side.
   April 26, 2016: Cyan Villarin updated the Front-End of the signatory account page.
-
+  May 6, 2016: Marbille Juntado updated Apply for Scholarship functionality.
   File Creation Date: December 11, 2015
   Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
@@ -125,7 +125,7 @@ foreach ($rows9 as $key => $value)
             <ul>
               <li class = "current"><a href = "#">Home</a></li>
               <li><a href = "tempUserProfile.php">User Profile</a></li>
-              <li><a href = "tempUserApply.php">Apply for Application</a></li>
+              <li><a href = "tempUserApply.php">Apply</a></li>
               <li><a href = "tempUserView.php">View Application Status</a></li>
               <li><?php echo $_SESSION['currentUserName']. " (ID:" . $_SESSION['currentUserID'] . ")"?></li>
               <li><a href = "backend/logout.php" class = "button special">Logout</a></li>

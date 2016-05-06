@@ -10,7 +10,7 @@
   session_start();
   $currID = $_SESSION["currentUserID"];
   $selAppID = $_SESSION["selectedAppID"];
-  $schID = $_POST["schlist"];
+  $schID = $_SESSION["schoID"];
 
   /* Tinsert once Apply button is clicked */
 

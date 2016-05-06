@@ -1,3 +1,34 @@
+<!--
+ The MIT License (MIT)
+ Copyright (c) 2016 UPSMS
+ Authors:
+   Prototype Front-End Developer: Patricia Regarde
+   Front-End and Back-End Developer: Cyan Villarin
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ This is a course requirement for CS 192 Software Engineering II under the
+ supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer
+ Science, College of Engineering, University of the Philippines, Diliman for
+ the AY 2015-2016
+
+ Code History:
+  May 6, 2016: Marbille Juntado updated Apply for Scholarship functionality.
 <?php
 /* Start a session so that other files can access these variables */
   session_start();
@@ -78,7 +109,7 @@ foreach ($rows9 as $key => $value)
             <ul>
               <li><a href = "tempUserHome.php">Home</a></li>
               <li class = "current"><a href = "#">User Profile</a></li>
-              <li><a href = "tempUserApply.php">Apply for Application</a></li>
+              <li><a href = "tempUserApply.php">Apply</a></li>
               <li><a href = "tempUserView.php">View Application Status</a></li>
               <li><?php echo $_SESSION['currentUserName']. " (ID:" . $_SESSION['currentUserID'] . ")"?></li>
               <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
