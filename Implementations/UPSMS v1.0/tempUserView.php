@@ -29,6 +29,7 @@
 
  Code History:
   May 6, 2016: Marbille Juntado updated Apply for Scholarship functionality .
+ -->
 <?php
 /* Start a session so that other files can access these variables */
   session_start();
