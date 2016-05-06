@@ -46,7 +46,7 @@
   Development Group: UPSMS (Marbille Juntado, Patricia Regarde, Cyan Villarin)
   Client Group: Mrs. Rowena Solamo, Dr. Jaime Caro
   Purpose of this software: Our main goal is to implement a system that allows the monitoring of scholarship system within UP System.
--->
+-- >
 
 
 <?php

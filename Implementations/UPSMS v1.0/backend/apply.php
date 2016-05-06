@@ -1,5 +1,5 @@
 <?php
-  /* Connect to database */
+  /* Connect to database  */
     $conn = new mysqli("localhost","root","","cs192upsms");
   /* Checks Connection */
     if ($conn->connect_error) {

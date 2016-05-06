@@ -28,7 +28,7 @@
  the AY 2015-2016
 
  Code History:
-  May 6, 2016: Marbille Juntado updated Apply for Scholarship functionality.
+  May 6, 2016: Marbille Juntado updated Apply for Scholarship functionality .
 --> 
 <?php
 /* Start a session so that other files can access these variables */
