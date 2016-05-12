@@ -111,7 +111,7 @@ foreach ($rows9 as $key => $value)
               <li><a href = "tempUserHome.php">Home</a></li>
               <li class = "current"><a href = "#">User Profile</a></li>
               <li><a href = "tempUserApply.php">Apply</a></li>
-              <li><a href = "tempUserView.php">View Application Status</a></li>
+              <li><a href = "tempUserView.php">View Scholarship Status</a></li>
               <li><?php echo $_SESSION['currentUserName']. " (ID:" . $_SESSION['currentUserID'] . ")"?></li>
               <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
             </ul>

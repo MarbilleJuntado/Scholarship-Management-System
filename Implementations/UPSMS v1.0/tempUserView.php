@@ -111,7 +111,7 @@ foreach ($rows9 as $key => $value)
               <li><a href = "tempUserHome.php">Home</a></li>
               <li><a href = "tempUserProfile.php">User Profile</a></li>
               <li><a href = "tempUserApply.php">Apply</a></li>
-              <li class = "current"><a href = "#">View Application Status</a></li>
+              <li class = "current"><a href = "#">View Scholarship Status</a></li>
               <li><?php echo $_SESSION['currentUserName']. " (ID:" . $_SESSION['currentUserID'] . ")"?></li>
               <li><a href = "backend/logout.php" class = "button special">Logout</a></li>
             </ul>
@@ -120,22 +120,19 @@ foreach ($rows9 as $key => $value)
 
 
 			<!-- Main -->
-				<article id="main">
+			<article id="main">
 
-					<header class="special container">
-						<span class="icon fa-mobile"></span>
-					</header>
+				<header class="special container">
+					<span class="icon fa-mobile"></span>
+				</header>
 
-					<!-- One -->
-						<section class="wrapper style4 container">
+				<!-- One -->
+				<section class="wrapper style4 container">
 
-							<!-- Content -->
-								<div class="content">
-									<section>	
-										
-
-<h1>View Scholarship Status</h1>
-                          <p>Nunc elementum aliquet ante. Quisque tempus nec quam sed iaculis. Maecenas nec dapibus nulla. Donec sit amet scelerisque neque. Ut non molestie sem. Aliquam interdum non nisi imperdiet pharetra. Quisque tincidunt bibendum turpis in rutrum. Nulla eu nulla sit amet lorem convallis commodo commodo eu risus. Praesent molestie lorem a urna vestibulum facilisis ut id nulla. Aenean porttitor risus at sagittis congue. Etiam et magna ac mi porttitor viverra quis ut est. Aliquam ac lacinia magna. Suspendisse potenti.</p>
+					<!-- Content -->
+					<div class="content">
+						<section>								
+						  <h1><strong>Admin Approval Status</strong></h1>			                    
                           <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -167,88 +164,129 @@ foreach ($rows9 as $key => $value)
                                     }
 
                                   }
-                                ?>
-                                
-                                
+                                ?>		                                			                                
                             </tbody>
                           </table>
 
                           <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>									
-										
-									</section>
-								</div>
-
+								
 						</section>
+					</div>
 
-					<!-- Two -->
-						<section class="wrapper style1 container special">
-							<div class="row">
-								<div class="4u 12u(narrower)">
+					<div class="content">
+						<section>
+							<h1><strong>Signatory Approval Status</strong></h1>
+                          	<table class="table table-bordered">
+                            	<thead>
+                                	<tr>
+                                  		<th style="width:60%">Scholarship</th>
+                                  		<th style="width:10%">Signatory Status</th>
+                                  		<th style="width:10%">Application ID</th>
+                                	</tr>
+                            	</thead>
+                            	<tbody>
+                                	<?php
+                                  	$queryScholarship = "SELECT S.name, A.status, A.applicationID FROM application A join scholarship S on A.scholarshipID = S.scholarshipID WHERE studentID = $_SESSION[currentUserID]";
+                                  	$qSchoResult = mysqli_query($conn, $queryScholarship);
+                            
 
-									<section>
-										<header>
-											<h3>This is Something</h3>
-										</header>
-										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
-										<footer>
-											<ul class="buttons">
-												<li><a href="#" class="button small">Learn More</a></li>
-											</ul>
-										</footer>
-									</section>
+                                  	while($rows=mysqli_fetch_row($qSchoResult))
+                                  	{
+                                  		
+                                    	foreach($rows as $key => $value){
 
-								</div>
-								<div class="4u 12u(narrower)">
+	                                      	if ($key == 0){
+	                                        	?> <tr ><td> <?php echo $value;
+	                                      	}
+	                                      	if($key == 1){			                                    		
+	                                        ?>
+	                                        	<td><button class="btn btn-default"><a href="tempViewSigStatus.php">View</a></button>
+	                                        <?php
+	                                      	}
+	                                      	if($key == 2){
+	                                      	?>
+	                                      		<td><?php echo $value;
+	                                      		$_SESSION["appID"] = $value;
+	                                      	}
+                                    	}
 
-									<section>
-										<header>
-											<h3>Also Something</h3>
-										</header>
-										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
-										<footer>
-											<ul class="buttons">
-												<li><a href="#" class="button small">Learn More</a></li>
-											</ul>
-										</footer>
-									</section>
+                                  	}
+                                	?>		                                			                                
+                            	</tbody>
+                          	</table>
+						</sectioN>
+					</div>
+				</section>
 
-								</div>
-								<div class="4u 12u(narrower)">
+			<!-- Two -->
+				<section class="wrapper style1 container special">
+					<div class="row">
+						<div class="4u 12u(narrower)">
 
-									<section>
-										<header>
-											<h3>Probably Something</h3>
-										</header>
-										<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
-										<footer>
-											<ul class="buttons">
-												<li><a href="#" class="button small">Learn More</a></li>
-											</ul>
-										</footer>
-									</section>
+							<section>
+								<header>
+									<h3>This is Something</h3>
+								</header>
+								<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+								<footer>
+									<ul class="buttons">
+										<li><a href="#" class="button small">Learn More</a></li>
+									</ul>
+								</footer>
+							</section>
 
-								</div>
-							</div>
-						</section>
+						</div>
+						<div class="4u 12u(narrower)">
 
-				</article>
+							<section>
+								<header>
+									<h3>Also Something</h3>
+								</header>
+								<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+								<footer>
+									<ul class="buttons">
+										<li><a href="#" class="button small">Learn More</a></li>
+									</ul>
+								</footer>
+							</section>
+
+						</div>
+						<div class="4u 12u(narrower)">
+
+							<section>
+								<header>
+									<h3>Probably Something</h3>
+								</header>
+								<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+								<footer>
+									<ul class="buttons">
+										<li><a href="#" class="button small">Learn More</a></li>
+									</ul>
+								</footer>
+							</section>
+
+						</div>
+					</div>
+				</section>
+
+			</article>
 
 			<!-- Footer -->
-				<footer id="footer">
+			<footer id="footer">
 
-					<ul class="icons">
-						<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
-						<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
-					</ul>
+				<ul class="icons">
+					<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+					<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
+					<li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
+				</ul>
 
-					<ul class="copyright">
-						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
+				<ul class="copyright">
+					<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
 
-				</footer>
+			</footer>
 
 		</div>
 
@@ -261,5 +299,7 @@ foreach ($rows9 as $key => $value)
       <script src="js/util.js"></script>
       <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
       <script src="js/main.js"></script>
+
+
 	</body>
 </html>
